@@ -101,7 +101,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  serializedNodes: []
   edges: []
   stackNodes: []
   pinnedElements:
@@ -148,7 +147,8 @@ MonoBehaviour:
   exposedParameters: []
   serializedParameterList: []
   stickyNotes: []
-  position: {x: -140, y: 355, z: 0}
-  scale: {x: 1.15, y: 1.15, z: 1}
+  position: {x: -112, y: 404, z: 0}
+  scale: {x: 0.65751624, y: 0.65751624, z: 1}
   references:
-    version: 1
+    version: 2
+    RefIds: []

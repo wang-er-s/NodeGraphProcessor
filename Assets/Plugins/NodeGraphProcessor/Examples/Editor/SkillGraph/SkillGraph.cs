@@ -11,8 +11,8 @@ namespace Examples.Editor._05_All
 {
     public class SkillGraph: NPBehaveGraph
     {
-        [Button("ExpoertSkillData")]
-        public void ExpoertSkillData()
+        [Button("ExportSkillData")]
+        public void ExportSkillData()
         {
             
         }

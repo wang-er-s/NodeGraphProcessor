@@ -4,6 +4,7 @@
 // Data: 2021年6月15日 11:19:33
 //------------------------------------------------------------
 
+using System;
 using GraphProcessor;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -14,11 +15,15 @@ namespace Examples.Editor._05_All
     {
         [HideInInspector]
         public NP_BlackBoard NpBlackBoard = new NP_BlackBoard();
-        
-        [Button("ExpoertNPBehaveData")]
-        public void ExpoertNPBehaveData()
+
+        private void OnEnable()
         {
             
+        }
+
+        [Button("ExportNPBehaveData")]
+        public void ExportNPBehaveData()
+        {
         }
     }
 }
