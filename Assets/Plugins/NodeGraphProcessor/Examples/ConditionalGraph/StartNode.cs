@@ -16,7 +16,7 @@ namespace NodeGraphProcessor.Examples
 		public IEnumerable< ConditionalNode >	GetExecutedNodes()
 		{
 			// Return all the nodes connected to the executes port
-			return GetOutputNodes().Where(n => n is ConditionalNode).Select(n => n as ConditionalNode);
+			return GetOutputNodes().OfType<ConditionalNode>();
 		}
 
 		public override FieldInfo[] GetNodeFields() => base.GetNodeFields();
