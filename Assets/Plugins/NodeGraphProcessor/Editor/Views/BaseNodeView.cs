@@ -495,18 +495,28 @@ namespace GraphProcessor
 
         private void OpenTargetNodeCSFile()
         {
-            var typeName = nodeTarget.GetType().Name;
-            var fileName = typeName + ".cs";
-            var guids = AssetDatabase.FindAssets(typeName);
-            foreach (var guid in guids)
+            bool OpenScript(string typeName)
             {
-                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                if (Path.GetFileName(assetPath) == fileName)
+                string fileName = typeName + ".cs";
+                var guids = AssetDatabase.FindAssets(typeName);
+                foreach (var guid in guids)
                 {
-                    var script = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
-                    AssetDatabase.OpenAsset(script);
-                    break;
+                    var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                    if (Path.GetFileName(assetPath) == fileName)
+                    {
+                        var script = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
+                        AssetDatabase.OpenAsset(script);
+                        return true;
+                    }
                 }
+
+                return false;
+            }
+
+            var typeName = nodeTarget.GetType().Name;
+            if (!OpenScript(typeName))
+            {
+                OpenScript(typeName + "Node");
             }
         }
 

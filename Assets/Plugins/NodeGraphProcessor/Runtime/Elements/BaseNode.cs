@@ -985,7 +985,6 @@ namespace GraphProcessor
         {
             return string.IsNullOrEmpty(nodeCustomName) ? name : nodeCustomName;
         }
-
         #endregion
     }
 }
