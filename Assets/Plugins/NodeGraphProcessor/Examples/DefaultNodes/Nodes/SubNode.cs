@@ -1,34 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using GraphProcessor;
-using System.Linq;
 
-[System.Serializable, NodeMenuItem("Operations/Sub")]
+[Serializable]
+[NodeMenuItem("Operations/Sub")]
 public class SubNode : BaseNode
 {
-	[Input(name = "A")]
-    public float                inputA;
-	[Input(name = "B")]
-    public float                inputB;
+    [Input(name = "A")] public float inputA;
 
-	[Output(name = "Out")]
-	public float				output;
+    [Input(name = "B")] public float inputB;
 
-	public override string		name => "Sub";
-	
-	protected override void Process()
-	{
-		TryGetInputValue(nameof(inputA), ref inputA);
-		TryGetInputValue(nameof(inputB), ref inputB);
-		output = inputA - inputB;
-	}
+    [Output(name = "Out")] public float output;
 
-	public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
-	{
-		if (output is T finalValue)
-		{
-			value = finalValue;
-		}
-	}
+    public override string name => "Sub";
+
+    protected override void Process()
+    {
+        TryGetInputValue(nameof(inputA), ref inputA);
+        TryGetInputValue(nameof(inputB), ref inputB);
+        output = inputA - inputB;
+    }
+
+    public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
+    {
+        if (output is T finalValue) value = finalValue;
+    }
 }

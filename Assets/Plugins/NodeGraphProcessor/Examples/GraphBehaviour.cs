@@ -1,5 +1,5 @@
-using UnityEngine;
 using GraphProcessor;
+using UnityEngine;
 
 [ExecuteAlways]
 public class GraphBehaviour : MonoBehaviour

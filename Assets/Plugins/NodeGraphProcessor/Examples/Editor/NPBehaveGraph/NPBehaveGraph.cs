@@ -4,21 +4,18 @@
 // Data: 2021年6月15日 11:19:33
 //------------------------------------------------------------
 
-using System;
 using GraphProcessor;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Examples.Editor._05_All
 {
-    public class NPBehaveGraph: BaseGraph
+    public class NPBehaveGraph : BaseGraph
     {
-        [HideInInspector]
-        public NP_BlackBoard NpBlackBoard = new NP_BlackBoard();
+        [HideInInspector] public NP_BlackBoard NpBlackBoard = new();
 
         private void OnEnable()
         {
-            
         }
 
         [Button("ExportNPBehaveData")]

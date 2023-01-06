@@ -5,43 +5,41 @@ using UnityEngine;
 
 namespace NodeGraphProcessor.Examples
 {
-	[Serializable, NodeMenuItem("Debug/Console Log")]
-	public class ConsoleNode : LinearConditionalNode
-	{
-		public override string name => "Console Log";
+    [Serializable]
+    [NodeMenuItem("Debug/Console Log")]
+    public class ConsoleNode : LinearConditionalNode
+    {
+        [Input("Log")] [SerializeField] [Tooltip("If Object is null, this will be the log.")]
+        public string logText = "Log";
 
-		[Input("Object")]
-		public object obj;
+        [Setting("Log Type")] public LogType logType = LogType.Log;
 
-		[Input("Log"), SerializeField, Tooltip("If Object is null, this will be the log.")]
-		public string logText = "Log";
+        [Input("Object")] public object obj;
 
-		[Setting("Log Type")]
-		public LogType logType = LogType.Log;
+        [ShowInInspector(true)] public Dictionary<string, string> TestDic = new();
 
-		[ShowInInspector(true)]
-		public Dictionary<string, string> TestDic = new Dictionary<string, string>();
-		
-		protected override void Process()
-		{
-			TryGetInputValue(nameof(obj), ref obj);
-			
-			switch(logType)
-			{
-				case LogType.Error:
-				case LogType.Exception:
-					Debug.LogError(obj != null ? obj.ToString() : logText);
-					break;
-				case LogType.Assert:
-					Debug.LogAssertion(obj != null ? obj.ToString() : logText);
-					break;
-				case LogType.Warning:
-					Debug.LogWarning(obj != null ? obj.ToString() : logText);
-					break;
-				case LogType.Log:
-					Debug.Log(obj != null ? obj.ToString() : logText);
-					break;
-			}
-		}
-	}
+        public override string name => "Console Log";
+
+        protected override void Process()
+        {
+            TryGetInputValue(nameof(obj), ref obj);
+
+            switch (logType)
+            {
+                case LogType.Error:
+                case LogType.Exception:
+                    Debug.LogError(obj != null ? obj.ToString() : logText);
+                    break;
+                case LogType.Assert:
+                    Debug.LogAssertion(obj != null ? obj.ToString() : logText);
+                    break;
+                case LogType.Warning:
+                    Debug.LogWarning(obj != null ? obj.ToString() : logText);
+                    break;
+                case LogType.Log:
+                    Debug.Log(obj != null ? obj.ToString() : logText);
+                    break;
+            }
+        }
+    }
 }

@@ -1,36 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
-using System;
 
 namespace GraphProcessor
 {
-	public class BaseEdgeConnector : EdgeConnector
-	{
-		protected BaseEdgeDragHelper dragHelper;
-        Edge edgeCandidate;
-        protected bool active;
-        Vector2 mouseDownPosition;
-        protected BaseGraphView graphView;
-
+    public class BaseEdgeConnector : EdgeConnector
+    {
         internal const float k_ConnectionDistanceTreshold = 10f;
+        protected bool active;
+        protected BaseEdgeDragHelper dragHelper;
+        private Edge edgeCandidate;
+        protected BaseGraphView graphView;
+        private Vector2 mouseDownPosition;
 
-		public BaseEdgeConnector(IEdgeConnectorListener listener) : base()
-		{
+        public BaseEdgeConnector(IEdgeConnectorListener listener)
+        {
             graphView = (listener as BaseEdgeConnectorListener)?.graphView;
             active = false;
             InitEdgeConnector(listener);
         }
+
+        public override EdgeDragHelper edgeDragHelper => dragHelper;
 
         protected virtual void InitEdgeConnector(IEdgeConnectorListener listener)
         {
             dragHelper = new BaseEdgeDragHelper(listener);
             activators.Add(new ManipulatorActivationFilter { button = MouseButton.LeftMouse });
         }
-
-		public override EdgeDragHelper edgeDragHelper => dragHelper;
 
         protected override void RegisterCallbacksOnTarget()
         {
@@ -57,16 +53,10 @@ namespace GraphProcessor
                 return;
             }
 
-            if (!CanStartManipulation(e))
-            {
-                return;
-            }
+            if (!CanStartManipulation(e)) return;
 
             var graphElement = target as Port;
-            if (graphElement == null)
-            {
-                return;
-            }
+            if (graphElement == null) return;
 
             mouseDownPosition = e.localMousePosition;
 
@@ -88,7 +78,7 @@ namespace GraphProcessor
             }
         }
 
-        void OnCaptureOut(MouseCaptureOutEvent e)
+        private void OnCaptureOut(MouseCaptureOutEvent e)
         {
             active = false;
             if (edgeCandidate != null)
@@ -133,7 +123,7 @@ namespace GraphProcessor
             e.StopPropagation();
         }
 
-        void Abort()
+        private void Abort()
         {
             var graphView = target?.GetFirstAncestorOfType<GraphView>();
             graphView?.RemoveElement(edgeCandidate);
@@ -145,7 +135,7 @@ namespace GraphProcessor
             edgeDragHelper.Reset();
         }
 
-        bool CanPerformConnection(Vector2 mousePosition)
+        private bool CanPerformConnection(Vector2 mousePosition)
         {
             return Vector2.Distance(mouseDownPosition, mousePosition) > k_ConnectionDistanceTreshold;
         }

@@ -1,39 +1,15 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphProcessor
 {
     public static class GraphUtils
     {
-        enum State
+        private static TraversalGraph ConvertGraphToTraversalGraph(BaseGraph graph)
         {
-            White,
-            Grey,
-            Black,
-        }
-
-        class TarversalNode
-        {
-            public BaseNode node;
-            public List<TarversalNode> inputs = new List<TarversalNode>();
-            public List<TarversalNode> outputs = new List<TarversalNode>();
-            public State    state = State.White;
-
-            public TarversalNode(BaseNode node) { this.node = node; }
-        }
-
-        // A structure made for easy graph traversal
-        class TraversalGraph
-        {
-            public List<TarversalNode> nodes = new List<TarversalNode>();
-            public List<TarversalNode> outputs = new List<TarversalNode>();
-        }
-
-        static TraversalGraph ConvertGraphToTraversalGraph(BaseGraph graph)
-        {
-            TraversalGraph g = new TraversalGraph();
-            Dictionary<BaseNode, TarversalNode> nodeMap = new Dictionary<BaseNode, TarversalNode>();
+            var g = new TraversalGraph();
+            var nodeMap = new Dictionary<BaseNode, TarversalNode>();
 
             foreach (var node in graph.nodes)
             {
@@ -48,7 +24,8 @@ namespace GraphProcessor
             foreach (var tn in g.nodes)
             {
                 tn.inputs = tn.node.GetInputNodes().Where(n => nodeMap.ContainsKey(n)).Select(n => nodeMap[n]).ToList();
-                tn.outputs = tn.node.GetOutputNodes().Where(n => nodeMap.ContainsKey(n)).Select(n => nodeMap[n]).ToList();
+                tn.outputs = tn.node.GetOutputNodes().Where(n => nodeMap.ContainsKey(n)).Select(n => nodeMap[n])
+                    .ToList();
             }
 
             return g;
@@ -57,7 +34,7 @@ namespace GraphProcessor
         public static List<BaseNode> DepthFirstSort(BaseGraph g)
         {
             var graph = ConvertGraphToTraversalGraph(g);
-            List<BaseNode> depthFirstNodes = new List<BaseNode>();
+            var depthFirstNodes = new List<BaseNode>();
 
             foreach (var n in graph.nodes)
                 DFS(n);
@@ -66,27 +43,23 @@ namespace GraphProcessor
             {
                 if (n.state == State.Black)
                     return;
-                
+
                 n.state = State.Grey;
 
                 if (n.node is ParameterNode parameterNode && parameterNode.accessor == ParameterAccessor.Get)
                 {
-                    foreach (var setter in graph.nodes.Where(x=> 
-                        x.node is ParameterNode p &&
-                        p.parameterGUID == parameterNode.parameterGUID &&
-                        p.accessor == ParameterAccessor.Set))
-                    {
+                    foreach (var setter in graph.nodes.Where(x =>
+                                 x.node is ParameterNode p &&
+                                 p.parameterGUID == parameterNode.parameterGUID &&
+                                 p.accessor == ParameterAccessor.Set))
                         if (setter.state == State.White)
                             DFS(setter);
-                    }
                 }
                 else
                 {
                     foreach (var input in n.inputs)
-                    {
                         if (input.state == State.White)
                             DFS(input);
-                    }
                 }
 
                 n.state = State.Black;
@@ -101,7 +74,7 @@ namespace GraphProcessor
         public static void FindCyclesInGraph(BaseGraph g, Action<BaseNode> cyclicNode)
         {
             var graph = ConvertGraphToTraversalGraph(g);
-            List<TarversalNode> cyclicNodes = new List<TarversalNode>();
+            var cyclicNodes = new List<TarversalNode>();
 
             foreach (var n in graph.nodes)
                 DFS(n);
@@ -110,20 +83,45 @@ namespace GraphProcessor
             {
                 if (n.state == State.Black)
                     return;
-                
+
                 n.state = State.Grey;
 
                 foreach (var input in n.inputs)
-                {
                     if (input.state == State.White)
                         DFS(input);
                     else if (input.state == State.Grey)
                         cyclicNodes.Add(n);
-                }
                 n.state = State.Black;
             }
 
-            cyclicNodes.ForEach((tn) => cyclicNode?.Invoke(tn.node));
+            cyclicNodes.ForEach(tn => cyclicNode?.Invoke(tn.node));
+        }
+
+        private enum State
+        {
+            White,
+            Grey,
+            Black
+        }
+
+        private class TarversalNode
+        {
+            public List<TarversalNode> inputs = new();
+            public readonly BaseNode node;
+            public List<TarversalNode> outputs = new();
+            public State state = State.White;
+
+            public TarversalNode(BaseNode node)
+            {
+                this.node = node;
+            }
+        }
+
+        // A structure made for easy graph traversal
+        private class TraversalGraph
+        {
+            public readonly List<TarversalNode> nodes = new();
+            public readonly List<TarversalNode> outputs = new();
         }
     }
 }

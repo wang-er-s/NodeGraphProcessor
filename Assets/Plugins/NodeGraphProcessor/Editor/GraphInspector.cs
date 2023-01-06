@@ -1,19 +1,15 @@
-using UnityEngine;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
-using System;
-using System.Reflection;
 
 namespace GraphProcessor
 {
     public class GraphInspector : Editor
     {
-        protected VisualElement root;
-        protected BaseGraph     graph;
         protected ExposedParameterFieldFactory exposedParameterFactory;
+        protected BaseGraph graph;
 
-        VisualElement           parameterContainer;
+        private VisualElement parameterContainer;
+        protected VisualElement root;
 
         protected virtual void OnEnable()
         {
@@ -41,7 +37,8 @@ namespace GraphProcessor
 
         protected virtual void CreateInspector()
         {
-            parameterContainer = new VisualElement{
+            parameterContainer = new VisualElement
+            {
                 name = "ExposedParameters"
             };
             FillExposedParameters(parameterContainer);
@@ -59,7 +56,8 @@ namespace GraphProcessor
                 if (param.settings.isHidden)
                     continue;
 
-                var field = exposedParameterFactory.GetParameterValueField(param, (newValue) => {
+                var field = exposedParameterFactory.GetParameterValueField(param, newValue =>
+                {
                     param.value = newValue;
                     serializedObject.ApplyModifiedProperties();
                     graph.NotifyExposedParameterValueChanged(param);
@@ -68,16 +66,20 @@ namespace GraphProcessor
             }
         }
 
-        void UpdateExposedParameters(ExposedParameter param) => UpdateExposedParameters();
+        private void UpdateExposedParameters(ExposedParameter param)
+        {
+            UpdateExposedParameters();
+        }
 
-        void UpdateExposedParameters()
+        private void UpdateExposedParameters()
         {
             parameterContainer.Clear();
             FillExposedParameters(parameterContainer);
         }
 
         // Don't use ImGUI
-        public sealed override void OnInspectorGUI() {}
-
+        public sealed override void OnInspectorGUI()
+        {
+        }
     }
 }

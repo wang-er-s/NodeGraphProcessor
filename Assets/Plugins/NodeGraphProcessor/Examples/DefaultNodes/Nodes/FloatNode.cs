@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using GraphProcessor;
 
-[System.Serializable, NodeMenuItem("Primitives/Float")]
+[Serializable]
+[NodeMenuItem("Primitives/Float")]
 public class FloatNode : BaseNode
 {
     [Output("Out")] public float output;
@@ -20,9 +19,6 @@ public class FloatNode : BaseNode
 
     public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
     {
-        if (output is T finalValue)
-        {
-            value = finalValue;
-        }
+        if (output is T finalValue) value = finalValue;
     }
 }

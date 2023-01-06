@@ -1,45 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Unity.Jobs;
-using Unity.Collections;
+
 // using Unity.Entities;
 
 namespace GraphProcessor
 {
-
 	/// <summary>
-	/// Graph processor
+	///     Graph processor
 	/// </summary>
 	public class ProcessGraphProcessor : BaseGraphProcessor
-	{
-		List< BaseNode >		processList;
-		
-		/// <summary>
-		/// Manage graph scheduling and processing
-		/// </summary>
-		/// <param name="graph">Graph to be processed</param>
-		public ProcessGraphProcessor(BaseGraph graph) : base(graph) {}
+    {
+        private List<BaseNode> processList;
 
-		public override void UpdateComputeOrder()
-		{
-			processList = graph.nodes.OrderBy(n => n.computeOrder).ToList();
-		}
+        /// <summary>
+        ///     Manage graph scheduling and processing
+        /// </summary>
+        /// <param name="graph">Graph to be processed</param>
+        public ProcessGraphProcessor(BaseGraph graph) : base(graph)
+        {
+        }
 
-		/// <summary>
-		/// Schedule the graph into the job system
-		/// </summary>
-		public override void Run()
-		{
-			int count = processList.Count;
+        public override void UpdateComputeOrder()
+        {
+            processList = graph.nodes.OrderBy(n => n.computeOrder).ToList();
+        }
 
-			for (int i = 0; i < count; i++)
-			{
-				processList[i].OnProcess();
-			}
+        /// <summary>
+        ///     Schedule the graph into the job system
+        /// </summary>
+        public override void Run()
+        {
+            var count = processList.Count;
 
-			JobHandle.ScheduleBatchedJobs();
-		}
-	}
+            for (var i = 0; i < count; i++) processList[i].OnProcess();
+
+            JobHandle.ScheduleBatchedJobs();
+        }
+    }
 }

@@ -1,46 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
-using UnityEditor;
-using System.Linq;
 using System;
-using Status = UnityEngine.UIElements.DropdownMenuAction.Status;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace GraphProcessor
 {
     public class ToolbarView : VisualElement
     {
-        protected enum ElementType
-        {
-            Button,
-            Toggle,
-            DropDownButton,
-            Separator,
-            Custom,
-            FlexibleSpace,
-        }
-
-        protected class ToolbarButtonData
-        {
-            public GUIContent content;
-            public ElementType type;
-            public bool value;
-            public bool visible = true;
-            public Action buttonCallback;
-            public Action<bool> toggleCallback;
-            public int size;
-            public Action customDrawFunction;
-        }
-
-        List<ToolbarButtonData> leftButtonDatas = new List<ToolbarButtonData>();
-        List<ToolbarButtonData> rightButtonDatas = new List<ToolbarButtonData>();
         protected BaseGraphView graphView;
 
-        ToolbarButtonData showProcessor;
-        ToolbarButtonData showParameters;
+        private readonly List<ToolbarButtonData> leftButtonDatas = new();
+        private readonly List<ToolbarButtonData> rightButtonDatas = new();
+        private ToolbarButtonData showParameters;
+
+        private ToolbarButtonData showProcessor;
 
         public ToolbarView(BaseGraphView graphView)
         {
@@ -58,7 +33,9 @@ namespace GraphProcessor
         }
 
         protected ToolbarButtonData AddButton(string name, Action callback, bool left = true)
-            => AddButton(new GUIContent(name), callback, left);
+        {
+            return AddButton(new GUIContent(name), callback, left);
+        }
 
         protected ToolbarButtonData AddButton(GUIContent content, Action callback, bool left = true)
         {
@@ -68,7 +45,7 @@ namespace GraphProcessor
                 type = ElementType.Button,
                 buttonCallback = callback
             };
-            ((left) ? leftButtonDatas : rightButtonDatas).Add(data);
+            (left ? leftButtonDatas : rightButtonDatas).Add(data);
             return data;
         }
 
@@ -77,9 +54,9 @@ namespace GraphProcessor
             var data = new ToolbarButtonData
             {
                 type = ElementType.Separator,
-                size = sizeInPixels,
+                size = sizeInPixels
             };
-            ((left) ? leftButtonDatas : rightButtonDatas).Add(data);
+            (left ? leftButtonDatas : rightButtonDatas).Add(data);
         }
 
         protected void AddCustom(Action imguiDrawFunction, bool left = true)
@@ -90,18 +67,20 @@ namespace GraphProcessor
             var data = new ToolbarButtonData
             {
                 type = ElementType.Custom,
-                customDrawFunction = imguiDrawFunction,
+                customDrawFunction = imguiDrawFunction
             };
-            ((left) ? leftButtonDatas : rightButtonDatas).Add(data);
+            (left ? leftButtonDatas : rightButtonDatas).Add(data);
         }
 
         protected void AddFlexibleSpace(bool left = true)
         {
-            ((left) ? leftButtonDatas : rightButtonDatas).Add(new ToolbarButtonData {type = ElementType.FlexibleSpace});
+            (left ? leftButtonDatas : rightButtonDatas).Add(new ToolbarButtonData { type = ElementType.FlexibleSpace });
         }
 
         protected ToolbarButtonData AddToggle(string name, bool defaultValue, Action<bool> callback, bool left = true)
-            => AddToggle(new GUIContent(name), defaultValue, callback, left);
+        {
+            return AddToggle(new GUIContent(name), defaultValue, callback, left);
+        }
 
         protected ToolbarButtonData AddToggle(GUIContent content, bool defaultValue, Action<bool> callback,
             bool left = true)
@@ -113,12 +92,14 @@ namespace GraphProcessor
                 value = defaultValue,
                 toggleCallback = callback
             };
-            ((left) ? leftButtonDatas : rightButtonDatas).Add(data);
+            (left ? leftButtonDatas : rightButtonDatas).Add(data);
             return data;
         }
 
         protected ToolbarButtonData AddDropDownButton(string name, Action callback, bool left = true)
-            => AddDropDownButton(new GUIContent(name), callback, left);
+        {
+            return AddDropDownButton(new GUIContent(name), callback, left);
+        }
 
         protected ToolbarButtonData AddDropDownButton(GUIContent content, Action callback, bool left = true)
         {
@@ -128,22 +109,22 @@ namespace GraphProcessor
                 type = ElementType.DropDownButton,
                 buttonCallback = callback
             };
-            ((left) ? leftButtonDatas : rightButtonDatas).Add(data);
+            (left ? leftButtonDatas : rightButtonDatas).Add(data);
             return data;
         }
 
         /// <summary>
-        /// Also works for toggles
+        ///     Also works for toggles
         /// </summary>
         /// <param name="name"></param>
         /// <param name="left"></param>
         protected void RemoveButton(string name, bool left)
         {
-            ((left) ? leftButtonDatas : rightButtonDatas).RemoveAll(b => b.content.text == name);
+            (left ? leftButtonDatas : rightButtonDatas).RemoveAll(b => b.content.text == name);
         }
 
         /// <summary>
-        /// Hide the button
+        ///     Hide the button
         /// </summary>
         /// <param name="name">Display name of the button</param>
         protected void HideButton(string name)
@@ -157,7 +138,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Show the button
+        ///     Show the button
         /// </summary>
         /// <param name="name">Display name of the button</param>
         protected void ShowButton(string name)
@@ -174,11 +155,13 @@ namespace GraphProcessor
         {
             AddButton("Center", graphView.ResetPositionAndZoom);
 
-            bool processorVisible = graphView.GetPinnedElementStatus<ProcessorView>() != Status.Hidden;
-            showProcessor = AddToggle("Processor", processorVisible, (v) => graphView.ToggleView<ProcessorView>());
-            bool exposedParamsVisible = graphView.GetPinnedElementStatus<ExposedParameterView>() != Status.Hidden;
+            var processorVisible =
+                graphView.GetPinnedElementStatus<ProcessorView>() != DropdownMenuAction.Status.Hidden;
+            showProcessor = AddToggle("Processor", processorVisible, v => graphView.ToggleView<ProcessorView>());
+            var exposedParamsVisible = graphView.GetPinnedElementStatus<ExposedParameterView>() !=
+                                       DropdownMenuAction.Status.Hidden;
             showParameters = AddToggle("Parameters", exposedParamsVisible,
-                (v) => graphView.ToggleView<ExposedParameterView>());
+                v => graphView.ToggleView<ExposedParameterView>());
 
             AddButton("Show In Project", () => EditorGUIUtility.PingObject(graphView.graph), false);
         }
@@ -186,12 +169,14 @@ namespace GraphProcessor
         public virtual void UpdateButtonStatus()
         {
             if (showProcessor != null)
-                showProcessor.value = graphView.GetPinnedElementStatus<ProcessorView>() != Status.Hidden;
+                showProcessor.value = graphView.GetPinnedElementStatus<ProcessorView>() !=
+                                      DropdownMenuAction.Status.Hidden;
             if (showParameters != null)
-                showParameters.value = graphView.GetPinnedElementStatus<ExposedParameterView>() != Status.Hidden;
+                showParameters.value = graphView.GetPinnedElementStatus<ExposedParameterView>() !=
+                                       DropdownMenuAction.Status.Hidden;
         }
 
-        void DrawImGUIButtonList(List<ToolbarButtonData> buttons)
+        private void DrawImGUIButtonList(List<ToolbarButtonData> buttons)
         {
             foreach (var button in buttons.ToList())
             {
@@ -215,7 +200,7 @@ namespace GraphProcessor
                         break;
                     case ElementType.DropDownButton:
                         if (EditorGUILayout.DropdownButton(button.content, FocusType.Passive,
-                            EditorStyles.toolbarDropDown))
+                                EditorStyles.toolbarDropDown))
                             button.buttonCallback();
                         break;
                     case ElementType.Separator:
@@ -243,6 +228,28 @@ namespace GraphProcessor
             DrawImGUIButtonList(rightButtonDatas);
 
             GUILayout.EndHorizontal();
+        }
+
+        protected enum ElementType
+        {
+            Button,
+            Toggle,
+            DropDownButton,
+            Separator,
+            Custom,
+            FlexibleSpace
+        }
+
+        protected class ToolbarButtonData
+        {
+            public Action buttonCallback;
+            public GUIContent content;
+            public Action customDrawFunction;
+            public int size;
+            public Action<bool> toggleCallback;
+            public ElementType type;
+            public bool value;
+            public bool visible = true;
         }
     }
 }

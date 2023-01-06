@@ -1,22 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using GraphProcessor;
-using System.Linq;
 
-[System.Serializable, NodeMenuItem("Custom/OutputNode")]
+[Serializable]
+[NodeMenuItem("Custom/OutputNode")]
 public class OutputNode : BaseNode
 {
-	[Input(name = "In")]
-    public float                input;
+    [Input(name = "In")] public float input;
 
-	public override string		name => "OutputNode";
+    public override string name => "OutputNode";
 
-	public override bool		deletable => false;
+    public override bool deletable => false;
 
-	protected override void Process()
-	{
-		TryGetInputValue(nameof(input), ref input);
-		// Do stuff
-	}
+    protected override void Process()
+    {
+        TryGetInputValue(nameof(input), ref input);
+        // Do stuff
+    }
 }

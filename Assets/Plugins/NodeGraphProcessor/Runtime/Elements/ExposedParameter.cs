@@ -4,92 +4,77 @@ using UnityEngine;
 
 namespace GraphProcessor
 {
-	[Serializable]
-	public class ExposedParameter : ISerializationCallbackReceiver
-	{
-        [Serializable]
-        public class Settings
+    [Serializable]
+    public class ExposedParameter : ISerializationCallbackReceiver
+    {
+        private static Dictionary<Type, Type> exposedParameterTypeCache = new();
+
+        public string guid; // unique id to keep track of the parameter
+        public string name;
+
+        [Obsolete("Use GetValueType()")] public string type;
+
+        [Obsolete("Use value instead")] public SerializableObject serializedValue;
+
+        public bool input = true;
+
+        [SerializeReference] public Settings settings;
+
+        public string shortType => GetValueType()?.Name;
+
+        public virtual object value { get; set; }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            public bool isHidden = false;
-            public bool expanded = false;
-
-            [SerializeField]
-            internal string guid = null;
-
-            public override bool Equals(object obj)
+            // SerializeReference migration step:
+#pragma warning disable CS0618
+            if (serializedValue?.value != null) // old serialization system can't serialize null values
             {
-                if (obj is Settings s && s != null)
-                    return Equals(s);
-                else
-                    return false;
+                value = serializedValue.value;
+                Debug.Log("Migrated: " + serializedValue.value + " | " + serializedValue.serializedName);
+                serializedValue.value = null;
             }
-
-            public virtual bool Equals(Settings param)
-                => isHidden == param.isHidden && expanded == param.expanded;
-
-            public override int GetHashCode() => base.GetHashCode();
+#pragma warning restore CS0618
         }
 
-		public string				guid; // unique id to keep track of the parameter
-		public string				name;
-		[Obsolete("Use GetValueType()")]
-		public string				type;
-		[Obsolete("Use value instead")]
-		public SerializableObject	serializedValue;
-		public bool					input = true;
-        [SerializeReference]
-		public Settings             settings;
-		public string shortType => GetValueType()?.Name;
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+        }
 
         public void Initialize(string name, object value)
         {
-			guid = Guid.NewGuid().ToString(); // Generated once and unique per parameter
+            guid = Guid.NewGuid().ToString(); // Generated once and unique per parameter
             settings = CreateSettings();
             settings.guid = guid;
-			this.name = name;
-			this.value = value;
+            this.name = name;
+            this.value = value;
         }
 
-		void ISerializationCallbackReceiver.OnAfterDeserialize()
-		{
-			// SerializeReference migration step:
-#pragma warning disable CS0618
-			if (serializedValue?.value != null) // old serialization system can't serialize null values
-			{
-				value = serializedValue.value;
-				Debug.Log("Migrated: " + serializedValue.value + " | " + serializedValue.serializedName);
-				serializedValue.value = null;
-			}
-#pragma warning restore CS0618
-		}
+        protected virtual Settings CreateSettings()
+        {
+            return new Settings();
+        }
 
-		void ISerializationCallbackReceiver.OnBeforeSerialize() {}
+        public virtual Type GetValueType()
+        {
+            return value.GetType();
+        }
 
-        protected virtual Settings CreateSettings() => new Settings();
-
-        public virtual object value { get; set; }
-        public virtual Type GetValueType() => value.GetType();
-
-        static Dictionary<Type, Type> exposedParameterTypeCache = new Dictionary<Type, Type>();
         internal ExposedParameter Migrate()
         {
             if (exposedParameterTypeCache.Count == 0)
-            {
                 foreach (var type in UtilityRefelection.GetAllTypes())
-                {
                     if (type.IsSubclassOf(typeof(ExposedParameter)) && !type.IsAbstract)
                     {
                         var paramType = Activator.CreateInstance(type) as ExposedParameter;
                         exposedParameterTypeCache[paramType.GetValueType()] = type;
                     }
-                }
-            }
 #pragma warning disable CS0618 // Use of obsolete fields
             var oldType = Type.GetType(type);
 #pragma warning restore CS0618
             if (oldType == null || !exposedParameterTypeCache.TryGetValue(oldType, out var newParamType))
                 return null;
-            
+
             var newParam = Activator.CreateInstance(newParamType) as ExposedParameter;
 
             newParam.guid = guid;
@@ -99,7 +84,6 @@ namespace GraphProcessor
             newParam.settings.guid = guid;
 
             return newParam;
-     
         }
 
         public static bool operator ==(ExposedParameter param1, ExposedParameter param2)
@@ -116,19 +100,27 @@ namespace GraphProcessor
             return param1.Equals(param2);
         }
 
-        public static bool operator !=(ExposedParameter param1, ExposedParameter param2) => !(param1 == param2);
+        public static bool operator !=(ExposedParameter param1, ExposedParameter param2)
+        {
+            return !(param1 == param2);
+        }
 
-        public bool Equals(ExposedParameter parameter) => guid == parameter.guid;
+        public bool Equals(ExposedParameter parameter)
+        {
+            return guid == parameter.guid;
+        }
 
         public override bool Equals(object obj)
         {
-            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            if (obj == null || !GetType().Equals(obj.GetType()))
                 return false;
-            else
-                return Equals((ExposedParameter)obj);
+            return Equals((ExposedParameter)obj);
         }
 
-        public override int GetHashCode() => guid.GetHashCode();
+        public override int GetHashCode()
+        {
+            return guid.GetHashCode();
+        }
 
         public ExposedParameter Clone()
         {
@@ -142,11 +134,37 @@ namespace GraphProcessor
 
             return clonedParam;
         }
-	}
+
+        [Serializable]
+        public class Settings
+        {
+            public bool isHidden;
+            public bool expanded;
+
+            [SerializeField] internal string guid;
+
+            public override bool Equals(object obj)
+            {
+                if (obj is Settings s && s != null)
+                    return Equals(s);
+                return false;
+            }
+
+            public virtual bool Equals(Settings param)
+            {
+                return isHidden == param.isHidden && expanded == param.expanded;
+            }
+
+            public override int GetHashCode()
+            {
+                return base.GetHashCode();
+            }
+        }
+    }
 
     // Due to polymorphic constraints with [SerializeReference] we need to explicitly create a class for
     // every parameter type available in the graph (i.e. templating doesn't work)
-    [System.Serializable]
+    [Serializable]
     public class ColorParameter : ExposedParameter
     {
         public enum ColorMode
@@ -155,204 +173,322 @@ namespace GraphProcessor
             HDR
         }
 
+        [SerializeField] private Color val;
+
+        public override object value
+        {
+            get => val;
+            set => val = (Color)value;
+        }
+
+        protected override Settings CreateSettings()
+        {
+            return new ColorSettings();
+        }
+
         [Serializable]
         public class ColorSettings : Settings
         {
             public ColorMode mode;
 
             public override bool Equals(Settings param)
-                => base.Equals(param) && mode == ((ColorSettings)param).mode;
+            {
+                return base.Equals(param) && mode == ((ColorSettings)param).mode;
+            }
         }
-
-        [SerializeField] Color val;
-
-        public override object value { get => val; set => val = (Color)value; }
-        protected override Settings CreateSettings() => new ColorSettings();
     }
 
-    [System.Serializable]
+    [Serializable]
     public class FloatParameter : ExposedParameter
     {
         public enum FloatMode
         {
             Default,
-            Slider,
+            Slider
+        }
+
+        [SerializeField] private float val;
+
+        public override object value
+        {
+            get => val;
+            set => val = (float)value;
+        }
+
+        protected override Settings CreateSettings()
+        {
+            return new FloatSettings();
         }
 
         [Serializable]
         public class FloatSettings : Settings
         {
             public FloatMode mode;
-            public float min = 0;
+            public float min;
             public float max = 1;
 
             public override bool Equals(Settings param)
-                => base.Equals(param) && mode == ((FloatSettings)param).mode && min == ((FloatSettings)param).min && max == ((FloatSettings)param).max;
+            {
+                return base.Equals(param) && mode == ((FloatSettings)param).mode && min == ((FloatSettings)param).min &&
+                       max == ((FloatSettings)param).max;
+            }
         }
-
-        [SerializeField] float val;
-
-        public override object value { get => val; set => val = (float)value; }
-        protected override Settings CreateSettings() => new FloatSettings();
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Vector2Parameter : ExposedParameter
     {
         public enum Vector2Mode
         {
             Default,
-            MinMaxSlider,
+            MinMaxSlider
+        }
+
+        [SerializeField] private Vector2 val;
+
+        public override object value
+        {
+            get => val;
+            set => val = (Vector2)value;
+        }
+
+        protected override Settings CreateSettings()
+        {
+            return new Vector2Settings();
         }
 
         [Serializable]
         public class Vector2Settings : Settings
         {
             public Vector2Mode mode;
-            public float min = 0;
+            public float min;
             public float max = 1;
 
             public override bool Equals(Settings param)
-                => base.Equals(param) && mode == ((Vector2Settings)param).mode && min == ((Vector2Settings)param).min && max == ((Vector2Settings)param).max;
+            {
+                return base.Equals(param) && mode == ((Vector2Settings)param).mode &&
+                       min == ((Vector2Settings)param).min && max == ((Vector2Settings)param).max;
+            }
         }
-
-        [SerializeField] Vector2 val;
-
-        public override object value { get => val; set => val = (Vector2)value; }
-        protected override Settings CreateSettings() => new Vector2Settings();
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Vector3Parameter : ExposedParameter
     {
-        [SerializeField] Vector3 val;
+        [SerializeField] private Vector3 val;
 
-        public override object value { get => val; set => val = (Vector3)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (Vector3)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Vector4Parameter : ExposedParameter
     {
-        [SerializeField] Vector4 val;
+        [SerializeField] private Vector4 val;
 
-        public override object value { get => val; set => val = (Vector4)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (Vector4)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class IntParameter : ExposedParameter
     {
         public enum IntMode
         {
             Default,
-            Slider,
+            Slider
+        }
+
+        [SerializeField] private int val;
+
+        public override object value
+        {
+            get => val;
+            set => val = (int)value;
+        }
+
+        protected override Settings CreateSettings()
+        {
+            return new IntSettings();
         }
 
         [Serializable]
         public class IntSettings : Settings
         {
             public IntMode mode;
-            public int min = 0;
+            public int min;
             public int max = 10;
 
             public override bool Equals(Settings param)
-                => base.Equals(param) && mode == ((IntSettings)param).mode && min == ((IntSettings)param).min && max == ((IntSettings)param).max;
+            {
+                return base.Equals(param) && mode == ((IntSettings)param).mode && min == ((IntSettings)param).min &&
+                       max == ((IntSettings)param).max;
+            }
         }
-
-        [SerializeField] int val;
-
-        public override object value { get => val; set => val = (int)value; }
-        protected override Settings CreateSettings() => new IntSettings();
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Vector2IntParameter : ExposedParameter
     {
-        [SerializeField] Vector2Int val;
+        [SerializeField] private Vector2Int val;
 
-        public override object value { get => val; set => val = (Vector2Int)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (Vector2Int)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Vector3IntParameter : ExposedParameter
     {
-        [SerializeField] Vector3Int val;
+        [SerializeField] private Vector3Int val;
 
-        public override object value { get => val; set => val = (Vector3Int)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (Vector3Int)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class DoubleParameter : ExposedParameter
     {
-        [SerializeField] Double val;
+        [SerializeField] private double val;
 
-        public override object value { get => val; set => val = (Double)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (double)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class LongParameter : ExposedParameter
     {
-        [SerializeField] long val;
+        [SerializeField] private long val;
 
-        public override object value { get => val; set => val = (long)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (long)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class StringParameter : ExposedParameter
     {
-        [SerializeField] string val;
+        [SerializeField] private string val;
 
-        public override object value { get => val; set => val = (string)value; }
-        public override Type GetValueType() => typeof(String);
+        public override object value
+        {
+            get => val;
+            set => val = (string)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(string);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class RectParameter : ExposedParameter
     {
-        [SerializeField] Rect val;
+        [SerializeField] private Rect val;
 
-        public override object value { get => val; set => val = (Rect)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (Rect)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class RectIntParameter : ExposedParameter
     {
-        [SerializeField] RectInt val;
+        [SerializeField] private RectInt val;
 
-        public override object value { get => val; set => val = (RectInt)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (RectInt)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BoundsParameter : ExposedParameter
     {
-        [SerializeField] Bounds val;
+        [SerializeField] private Bounds val;
 
-        public override object value { get => val; set => val = (Bounds)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (Bounds)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BoundsIntParameter : ExposedParameter
     {
-        [SerializeField] BoundsInt val;
+        [SerializeField] private BoundsInt val;
 
-        public override object value { get => val; set => val = (BoundsInt)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (BoundsInt)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class AnimationCurveParameter : ExposedParameter
     {
-        [SerializeField] AnimationCurve val;
+        [SerializeField] private AnimationCurve val;
 
-        public override object value { get => val; set => val = (AnimationCurve)value; }
-        public override Type GetValueType() => typeof(AnimationCurve);
+        public override object value
+        {
+            get => val;
+            set => val = (AnimationCurve)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(AnimationCurve);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class GradientParameter : ExposedParameter
     {
         public enum GradientColorMode
         {
             Default,
-            HDR,
+            HDR
+        }
+
+        [SerializeField] private Gradient val;
+        [SerializeField] [GradientUsage(true)] private Gradient hdrVal;
+
+        public override object value
+        {
+            get => val;
+            set => val = (Gradient)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(Gradient);
+        }
+
+        protected override Settings CreateSettings()
+        {
+            return new GradientSettings();
         }
 
         [Serializable]
@@ -361,67 +497,106 @@ namespace GraphProcessor
             public GradientColorMode mode;
 
             public override bool Equals(Settings param)
-                => base.Equals(param) && mode == ((GradientSettings)param).mode;
+            {
+                return base.Equals(param) && mode == ((GradientSettings)param).mode;
+            }
         }
-
-        [SerializeField] Gradient val;
-        [SerializeField, GradientUsage(true)] Gradient hdrVal;
-
-        public override object value { get => val; set => val = (Gradient)value; }
-        public override Type GetValueType() => typeof(Gradient);
-        protected override Settings CreateSettings() => new GradientSettings();
     }
 
-    [System.Serializable]
+    [Serializable]
     public class GameObjectParameter : ExposedParameter
     {
-        [SerializeField] GameObject val;
+        [SerializeField] private GameObject val;
 
-        public override object value { get => val; set => val = (GameObject)value; }
-        public override Type GetValueType() => typeof(GameObject);
+        public override object value
+        {
+            get => val;
+            set => val = (GameObject)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(GameObject);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BoolParameter : ExposedParameter
     {
-        [SerializeField] bool val;
+        [SerializeField] private bool val;
 
-        public override object value { get => val; set => val = (bool)value; }
+        public override object value
+        {
+            get => val;
+            set => val = (bool)value;
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Texture2DParameter : ExposedParameter
     {
-        [SerializeField] Texture2D val;
+        [SerializeField] private Texture2D val;
 
-        public override object value { get => val; set => val = (Texture2D)value; }
-        public override Type GetValueType() => typeof(Texture2D);
+        public override object value
+        {
+            get => val;
+            set => val = (Texture2D)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(Texture2D);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class RenderTextureParameter : ExposedParameter
     {
-        [SerializeField] RenderTexture val;
+        [SerializeField] private RenderTexture val;
 
-        public override object value { get => val; set => val = (RenderTexture)value; }
-        public override Type GetValueType() => typeof(RenderTexture);
+        public override object value
+        {
+            get => val;
+            set => val = (RenderTexture)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(RenderTexture);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class MeshParameter : ExposedParameter
     {
-        [SerializeField] Mesh val;
+        [SerializeField] private Mesh val;
 
-        public override object value { get => val; set => val = (Mesh)value; }
-        public override Type GetValueType() => typeof(Mesh);
+        public override object value
+        {
+            get => val;
+            set => val = (Mesh)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(Mesh);
+        }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class MaterialParameter : ExposedParameter
     {
-        [SerializeField] Material val;
+        [SerializeField] private Material val;
 
-        public override object value { get => val; set => val = (Material)value; }
-        public override Type GetValueType() => typeof(Material);
+        public override object value
+        {
+            get => val;
+            set => val = (Material)value;
+        }
+
+        public override Type GetValueType()
+        {
+            return typeof(Material);
+        }
     }
 }

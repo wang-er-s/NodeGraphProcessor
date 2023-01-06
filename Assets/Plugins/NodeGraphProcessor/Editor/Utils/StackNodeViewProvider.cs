@@ -1,14 +1,13 @@
-using UnityEditor;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using UnityEditor;
 
 namespace GraphProcessor
 {
-	public static class StackNodeViewProvider
-	{
-		static Dictionary< Type, Type >		stackNodeViewPerType = new Dictionary< Type, Type >();
+    public static class StackNodeViewProvider
+    {
+        private static readonly Dictionary<Type, Type> stackNodeViewPerType = new();
 
         static StackNodeViewProvider()
         {
@@ -28,6 +27,7 @@ namespace GraphProcessor
             {
                 // Debug.Log(t.Key + " -> " + t.Value);
             }
+
             stackNodeViewPerType.TryGetValue(stackNodeType, out var view);
             return view;
         }

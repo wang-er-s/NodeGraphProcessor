@@ -5,18 +5,14 @@
 //------------------------------------------------------------
 
 using GraphProcessor;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.UIElements;
 
 namespace Examples.Editor._05_All
 {
     public class SkillToolbarView : NPBehaveToolbarView
     {
-        private SkillGraphWindow _skillGraphWindow;
+        private readonly SkillGraphWindow _skillGraphWindow;
 
         public SkillToolbarView(SkillGraphWindow skillGraphWindow, BaseGraphView graphView, MiniMap miniMap,
             BaseGraph baseGraph) : base(graphView,

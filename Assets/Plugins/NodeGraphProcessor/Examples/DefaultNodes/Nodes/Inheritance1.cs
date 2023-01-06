@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using GraphProcessor;
-using System.Linq;
 
-[System.Serializable, NodeMenuItem("Custom/Inheritance1")]
+[Serializable]
+[NodeMenuItem("Custom/Inheritance1")]
 public class Inheritance1 : InheritanceBase
 {
     [Input(name = "In 1")] public float input1;
@@ -28,10 +26,7 @@ public class Inheritance1 : InheritanceBase
         switch (outputPort.fieldName)
         {
             case nameof(output1):
-                if (output1 is T finalValue1)
-                {
-                    value = finalValue1;
-                }
+                if (output1 is T finalValue1) value = finalValue1;
                 break;
         }
     }

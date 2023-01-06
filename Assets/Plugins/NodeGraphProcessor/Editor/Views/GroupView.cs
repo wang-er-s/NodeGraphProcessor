@@ -1,56 +1,53 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GraphProcessor
 {
     public class GroupView : UnityEditor.Experimental.GraphView.Group
-	{
-		public BaseGraphView	owner;
-		public Group		    group;
+    {
+        private readonly string groupStyle = "GraphProcessorStyles/GroupView";
+        private ColorField colorField;
+        public Group group;
+        public BaseGraphView owner;
 
-        Label                   titleLabel;
-        ColorField              colorField;
-
-        readonly string         groupStyle = "GraphProcessorStyles/GroupView";
+        private Label titleLabel;
 
         public GroupView()
         {
             styleSheets.Add(Resources.Load<StyleSheet>(groupStyle));
-		}
-		
-		private static void BuildContextualMenu(ContextualMenuPopulateEvent evt) {}
-		
-		public void Initialize(BaseGraphView graphView, Group block)
-		{
-			group = block;
-			owner = graphView;
+        }
+
+        private static void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+        }
+
+        public void Initialize(BaseGraphView graphView, Group block)
+        {
+            group = block;
+            owner = graphView;
 
             title = block.title;
             SetPosition(block.position);
-			
-			this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
-			
+
+            this.AddManipulator(new ContextualMenuManipulator(BuildContextualMenu));
+
             headerContainer.Q<TextField>().RegisterCallback<ChangeEvent<string>>(TitleChangedCallback);
             titleLabel = headerContainer.Q<Label>();
 
-            colorField = new ColorField{ value = group.color, name = "headerColorPicker" };
-            colorField.RegisterValueChangedCallback(e =>
-            {
-                UpdateGroupColor(e.newValue);
-            });
+            colorField = new ColorField { value = group.color, name = "headerColorPicker" };
+            colorField.RegisterValueChangedCallback(e => { UpdateGroupColor(e.newValue); });
             UpdateGroupColor(group.color);
 
             headerContainer.Add(colorField);
 
             InitializeInnerNodes();
-		}
+        }
 
-        void InitializeInnerNodes()
+        private void InitializeInnerNodes()
         {
             foreach (var nodeGUID in group.innerNodeGUIDs.ToList())
             {
@@ -58,8 +55,9 @@ namespace GraphProcessor
                 {
                     Debug.LogWarning("Node GUID not found: " + nodeGUID);
                     group.innerNodeGUIDs.Remove(nodeGUID);
-                    continue ;
+                    continue;
                 }
+
                 var node = owner.graph.nodesPerGUID[nodeGUID];
                 var nodeView = owner.nodeViewsPerNode[node];
 
@@ -80,6 +78,7 @@ namespace GraphProcessor
                 if (!group.innerNodeGUIDs.Contains(node.nodeTarget.GUID))
                     group.innerNodeGUIDs.Add(node.nodeTarget.GUID);
             }
+
             base.OnElementsAdded(elements);
         }
 
@@ -87,15 +86,9 @@ namespace GraphProcessor
         {
             // Only remove the nodes when the group exists in the hierarchy
             if (parent != null)
-            {
                 foreach (var elem in elements)
-                {
                     if (elem is BaseNodeView nodeView)
-                    {
                         group.innerNodeGUIDs.Remove(nodeView.nodeTarget.GUID);
-                    }
-                }
-            }
 
             base.OnElementsRemoved(elements);
         }
@@ -106,16 +99,16 @@ namespace GraphProcessor
             style.backgroundColor = newColor;
         }
 
-        void TitleChangedCallback(ChangeEvent< string > e)
+        private void TitleChangedCallback(ChangeEvent<string> e)
         {
             group.title = e.newValue;
         }
 
-		public override void SetPosition(Rect newPos)
-		{
-			base.SetPosition(newPos);
+        public override void SetPosition(Rect newPos)
+        {
+            base.SetPosition(newPos);
 
-			group.position = newPos;
-		}
-	}
+            group.position = newPos;
+        }
+    }
 }

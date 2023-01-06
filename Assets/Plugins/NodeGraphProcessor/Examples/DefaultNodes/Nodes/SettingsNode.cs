@@ -1,39 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using GraphProcessor;
-using System.Linq;
 
 public enum Setting
 {
-	S1,
-	S2,
-	S3,
+    S1,
+    S2,
+    S3
 }
 
-[System.Serializable, NodeMenuItem("Custom/SettingsNode")]
+[Serializable]
+[NodeMenuItem("Custom/SettingsNode")]
 public class SettingsNode : BaseNode
 {
-	public Setting				setting;
-	public override string		name => "SettingsNode";
+    public Setting setting;
 
-	[Input]
-	public float			input;
-	
-	[Output]
-	public float			output;
+    [Input] public float input;
 
-	protected override void Process()
-	{
-		TryGetInputValue(nameof(input), ref input);
-		output = input;
-	}
+    [Output] public float output;
 
-	public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
-	{
-		if (output is T finalValue)
-		{
-			value = finalValue;
-		}
-	}
+    public override string name => "SettingsNode";
+
+    protected override void Process()
+    {
+        TryGetInputValue(nameof(input), ref input);
+        output = input;
+    }
+
+    public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
+    {
+        if (output is T finalValue) value = finalValue;
+    }
 }

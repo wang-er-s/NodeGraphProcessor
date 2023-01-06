@@ -1,7 +1,8 @@
-using UnityEngine;
+using System;
 using GraphProcessor;
 
-[System.Serializable, NodeMenuItem("Custom/Renamable")]
+[Serializable]
+[NodeMenuItem("Custom/Renamable")]
 public class RenamableNode : BaseNode
 {
     [Output("Out")] public float output;
@@ -20,9 +21,6 @@ public class RenamableNode : BaseNode
 
     public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
     {
-        if (output is T finalValue)
-        {
-            value = finalValue;
-        }
+        if (output is T finalValue) value = finalValue;
     }
 }

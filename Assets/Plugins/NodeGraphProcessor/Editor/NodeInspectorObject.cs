@@ -1,10 +1,6 @@
-using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEditor;
-using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Object = UnityEngine.Object;
+using UnityEditor;
 
 namespace GraphProcessor
 {
@@ -70,12 +66,12 @@ namespace GraphProcessor
     // }
 
     /// <summary>
-    /// Node inspector object, you can inherit from this class to customize your node inspector.
+    ///     Node inspector object, you can inherit from this class to customize your node inspector.
     /// </summary>
     public class NodeInspectorObject : SerializedScriptableObject
     {
         /// <summary>List of currently selected nodes</summary>
-        public HashSet<BaseNodeView> selectedNodes = new HashSet<BaseNodeView>();
+        public HashSet<BaseNodeView> selectedNodes = new();
 
         public virtual void NodeViewRemoved(BaseNodeView view)
         {
@@ -84,8 +80,8 @@ namespace GraphProcessor
     }
 
     /// <summary>
-    /// 手动清理NodeInspectorObject，防止出现编辑已经非法的数据，因为NodeView是每次重新编译/PlayMode后重新构建的
-    /// 所以如果这里不做清理在重新编译/PlayMode后编辑的就是已经失效的数据
+    ///     手动清理NodeInspectorObject，防止出现编辑已经非法的数据，因为NodeView是每次重新编译/PlayMode后重新构建的
+    ///     所以如果这里不做清理在重新编译/PlayMode后编辑的就是已经失效的数据
     /// </summary>
     public class ResetSelectNodeInfo : Editor
     {
@@ -93,9 +89,7 @@ namespace GraphProcessor
         public static void _ResetSelectNodeInfo()
         {
             if (Selection.activeObject is NodeInspectorObject nodeInspectorObject)
-            {
                 nodeInspectorObject.selectedNodes.Clear();
-            }
         }
     }
 }

@@ -1,19 +1,18 @@
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 [CustomEditor(typeof(GraphBehaviour))]
 public class GraphBehaviourEditor : Editor
 {
-    Editor graphEditor;
-    GraphBehaviour behaviour => target as GraphBehaviour;
+    private Editor graphEditor;
+    private GraphBehaviour behaviour => target as GraphBehaviour;
 
-    void OnEnable()
+    private void OnEnable()
     {
-        graphEditor = Editor.CreateEditor(behaviour.graph);
+        graphEditor = CreateEditor(behaviour.graph);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         DestroyImmediate(graphEditor);
     }

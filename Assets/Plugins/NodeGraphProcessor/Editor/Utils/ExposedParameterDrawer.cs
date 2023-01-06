@@ -1,7 +1,7 @@
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
 
 namespace GraphProcessor
 {
@@ -25,16 +25,25 @@ namespace GraphProcessor
 
             var p = new PropertyField(GetValProperty(property), displayName);
 
-            p.RegisterValueChangeCallback(e => {
-                ApplyModifiedProperties(property);
-            });
+            p.RegisterValueChangeCallback(e => { ApplyModifiedProperties(property); });
 
             return p;
         }
 
-        protected SerializedProperty GetSettingsProperty(SerializedProperty property) => property.FindPropertyRelative(nameof(ExposedParameter.settings));
-        protected SerializedProperty GetValProperty(SerializedProperty property) => property.FindPropertyRelative("val");
-        protected SerializedProperty GetNameProperty(SerializedProperty property) => property.FindPropertyRelative(nameof(ExposedParameter.name));
+        protected SerializedProperty GetSettingsProperty(SerializedProperty property)
+        {
+            return property.FindPropertyRelative(nameof(ExposedParameter.settings));
+        }
+
+        protected SerializedProperty GetValProperty(SerializedProperty property)
+        {
+            return property.FindPropertyRelative("val");
+        }
+
+        protected SerializedProperty GetNameProperty(SerializedProperty property)
+        {
+            return property.FindPropertyRelative(nameof(ExposedParameter.name));
+        }
 
         protected void ApplyModifiedProperties(SerializedProperty property)
         {
@@ -56,7 +65,8 @@ namespace GraphProcessor
             var mode = settings.FindPropertyRelative(nameof(FloatParameter.FloatSettings.mode));
             var min = settings.FindPropertyRelative(nameof(FloatParameter.FloatSettings.min));
             var max = settings.FindPropertyRelative(nameof(FloatParameter.FloatSettings.max));
-            container.Add(new IMGUIContainer(() => {
+            container.Add(new IMGUIContainer(() =>
+            {
                 float newValue;
                 EditorGUIUtility.labelWidth = 150;
                 if ((FloatParameter.FloatMode)mode.intValue == FloatParameter.FloatMode.Slider)
@@ -65,12 +75,16 @@ namespace GraphProcessor
                     newValue = Mathf.Clamp(newValue, min.floatValue, max.floatValue);
                 }
                 else
+                {
                     newValue = EditorGUILayout.FloatField(name.stringValue, val.floatValue);
+                }
+
                 if (newValue != val.floatValue)
                 {
                     val.floatValue = newValue;
                     ApplyModifiedProperties(property);
                 }
+
                 EditorGUIUtility.labelWidth = 0;
             }));
 
@@ -91,7 +105,8 @@ namespace GraphProcessor
             var mode = settings.FindPropertyRelative(nameof(IntParameter.IntSettings.mode));
             var min = settings.FindPropertyRelative(nameof(IntParameter.IntSettings.min));
             var max = settings.FindPropertyRelative(nameof(IntParameter.IntSettings.max));
-            container.Add(new IMGUIContainer(() => {
+            container.Add(new IMGUIContainer(() =>
+            {
                 int newValue;
                 EditorGUIUtility.labelWidth = 150;
                 if ((IntParameter.IntMode)mode.intValue == IntParameter.IntMode.Slider)
@@ -100,12 +115,16 @@ namespace GraphProcessor
                     newValue = Mathf.Clamp(newValue, min.intValue, max.intValue);
                 }
                 else
+                {
                     newValue = EditorGUILayout.IntField(name.stringValue, val.intValue);
+                }
+
                 if (newValue != val.intValue)
                 {
                     val.intValue = newValue;
                     ApplyModifiedProperties(property);
                 }
+
                 EditorGUIUtility.labelWidth = 0;
             }));
 
@@ -126,18 +145,22 @@ namespace GraphProcessor
             var mode = settings.FindPropertyRelative(nameof(Vector2Parameter.Vector2Settings.mode));
             var min = settings.FindPropertyRelative(nameof(Vector2Parameter.Vector2Settings.min));
             var max = settings.FindPropertyRelative(nameof(Vector2Parameter.Vector2Settings.max));
-            container.Add(new IMGUIContainer(() => {
+            container.Add(new IMGUIContainer(() =>
+            {
                 EditorGUIUtility.labelWidth = 150;
                 EditorGUI.BeginChangeCheck();
                 if ((Vector2Parameter.Vector2Mode)mode.intValue == Vector2Parameter.Vector2Mode.MinMaxSlider)
                 {
-                    float x = val.vector2Value.x;
-                    float y = val.vector2Value.y;
+                    var x = val.vector2Value.x;
+                    var y = val.vector2Value.y;
                     EditorGUILayout.MinMaxSlider(name.stringValue, ref x, ref y, min.floatValue, max.floatValue);
                     val.vector2Value = new Vector2(x, y);
                 }
                 else
+                {
                     val.vector2Value = EditorGUILayout.Vector2Field(name.stringValue, val.vector2Value);
+                }
+
                 if (EditorGUI.EndChangeCheck())
                     ApplyModifiedProperties(property);
                 EditorGUIUtility.labelWidth = 0;
@@ -154,11 +177,11 @@ namespace GraphProcessor
         {
             var name = GetNameProperty(property);
             var settings = GetSettingsProperty(property);
-            var mode = (GradientParameter.GradientColorMode)settings.FindPropertyRelative(nameof(GradientParameter.GradientSettings.mode)).intValue;
+            var mode = (GradientParameter.GradientColorMode)settings
+                .FindPropertyRelative(nameof(GradientParameter.GradientSettings.mode)).intValue;
             if (mode == GradientParameter.GradientColorMode.HDR)
                 return new PropertyField(property.FindPropertyRelative("hdrVal"), name.stringValue);
-            else
-                return new PropertyField(property.FindPropertyRelative("val"), name.stringValue);
+            return new PropertyField(property.FindPropertyRelative("val"), name.stringValue);
         }
     }
 
@@ -170,10 +193,13 @@ namespace GraphProcessor
             var name = GetNameProperty(property);
             var settings = GetSettingsProperty(property);
             var val = GetValProperty(property);
-            var mode = (ColorParameter.ColorMode)settings.FindPropertyRelative(nameof(ColorParameter.ColorSettings.mode)).intValue;
+            var mode = (ColorParameter.ColorMode)settings
+                .FindPropertyRelative(nameof(ColorParameter.ColorSettings.mode)).intValue;
 
-            var colorField = new ColorField(name.stringValue) { value = val.colorValue, hdr = mode == ColorParameter.ColorMode.HDR };
-            colorField.RegisterValueChangedCallback(e => {
+            var colorField = new ColorField(name.stringValue)
+                { value = val.colorValue, hdr = mode == ColorParameter.ColorMode.HDR };
+            colorField.RegisterValueChangedCallback(e =>
+            {
                 val.colorValue = e.newValue;
                 ApplyModifiedProperties(property);
             });
@@ -193,10 +219,11 @@ namespace GraphProcessor
         {
             var isHidden = settingsProperty.FindPropertyRelative(nameof(ExposedParameter.Settings.isHidden));
             var graph = GetGraph(settingsProperty);
-            var param = GetParameter(settingsProperty); 
-			var p =  new PropertyField(isHidden, "Hide in Inspector");
+            var param = GetParameter(settingsProperty);
+            var p = new PropertyField(isHidden, "Hide in Inspector");
 
-            p.RegisterValueChangeCallback(e => {
+            p.RegisterValueChangeCallback(e =>
+            {
                 settingsProperty.serializedObject.ApplyModifiedProperties();
                 graph.NotifyExposedParameterChanged(param);
             });
@@ -204,25 +231,31 @@ namespace GraphProcessor
             return p;
         }
 
-        protected static BaseGraph GetGraph(SerializedProperty property) => property.serializedObject.FindProperty("graph").objectReferenceValue as BaseGraph;
+        protected static BaseGraph GetGraph(SerializedProperty property)
+        {
+            return property.serializedObject.FindProperty("graph").objectReferenceValue as BaseGraph;
+        }
+
         protected static ExposedParameter GetParameter(SerializedProperty settingsProperty)
         {
             var guid = settingsProperty.FindPropertyRelative(nameof(ExposedParameter.Settings.guid)).stringValue;
             return GetGraph(settingsProperty).GetExposedParameterFromGUID(guid);
         }
 
-        protected static PropertyField CreateSettingsField(SerializedProperty settingsProperty, string fieldName, string displayName = null)
+        protected static PropertyField CreateSettingsField(SerializedProperty settingsProperty, string fieldName,
+            string displayName = null)
         {
             var prop = settingsProperty.FindPropertyRelative(fieldName);
-            var param = GetParameter(settingsProperty); 
+            var param = GetParameter(settingsProperty);
             var graph = GetGraph(settingsProperty);
 
             if (displayName == null)
                 displayName = ObjectNames.NicifyVariableName(fieldName);
 
-            var p =  new PropertyField(prop, displayName);
+            var p = new PropertyField(prop, displayName);
             p.Bind(settingsProperty.serializedObject);
-            p.RegisterValueChangeCallback(e => {
+            p.RegisterValueChangeCallback(e =>
+            {
                 settingsProperty.serializedObject.ApplyModifiedProperties();
                 graph.NotifyExposedParameterChanged(param);
             });
@@ -236,7 +269,7 @@ namespace GraphProcessor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty settingsProperty)
         {
-            VisualElement settings = new VisualElement();
+            var settings = new VisualElement();
 
             settings.Add(CreateHideInInspectorField(settingsProperty));
             settings.Add(CreateSettingsField(settingsProperty, nameof(ColorParameter.ColorSettings.mode), "Mode"));
@@ -250,7 +283,7 @@ namespace GraphProcessor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty settingsProperty)
         {
-            VisualElement settings = new VisualElement();
+            var settings = new VisualElement();
             settings.Bind(settingsProperty.serializedObject);
 
             settings.Add(CreateHideInInspectorField(settingsProperty));
@@ -286,7 +319,7 @@ namespace GraphProcessor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty settingsProperty)
         {
-            VisualElement settings = new VisualElement();
+            var settings = new VisualElement();
             settings.Bind(settingsProperty.serializedObject);
 
             settings.Add(CreateHideInInspectorField(settingsProperty));
@@ -322,7 +355,7 @@ namespace GraphProcessor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty settingsProperty)
         {
-            VisualElement settings = new VisualElement();
+            var settings = new VisualElement();
 
             settings.Add(CreateHideInInspectorField(settingsProperty));
             settings.Add(CreateSettingsField(settingsProperty, nameof(Vector2Parameter.Vector2Settings.mode), "Mode"));
@@ -338,10 +371,11 @@ namespace GraphProcessor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty settingsProperty)
         {
-            VisualElement settings = new VisualElement();
+            var settings = new VisualElement();
 
             settings.Add(CreateHideInInspectorField(settingsProperty));
-            settings.Add(CreateSettingsField(settingsProperty, nameof(GradientParameter.GradientSettings.mode), "Mode"));
+            settings.Add(CreateSettingsField(settingsProperty, nameof(GradientParameter.GradientSettings.mode),
+                "Mode"));
 
             return settings;
         }

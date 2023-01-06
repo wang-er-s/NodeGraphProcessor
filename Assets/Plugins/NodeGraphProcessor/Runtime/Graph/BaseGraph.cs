@@ -1,41 +1,40 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using System;
 using Sirenix.OdinInspector;
-using UnityEngine.Serialization;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace GraphProcessor
 {
     public class GraphChanges
     {
-        public SerializableEdge removedEdge;
         public SerializableEdge addedEdge;
-        public BaseNode removedNode;
-        public BaseNode addedNode;
-        public BaseNode nodeChanged;
         public Group addedGroups;
-        public Group removedGroups;
+        public BaseNode addedNode;
         public BaseStackNode addedStackNode;
-        public BaseStackNode removedStackNode;
         public StickyNote addedStickyNotes;
+        public BaseNode nodeChanged;
+        public SerializableEdge removedEdge;
+        public Group removedGroups;
+        public BaseNode removedNode;
+        public BaseStackNode removedStackNode;
         public StickyNote removedStickyNotes;
     }
 
     /// <summary>
-    /// Compute order type used to determine the compute order integer on the nodes
+    ///     Compute order type used to determine the compute order integer on the nodes
     /// </summary>
     public enum ComputeOrderType
     {
         DepthFirst,
-        BreadthFirst,
+        BreadthFirst
     }
 
     public class BaseGraph : SerializedScriptableObject
     {
-        static readonly int maxComputeOrderDepth = 1000;
+        private static readonly int maxComputeOrderDepth = 1000;
 
         /// <summary>Invalid compute order number of a node when it's inside a loop</summary>
         public static readonly int loopComputeOrder = -2;
@@ -44,81 +43,86 @@ namespace GraphProcessor
         public static readonly int invalidComputeOrder = -1;
 
         /// <summary>
-        /// List of all the nodes in the graph.
-        /// </summary>
-        /// <typeparam name="BaseNode"></typeparam>
-        /// <returns></returns>
-        public List<BaseNode> nodes = new List<BaseNode>();
-
-        /// <summary>
-        /// Dictionary to access node per GUID, faster than a search in a list
-        /// </summary>
-        /// <typeparam name="string"></typeparam>
-        /// <typeparam name="BaseNode"></typeparam>
-        /// <returns></returns>
-        [System.NonSerialized] public Dictionary<string, BaseNode> nodesPerGUID = new Dictionary<string, BaseNode>();
-
-        /// <summary>
-        /// Json list of edges
+        ///     Json list of edges
         /// </summary>
         /// <typeparam name="SerializableEdge"></typeparam>
         /// <returns></returns>
-        [SerializeField] [HideInInspector] public List<SerializableEdge> edges = new List<SerializableEdge>();
+        [SerializeField] [HideInInspector] public List<SerializableEdge> edges = new();
 
         /// <summary>
-        /// Dictionary of edges per GUID, faster than a search in a list
-        /// </summary>
-        /// <typeparam name="string"></typeparam>
-        /// <typeparam name="SerializableEdge"></typeparam>
-        /// <returns></returns>
-        [System.NonSerialized]
-        public Dictionary<string, SerializableEdge> edgesPerGUID = new Dictionary<string, SerializableEdge>();
-
-        /// <summary>
-        /// All groups in the graph
-        /// </summary>
-        /// <typeparam name="Group"></typeparam>
-        /// <returns></returns>
-        [HideInInspector] public List<Group> groups = new List<Group>();
-
-        /// <summary>
-        /// All Stack Nodes in the graph
+        ///     All Stack Nodes in the graph
         /// </summary>
         /// <typeparam name="stackNodes"></typeparam>
         /// <returns></returns>
-        [HideInInspector] [SerializeField, SerializeReference] // Polymorphic serialization
-        public List<BaseStackNode> stackNodes = new List<BaseStackNode>();
+        [HideInInspector] [SerializeField] [SerializeReference] // Polymorphic serialization
+        public List<BaseStackNode> stackNodes = new();
 
         /// <summary>
-        /// All pinned elements in the graph
+        ///     All pinned elements in the graph
         /// </summary>
         /// <typeparam name="PinnedElement"></typeparam>
         /// <returns></returns>
-        [SerializeField] [HideInInspector] public List<PinnedElement> pinnedElements = new List<PinnedElement>();
+        [SerializeField] [HideInInspector] public List<PinnedElement> pinnedElements = new();
 
         /// <summary>
-        /// All exposed parameters in the graph
+        ///     All exposed parameters in the graph
         /// </summary>
         /// <typeparam name="ExposedParameter"></typeparam>
         /// <returns></returns>
-        [SerializeField, SerializeReference] [HideInInspector]
-        public List<ExposedParameter> exposedParameters = new List<ExposedParameter>();
+        [SerializeField] [SerializeReference] [HideInInspector]
+        public List<ExposedParameter> exposedParameters = new();
 
-        [HideInInspector] [SerializeField, FormerlySerializedAs("exposedParameters")] // We keep this for upgrade
-        List<ExposedParameter> serializedParameterList = new List<ExposedParameter>();
+        [HideInInspector] [SerializeField] [FormerlySerializedAs("exposedParameters")] // We keep this for upgrade
+        private List<ExposedParameter> serializedParameterList = new();
 
-        [SerializeField] [HideInInspector] public List<StickyNote> stickyNotes = new List<StickyNote>();
-
-        [System.NonSerialized] Dictionary<BaseNode, int> computeOrderDictionary = new Dictionary<BaseNode, int>();
-
-        [NonSerialized] Scene linkedScene;
+        [SerializeField] [HideInInspector] public List<StickyNote> stickyNotes = new();
 
         //graph visual properties
         [HideInInspector] public Vector3 position = Vector3.zero;
         [HideInInspector] public Vector3 scale = Vector3.one;
 
+        [NonSerialized] private readonly Dictionary<BaseNode, int> computeOrderDictionary = new();
+
         /// <summary>
-        /// Triggered when something is changed in the list of exposed parameters
+        ///     Dictionary of edges per GUID, faster than a search in a list
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <typeparam name="SerializableEdge"></typeparam>
+        /// <returns></returns>
+        [NonSerialized] public Dictionary<string, SerializableEdge> edgesPerGUID = new();
+
+        /// <summary>
+        ///     All groups in the graph
+        /// </summary>
+        /// <typeparam name="Group"></typeparam>
+        /// <returns></returns>
+        [HideInInspector] public List<Group> groups = new();
+
+        private readonly HashSet<BaseNode> infiniteLoopTracker = new();
+
+        [NonSerialized] private Scene linkedScene;
+
+        /// <summary>
+        ///     List of all the nodes in the graph.
+        /// </summary>
+        /// <typeparam name="BaseNode"></typeparam>
+        /// <returns></returns>
+        public List<BaseNode> nodes = new();
+
+        /// <summary>
+        ///     Dictionary to access node per GUID, faster than a search in a list
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <typeparam name="BaseNode"></typeparam>
+        /// <returns></returns>
+        [NonSerialized] public Dictionary<string, BaseNode> nodesPerGUID = new();
+
+        [field: NonSerialized] public bool isEnabled { get; private set; }
+
+        public HashSet<BaseNode> graphOutputs { get; } = new();
+
+        /// <summary>
+        ///     Triggered when something is changed in the list of exposed parameters
         /// </summary>
         public event Action onExposedParameterListChanged;
 
@@ -126,24 +130,14 @@ namespace GraphProcessor
         public event Action<ExposedParameter> onExposedParameterValueChanged;
 
         /// <summary>
-        /// Triggered when the graph is linked to an active scene.
+        ///     Triggered when the graph is linked to an active scene.
         /// </summary>
         public event Action<Scene> onSceneLinked;
 
         /// <summary>
-        /// Triggered when the graph is changed
+        ///     Triggered when the graph is changed
         /// </summary>
         public event Action<GraphChanges> onGraphChanges;
-
-        [System.NonSerialized] bool _isEnabled = false;
-
-        public bool isEnabled
-        {
-            get => _isEnabled;
-            private set => _isEnabled = value;
-        }
-
-        public HashSet<BaseNode> graphOutputs { get; private set; } = new HashSet<BaseNode>();
 
         public void OnGraphEnable()
         {
@@ -156,7 +150,7 @@ namespace GraphProcessor
             isEnabled = true;
         }
 
-        void InitializeGraphElements()
+        private void InitializeGraphElements()
         {
             // Sanitize the element lists (it's possible that nodes are null if their full class name have changed)
             // If you rename / change the assembly of a node or parameter, please use the MovedFrom() attribute to avoid breaking the graph.
@@ -195,7 +189,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Adds a node to the graph
+        ///     Adds a node to the graph
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
@@ -212,7 +206,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Removes a node from the graph
+        ///     Removes a node from the graph
         /// </summary>
         /// <param name="node"></param>
         public void RemoveNode(BaseNode node)
@@ -228,7 +222,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Connect two ports with an edge
+        ///     Connect two ports with an edge
         /// </summary>
         /// <param name="inputPort">input port</param>
         /// <param name="outputPort">output port</param>
@@ -240,23 +234,15 @@ namespace GraphProcessor
 
             //If the input port does not support multi-connection, we remove them
             if (autoDisconnectInputs && !inputPort.portData.acceptMultipleEdges)
-            {
                 foreach (var e in inputPort.GetEdges().ToList())
-                {
                     // TODO: do not disconnect them if the connected port is the same than the old connected
                     Disconnect(e);
-                }
-            }
 
             // same for the output port:
             if (autoDisconnectInputs && !outputPort.portData.acceptMultipleEdges)
-            {
                 foreach (var e in outputPort.GetEdges().ToList())
-                {
                     // TODO: do not disconnect them if the connected port is the same than the old connected
                     Disconnect(e);
-                }
-            }
 
             edges.Add(edge);
 
@@ -270,7 +256,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Disconnect two ports
+        ///     Disconnect two ports
         /// </summary>
         /// <param name="inputNode">input node</param>
         /// <param name="inputFieldName">input field name</param>
@@ -280,10 +266,10 @@ namespace GraphProcessor
         {
             edges.RemoveAll(r =>
             {
-                bool remove = r.inputNode == inputNode
-                              && r.outputNode == outputNode
-                              && r.outputFieldName == outputFieldName
-                              && r.inputFieldName == inputFieldName;
+                var remove = r.inputNode == inputNode
+                             && r.outputNode == outputNode
+                             && r.outputFieldName == outputFieldName
+                             && r.inputFieldName == inputFieldName;
 
                 if (remove)
                 {
@@ -297,18 +283,21 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Disconnect an edge
+        ///     Disconnect an edge
         /// </summary>
         /// <param name="edge"></param>
-        public void Disconnect(SerializableEdge edge) => Disconnect(edge.GUID);
+        public void Disconnect(SerializableEdge edge)
+        {
+            Disconnect(edge.GUID);
+        }
 
         /// <summary>
-        /// Disconnect an edge
+        ///     Disconnect an edge
         /// </summary>
         /// <param name="edgeGUID"></param>
         public void Disconnect(string edgeGUID)
         {
-            List<(BaseNode, SerializableEdge)> disconnectEvents = new List<(BaseNode, SerializableEdge)>();
+            var disconnectEvents = new List<(BaseNode, SerializableEdge)>();
 
             edges.RemoveAll(r =>
             {
@@ -328,7 +317,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Add a group
+        ///     Add a group
         /// </summary>
         /// <param name="block"></param>
         public void AddGroup(Group block)
@@ -338,7 +327,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Removes a group
+        ///     Removes a group
         /// </summary>
         /// <param name="block"></param>
         public void RemoveGroup(Group block)
@@ -348,7 +337,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Add a StackNode
+        ///     Add a StackNode
         /// </summary>
         /// <param name="stackNode"></param>
         public void AddStackNode(BaseStackNode stackNode)
@@ -358,7 +347,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Remove a StackNode
+        ///     Remove a StackNode
         /// </summary>
         /// <param name="stackNode"></param>
         public void RemoveStackNode(BaseStackNode stackNode)
@@ -368,7 +357,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Add a sticky note 
+        ///     Add a sticky note
         /// </summary>
         /// <param name="note"></param>
         public void AddStickyNote(StickyNote note)
@@ -378,7 +367,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Removes a sticky note 
+        ///     Removes a sticky note
         /// </summary>
         /// <param name="note"></param>
         public void RemoveStickyNote(StickyNote note)
@@ -388,13 +377,16 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Invoke the onGraphChanges event, can be used as trigger to execute the graph when the content of a node is changed 
+        ///     Invoke the onGraphChanges event, can be used as trigger to execute the graph when the content of a node is changed
         /// </summary>
         /// <param name="node"></param>
-        public void NotifyNodeChanged(BaseNode node) => onGraphChanges?.Invoke(new GraphChanges { nodeChanged = node });
+        public void NotifyNodeChanged(BaseNode node)
+        {
+            onGraphChanges?.Invoke(new GraphChanges { nodeChanged = node });
+        }
 
         /// <summary>
-        /// Open a pinned element of type viewType
+        ///     Open a pinned element of type viewType
         /// </summary>
         /// <param name="viewType">type of the pinned element</param>
         /// <returns>the pinned element</returns>
@@ -408,13 +400,15 @@ namespace GraphProcessor
                 pinnedElements.Add(pinned);
             }
             else
+            {
                 pinned.opened = true;
+            }
 
             return pinned;
         }
 
         /// <summary>
-        /// Closes a pinned element of type viewType
+        ///     Closes a pinned element of type viewType
         /// </summary>
         /// <param name="viewType">type of the pinned element</param>
         public void ClosePinned(Type viewType)
@@ -436,16 +430,14 @@ namespace GraphProcessor
         {
             // Disable nodes correctly before removing them:
             if (nodes != null)
-            {
                 foreach (var node in nodes)
                     node.DisableInternal();
-            }
 
             InitializeGraphElements();
         }
 
         /// <summary>
-        /// Update the compute order of the nodes in the graph
+        ///     Update the compute order of the nodes in the graph
         /// </summary>
         /// <param name="type">Compute order type</param>
         public void UpdateComputeOrder(ComputeOrderType type = ComputeOrderType.DepthFirst)
@@ -479,7 +471,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Add an exposed parameter
+        ///     Add an exposed parameter
         /// </summary>
         /// <param name="name">parameter name</param>
         /// <param name="type">parameter type (must be a subclass of ExposedParameter)</param>
@@ -488,9 +480,7 @@ namespace GraphProcessor
         public string AddExposedParameter(string name, Type type, object value = null)
         {
             if (!type.IsSubclassOf(typeof(ExposedParameter)))
-            {
                 Debug.LogError($"Can't add parameter of type {type}, the type doesn't inherit from ExposedParameter.");
-            }
 
             var param = Activator.CreateInstance(type) as ExposedParameter;
 
@@ -507,13 +497,13 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Add an already allocated / initialized parameter to the graph
+        ///     Add an already allocated / initialized parameter to the graph
         /// </summary>
         /// <param name="parameter">The parameter to add</param>
         /// <returns>The unique id of the parameter</returns>
         public string AddExposedParameter(ExposedParameter parameter)
         {
-            string guid = Guid.NewGuid().ToString(); // Generated once and unique per parameter
+            var guid = Guid.NewGuid().ToString(); // Generated once and unique per parameter
 
             parameter.guid = guid;
             exposedParameters.Add(parameter);
@@ -524,7 +514,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Remove an exposed parameter
+        ///     Remove an exposed parameter
         /// </summary>
         /// <param name="ep">the parameter to remove</param>
         public void RemoveExposedParameter(ExposedParameter ep)
@@ -535,7 +525,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Remove an exposed parameter
+        ///     Remove an exposed parameter
         /// </summary>
         /// <param name="guid">GUID of the parameter</param>
         public void RemoveExposedParameter(string guid)
@@ -545,7 +535,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Update an exposed parameter value
+        ///     Update an exposed parameter value
         /// </summary>
         /// <param name="guid">GUID of the parameter</param>
         /// <param name="value">new value</param>
@@ -564,7 +554,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Update the exposed parameter name
+        ///     Update the exposed parameter name
         /// </summary>
         /// <param name="parameter">The parameter</param>
         /// <param name="name">new name</param>
@@ -575,7 +565,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Update parameter visibility
+        ///     Update parameter visibility
         /// </summary>
         /// <param name="parameter">The parameter</param>
         /// <param name="isHidden">is Hidden</param>
@@ -590,7 +580,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Get the exposed parameter from name
+        ///     Get the exposed parameter from name
         /// </summary>
         /// <param name="name">name</param>
         /// <returns>the parameter or null</returns>
@@ -600,7 +590,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Get exposed parameter from GUID
+        ///     Get exposed parameter from GUID
         /// </summary>
         /// <param name="guid">GUID of the parameter</param>
         /// <returns>The parameter</returns>
@@ -610,7 +600,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Set parameter value from name. (Warning: the parameter name can be changed by the user)
+        ///     Set parameter value from name. (Warning: the parameter name can be changed by the user)
         /// </summary>
         /// <param name="name">name of the parameter</param>
         /// <param name="value">new value</param>
@@ -628,22 +618,28 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Get the parameter value
+        ///     Get the parameter value
         /// </summary>
         /// <param name="name">parameter name</param>
         /// <returns>value</returns>
-        public object GetParameterValue(string name) => exposedParameters.FirstOrDefault(p => p.name == name)?.value;
+        public object GetParameterValue(string name)
+        {
+            return exposedParameters.FirstOrDefault(p => p.name == name)?.value;
+        }
 
         /// <summary>
-        /// Get the parameter value template
+        ///     Get the parameter value template
         /// </summary>
         /// <param name="name">parameter name</param>
         /// <typeparam name="T">type of the parameter</typeparam>
         /// <returns>value</returns>
-        public T GetParameterValue<T>(string name) => (T)GetParameterValue(name);
+        public T GetParameterValue<T>(string name)
+        {
+            return (T)GetParameterValue(name);
+        }
 
         /// <summary>
-        /// Link the current graph to the scene in parameter, allowing the graph to pick and serialize objects from the scene.
+        ///     Link the current graph to the scene in parameter, allowing the graph to pick and serialize objects from the scene.
         /// </summary>
         /// <param name="scene">Target scene to link</param>
         public void LinkToScene(Scene scene)
@@ -653,20 +649,24 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Return true when the graph is linked to a scene, false otherwise.
+        ///     Return true when the graph is linked to a scene, false otherwise.
         /// </summary>
-        public bool IsLinkedToScene() => linkedScene.IsValid();
+        public bool IsLinkedToScene()
+        {
+            return linkedScene.IsValid();
+        }
 
         /// <summary>
-        /// Get the linked scene. If there is no linked scene, it returns an invalid scene
+        ///     Get the linked scene. If there is no linked scene, it returns an invalid scene
         /// </summary>
-        public Scene GetLinkedScene() => linkedScene;
-
-        HashSet<BaseNode> infiniteLoopTracker = new HashSet<BaseNode>();
-
-        int UpdateComputeOrderBreadthFirst(int depth, BaseNode node)
+        public Scene GetLinkedScene()
         {
-            int computeOrder = 0;
+            return linkedScene;
+        }
+
+        private int UpdateComputeOrderBreadthFirst(int depth, BaseNode node)
+        {
+            var computeOrder = 0;
 
             if (depth > maxComputeOrderDepth)
             {
@@ -689,7 +689,7 @@ namespace GraphProcessor
 
             foreach (var dep in node.GetInputNodes())
             {
-                int c = UpdateComputeOrderBreadthFirst(depth + 1, dep);
+                var c = UpdateComputeOrderBreadthFirst(depth + 1, dep);
 
                 if (c == -1)
                 {
@@ -709,13 +709,13 @@ namespace GraphProcessor
             return computeOrder;
         }
 
-        void UpdateComputeOrderDepthFirst()
+        private void UpdateComputeOrderDepthFirst()
         {
-            Stack<BaseNode> dfs = new Stack<BaseNode>();
+            var dfs = new Stack<BaseNode>();
 
-            GraphUtils.FindCyclesInGraph(this, (n) => { PropagateComputeOrder(n, loopComputeOrder); });
+            GraphUtils.FindCyclesInGraph(this, n => { PropagateComputeOrder(n, loopComputeOrder); });
 
-            int computeOrder = 0;
+            var computeOrder = 0;
             foreach (var node in GraphUtils.DepthFirstSort(this))
             {
                 if (node.computeOrder == loopComputeOrder)
@@ -727,10 +727,10 @@ namespace GraphProcessor
             }
         }
 
-        void PropagateComputeOrder(BaseNode node, int computeOrder)
+        private void PropagateComputeOrder(BaseNode node, int computeOrder)
         {
-            Stack<BaseNode> deps = new Stack<BaseNode>();
-            HashSet<BaseNode> loop = new HashSet<BaseNode>();
+            var deps = new Stack<BaseNode>();
+            var loop = new HashSet<BaseNode>();
 
             deps.Push(node);
             while (deps.Count > 0)
@@ -746,7 +746,7 @@ namespace GraphProcessor
             }
         }
 
-        void DestroyBrokenGraphElements()
+        private void DestroyBrokenGraphElements()
         {
             edges.RemoveAll(e => e.inputNode == null
                                  || e.outputNode == null
@@ -757,7 +757,7 @@ namespace GraphProcessor
         }
 
         /// <summary>
-        /// Tell if two types can be connected in the context of a graph
+        ///     Tell if two types can be connected in the context of a graph
         /// </summary>
         /// <param name="t1"></param>
         /// <param name="t2"></param>

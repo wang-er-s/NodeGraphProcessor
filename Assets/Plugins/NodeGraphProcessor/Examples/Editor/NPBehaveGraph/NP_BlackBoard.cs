@@ -13,8 +13,8 @@ namespace Examples.Editor._05_All
     [BoxGroup]
     public class NP_BlackBoard
     {
-        public Dictionary<string, string> TestEvent = new Dictionary<string, string>();
+        public Dictionary<string, string> TestEvent = new();
 
-        public Dictionary<long, long> TestId = new Dictionary<long, long>();
+        public Dictionary<long, long> TestId = new();
     }
 }

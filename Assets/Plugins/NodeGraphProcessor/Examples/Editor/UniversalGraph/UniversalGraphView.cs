@@ -1,13 +1,11 @@
-using UnityEngine.UIElements;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using GraphProcessor;
-using System;
 using UnityEditor;
+using UnityEngine.UIElements;
 
 public class UniversalGraphView : BaseGraphView
 {
     public UniversalGraphWindow universalGraphWindow;
+
     // Nothing special to add for now
     public UniversalGraphView(EditorWindow window) : base(window)
     {
@@ -21,14 +19,14 @@ public class UniversalGraphView : BaseGraphView
     }
 
     /// <summary>
-    /// Add the New Stack entry to the context menu
+    ///     Add the New Stack entry to the context menu
     /// </summary>
     /// <param name="evt"></param>
     protected void BuildStackNodeContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        Vector2 position =
+        var position =
             (evt.currentTarget as VisualElement).ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
-        evt.menu.AppendAction("New Stack", (e) => AddStackNode(new BaseStackNode(position)),
+        evt.menu.AppendAction("New Stack", e => AddStackNode(new BaseStackNode(position)),
             DropdownMenuAction.AlwaysEnabled);
     }
 }

@@ -1,9 +1,10 @@
-using UnityEngine;
-using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine;
+using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace GraphProcessor
 {
@@ -16,14 +17,14 @@ namespace GraphProcessor
     // but it's far better than having to re-create the graph every time a parameter or a setting is changed.
     public class ExposedParameterFieldFactory : IDisposable
     {
-        BaseGraph graph;
-        [SerializeField]
-        ExposedParameterWorkaround  exposedParameterObject;
-        SerializedObject            serializedObject;
-        SerializedProperty          serializedParameters;
+        [SerializeField] private readonly ExposedParameterWorkaround exposedParameterObject;
 
-        Dictionary<ExposedParameter, object> oldParameterValues = new Dictionary<ExposedParameter, object>();
-        Dictionary<ExposedParameter, ExposedParameter.Settings> oldParameterSettings = new Dictionary<ExposedParameter, ExposedParameter.Settings>();
+        private readonly BaseGraph graph;
+        private readonly Dictionary<ExposedParameter, ExposedParameter.Settings> oldParameterSettings = new();
+
+        private readonly Dictionary<ExposedParameter, object> oldParameterValues = new();
+        private readonly SerializedObject serializedObject;
+        private SerializedProperty serializedParameters;
 
         public ExposedParameterFieldFactory(BaseGraph graph, List<ExposedParameter> customParameters = null)
         {
@@ -34,6 +35,11 @@ namespace GraphProcessor
             exposedParameterObject.hideFlags = HideFlags.HideAndDontSave;
             serializedObject = new SerializedObject(exposedParameterObject);
             UpdateSerializedProperties(customParameters);
+        }
+
+        public void Dispose()
+        {
+            Object.DestroyImmediate(exposedParameterObject);
         }
 
         public void UpdateSerializedProperties(List<ExposedParameter> parameters = null)
@@ -49,38 +55,37 @@ namespace GraphProcessor
         public VisualElement GetParameterValueField(ExposedParameter parameter, Action<object> valueChangedCallback)
         {
             serializedObject.Update();
-            int propIndex = FindPropertyIndex(parameter);
+            var propIndex = FindPropertyIndex(parameter);
             var field = new PropertyField(serializedParameters.GetArrayElementAtIndex(propIndex));
             field.Bind(serializedObject);
 
-            VisualElement view = new VisualElement();
+            var view = new VisualElement();
             view.Add(field);
 
             oldParameterValues[parameter] = parameter.value;
             view.Add(new IMGUIContainer(() =>
             {
                 if (oldParameterValues.TryGetValue(parameter, out var value))
-                {
                     if (parameter.value != null && !parameter.value.Equals(value))
                         valueChangedCallback(parameter.value);
-                }
                 oldParameterValues[parameter] = parameter.value;
             }));
 
-			// Disallow picking scene objects when the graph is not linked to a scene
-            if (!this.graph.IsLinkedToScene())
+            // Disallow picking scene objects when the graph is not linked to a scene
+            if (!graph.IsLinkedToScene())
             {
-				var objectField = view.Q<ObjectField>();
-				if (objectField != null)
-					objectField.allowSceneObjects = false;
+                var objectField = view.Q<ObjectField>();
+                if (objectField != null)
+                    objectField.allowSceneObjects = false;
             }
+
             return view;
         }
 
         public VisualElement GetParameterSettingsField(ExposedParameter parameter, Action<object> valueChangedCallback)
         {
             serializedObject.Update();
-            int propIndex = FindPropertyIndex(parameter);
+            var propIndex = FindPropertyIndex(parameter);
             var serializedParameter = serializedParameters.GetArrayElementAtIndex(propIndex);
             serializedParameter.managedReferenceValue = exposedParameterObject.parameters[propIndex];
             var serializedSettings = serializedParameter.FindPropertyRelative(nameof(ExposedParameter.settings));
@@ -88,7 +93,7 @@ namespace GraphProcessor
             var settingsField = new PropertyField(serializedSettings);
             settingsField.Bind(serializedObject);
 
-            VisualElement view = new VisualElement();
+            var view = new VisualElement();
             view.Add(settingsField);
 
             // TODO: see if we can replace this with an event
@@ -96,10 +101,8 @@ namespace GraphProcessor
             view.Add(new IMGUIContainer(() =>
             {
                 if (oldParameterSettings.TryGetValue(parameter, out var settings))
-                {
                     if (!settings.Equals(parameter.settings))
                         valueChangedCallback(parameter.settings);
-                }
                 oldParameterSettings[parameter] = parameter.settings;
             }));
 
@@ -112,11 +115,9 @@ namespace GraphProcessor
             oldParameterSettings.Remove(parameter);
         }
 
-        int FindPropertyIndex(ExposedParameter param) => exposedParameterObject.parameters.FindIndex(p => p == param);
-
-        public void Dispose()
+        private int FindPropertyIndex(ExposedParameter param)
         {
-            GameObject.DestroyImmediate(exposedParameterObject);
+            return exposedParameterObject.parameters.FindIndex(p => p == param);
         }
     }
 }

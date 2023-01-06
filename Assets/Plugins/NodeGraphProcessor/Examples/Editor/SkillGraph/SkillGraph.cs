@@ -4,17 +4,15 @@
 // Data: 2021年6月15日 11:19:33
 //------------------------------------------------------------
 
-using GraphProcessor;
 using Sirenix.OdinInspector;
 
 namespace Examples.Editor._05_All
 {
-    public class SkillGraph: NPBehaveGraph
+    public class SkillGraph : NPBehaveGraph
     {
         [Button("ExportSkillData")]
         public void ExportSkillData()
         {
-            
         }
     }
 }

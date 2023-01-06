@@ -1,22 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using GraphProcessor;
-using System.Linq;
+using UnityEngine;
 
-[System.Serializable, NodeMenuItem("String")]
+[Serializable]
+[NodeMenuItem("String")]
 public class StringNode : BaseNode
 {
-	[Output(name = "Out"), SerializeField]
-	public string				output;
+    [Output(name = "Out")] [SerializeField]
+    public string output;
 
-	public override string		name => "String";
+    public override string name => "String";
 
-	public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
-	{
-		if (output is T finalValue)
-		{
-			value = finalValue;
-		}
-	}
+    public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
+    {
+        if (output is T finalValue) value = finalValue;
+    }
 }

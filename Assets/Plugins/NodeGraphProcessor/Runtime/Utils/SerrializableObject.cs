@@ -1,23 +1,16 @@
 using System;
-using UnityEngine;
 using System.Globalization;
-
+using UnityEngine;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace GraphProcessor
 {
     // Warning: this class only support the serialization of UnityObject and primitive
-    [System.Serializable]
+    [Serializable]
     public class SerializableObject
     {
-        [System.Serializable]
-        class ObjectWrapper
-        {
-            public UnityEngine.Object value;
-        }
-
         public string serializedType;
         public string serializedName;
         public string serializedValue;
@@ -27,19 +20,19 @@ namespace GraphProcessor
         public SerializableObject(object value, Type type, string name = null)
         {
             this.value = value;
-            this.serializedName = name;
-            this.serializedType = type.AssemblyQualifiedName;
+            serializedName = name;
+            serializedType = type.AssemblyQualifiedName;
         }
 
         public void Deserialize()
         {
-            if (String.IsNullOrEmpty(serializedType))
+            if (string.IsNullOrEmpty(serializedType))
             {
                 Debug.LogError("Can't deserialize the object from null type");
                 return;
             }
 
-            Type type = Type.GetType(serializedType);
+            var type = Type.GetType(serializedType);
 
             if (type.IsPrimitive)
             {
@@ -48,20 +41,27 @@ namespace GraphProcessor
                 else
                     value = Convert.ChangeType(serializedValue, type, CultureInfo.InvariantCulture);
             }
-            else if (typeof(UnityEngine.Object).IsAssignableFrom(type))
+            else if (typeof(Object).IsAssignableFrom(type))
             {
-                ObjectWrapper obj = new ObjectWrapper();
+                var obj = new ObjectWrapper();
                 JsonUtility.FromJsonOverwrite(serializedValue, obj);
                 value = obj.value;
             }
             else if (type == typeof(string))
-                value = serializedValue.Length > 1 ? serializedValue.Substring(1, serializedValue.Length - 2).Replace("\\\"", "\"") : "";
+            {
+                value = serializedValue.Length > 1
+                    ? serializedValue.Substring(1, serializedValue.Length - 2).Replace("\\\"", "\"")
+                    : "";
+            }
             else
             {
-                try {
+                try
+                {
                     value = Activator.CreateInstance(type);
                     JsonUtility.FromJsonOverwrite(serializedValue, value);
-                } catch (Exception e){
+                }
+                catch (Exception e)
+                {
                     Debug.LogError(e);
                     Debug.LogError("Can't serialize type " + serializedType);
                 }
@@ -71,32 +71,45 @@ namespace GraphProcessor
         public void Serialize()
         {
             if (value == null)
-                return ;
+                return;
 
             serializedType = value.GetType().AssemblyQualifiedName;
 
             if (value.GetType().IsPrimitive)
-                serializedValue = Convert.ToString(value, CultureInfo.InvariantCulture);
-            else if (value is UnityEngine.Object) //type is a unity object
             {
-                if ((value as UnityEngine.Object) == null)
-                    return ;
+                serializedValue = Convert.ToString(value, CultureInfo.InvariantCulture);
+            }
+            else if (value is Object) //type is a unity object
+            {
+                if (value as Object == null)
+                    return;
 
-                ObjectWrapper wrapper = new ObjectWrapper { value = value as UnityEngine.Object };
+                var wrapper = new ObjectWrapper { value = value as Object };
                 serializedValue = JsonUtility.ToJson(wrapper);
             }
             else if (value is string)
+            {
                 serializedValue = "\"" + ((string)value).Replace("\"", "\\\"") + "\"";
+            }
             else
             {
-                try {
+                try
+                {
                     serializedValue = JsonUtility.ToJson(value);
-                    if (String.IsNullOrEmpty(serializedValue))
+                    if (string.IsNullOrEmpty(serializedValue))
                         throw new Exception();
-                } catch {
+                }
+                catch
+                {
                     Debug.LogError("Can't serialize type " + serializedType);
                 }
             }
+        }
+
+        [Serializable]
+        private class ObjectWrapper
+        {
+            public Object value;
         }
     }
 }

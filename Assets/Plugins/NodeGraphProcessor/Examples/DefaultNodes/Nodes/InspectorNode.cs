@@ -1,36 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 using GraphProcessor;
-using System.Linq;
 
-[System.Serializable, NodeMenuItem("Custom/InspectorNode")]
+[Serializable]
+[NodeMenuItem("Custom/InspectorNode")]
 public class InspectorNode : BaseNode
 {
-	[Input(name = "In")]
-    public float                input;
+    [Input(name = "In")] public float input;
 
-	[Output(name = "Out")]
-	public float				output;
+    [Output(name = "Out")] public float output;
 
-	[ShowInInspector]
-	public bool additionalSettings;
-	[ShowInInspector]
-	public string additionalParam;
+    [ShowInInspector] public bool additionalSettings;
 
-	public override string		name => "InspectorNode";
+    [ShowInInspector] public string additionalParam;
 
-	protected override void Process()
-	{
-		TryGetInputValue(nameof(input), ref input);
-	    output = input * 42;
-	}
+    public override string name => "InspectorNode";
 
-	public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
-	{
-		if (output is T finalValue)
-		{
-			value = finalValue;
-		}
-	}
+    protected override void Process()
+    {
+        TryGetInputValue(nameof(input), ref input);
+        output = input * 42;
+    }
+
+    public override void TryGetOutputValue<T>(NodePort outputPort, NodePort inputPort, ref T value)
+    {
+        if (output is T finalValue) value = finalValue;
+    }
 }
