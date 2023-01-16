@@ -40,13 +40,13 @@ MonoBehaviour:
         mscorlib
     - Name: 
       Entry: 12
-      Data: 11
+      Data: 4
     - Name: 
       Entry: 7
-      Data: 2|IfNode, NodeGraphProcessor.Examples
+      Data: 2|NP_RootNode, Assembly-CSharp
     - Name: computeOrder
       Entry: 3
-      Data: 3
+      Data: 0
     - Name: debug
       Entry: 5
       Data: false
@@ -55,7 +55,7 @@ MonoBehaviour:
       Data: false
     - Name: GUID
       Entry: 1
-      Data: 56f6d61f-3bc6-46a7-97b7-cb91a5ca86d0
+      Data: f090b9d8-cec9-4e31-8689-91057f6a9ff9
     - Name: nodeCustomName
       Entry: 6
       Data: 
@@ -67,40 +67,130 @@ MonoBehaviour:
       Data: UnityEngine.Rect, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 338.2174
+      Data: -283.9565
     - Name: 
       Entry: 4
-      Data: 421.739166
+      Data: 630.2174
     - Name: 
       Entry: 4
-      Data: 164
+      Data: 142
     - Name: 
       Entry: 4
-      Data: 113
+      Data: 76
     - Name: 
       Entry: 8
       Data: 
-    - Name: executed
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: condition
-      Entry: 5
-      Data: true
-    - Name: compareOperator
+    - Name: Level
       Entry: 3
-      Data: 3
-    - Name: false
+      Data: 0
+    - Name: NextNode
+      Entry: 6
+      Data: 
+    - Name: MRootNodeData
       Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
+      Data: 3|NP_RootNodeData, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: LinkedIds
+      Entry: 7
+      Data: 4|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
     - Name: 
       Entry: 8
       Data: 
-    - Name: true
+    - Name: NodeDes
+      Entry: 6
+      Data: 
+    - Name: m_Root
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
+      Data: 5|NP_ParallelNode, Assembly-CSharp
+    - Name: computeOrder
+      Entry: 3
+      Data: 1
+    - Name: debug
+      Entry: 5
+      Data: false
+    - Name: expanded
+      Entry: 5
+      Data: false
+    - Name: GUID
+      Entry: 1
+      Data: ffd2cd51-874d-44ce-ab32-c781f22b62f7
+    - Name: nodeCustomName
+      Entry: 6
+      Data: 
+    - Name: nodeLock
+      Entry: 5
+      Data: false
+    - Name: position
+      Entry: 7
+      Data: UnityEngine.Rect, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: -367.260864
+    - Name: 
+      Entry: 4
+      Data: 765.1739
+    - Name: 
+      Entry: 4
+      Data: 110
+    - Name: 
+      Entry: 4
+      Data: 84
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: Level
+      Entry: 3
+      Data: 0
+    - Name: PrevNode
+      Entry: 6
+      Data: 
+    - Name: NextNode
+      Entry: 6
+      Data: 
+    - Name: NP_ParallelNodeData
+      Entry: 7
+      Data: 6|NP_ParallelNodeData, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: LinkedIds
+      Entry: 7
+      Data: 7|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: NodeDes
+      Entry: 1
+      Data: "\u5E76\u884C\u7EC4\u5408\u5668"
+    - Name: SuccessPolicy
+      Entry: 3
+      Data: 1
+    - Name: FailurePolicy
+      Entry: 3
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -109,7 +199,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 3|NodeGraphProcessor.Examples.Comparison, NodeGraphProcessor.Examples
+      Data: 8|NP_ParallelNode, Assembly-CSharp
     - Name: computeOrder
       Entry: 3
       Data: 2
@@ -121,9 +211,9 @@ MonoBehaviour:
       Data: false
     - Name: GUID
       Entry: 1
-      Data: ef0c6f0d-810a-43ff-8595-ea5600b7f1b8
+      Data: 2a13a585-f724-47a5-a881-0b78fcb29b88
     - Name: nodeCustomName
-      Entry: 6
+      Entry: 1
       Data: 
     - Name: nodeLock
       Entry: 5
@@ -133,105 +223,37 @@ MonoBehaviour:
       Data: UnityEngine.Rect, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 27.2173767
+      Data: -197
     - Name: 
       Entry: 4
-      Data: 408.739166
+      Data: 765
     - Name: 
       Entry: 4
-      Data: 242
+      Data: 110
     - Name: 
       Entry: 4
-      Data: 159
+      Data: 84
     - Name: 
       Entry: 8
       Data: 
-    - Name: inA
-      Entry: 4
-      Data: 1
-    - Name: inB
-      Entry: 4
-      Data: 1
-    - Name: compared
-      Entry: 5
-      Data: true
-    - Name: compareFunction
+    - Name: Level
       Entry: 3
-      Data: 4
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|NodeGraphProcessor.Examples.ConsoleNode, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 4
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 1a85e37e-2a0b-414a-8306-caef70f610c5
-    - Name: nodeCustomName
+      Data: 0
+    - Name: PrevNode
       Entry: 6
       Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 642.094543
-    - Name: 
-      Entry: 4
-      Data: 464.5001
-    - Name: 
-      Entry: 4
-      Data: 170
-    - Name: 
-      Entry: 4
-      Data: 123
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: executed
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: executes
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: logText
-      Entry: 1
-      Data: "\u6210\u529F"
-    - Name: logType
-      Entry: 3
-      Data: 3
-    - Name: obj
+    - Name: NextNode
       Entry: 6
       Data: 
-    - Name: TestDic
+    - Name: NP_ParallelNodeData
       Entry: 7
-      Data: 5|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
+      Data: 9|NP_ParallelNodeData, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: LinkedIds
       Entry: 7
-      Data: 6|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 10|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -241,15 +263,27 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: NodeDes
+      Entry: 1
+      Data: "\u5E76\u884C\u7EC4\u5408\u5668"
+    - Name: SuccessPolicy
+      Entry: 3
+      Data: 1
+    - Name: FailurePolicy
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 7|NodeGraphProcessor.Examples.ConsoleNode, NodeGraphProcessor.Examples
+      Data: 11|NP_AddBuffActionNode, Assembly-CSharp
     - Name: computeOrder
       Entry: 3
-      Data: 6
+      Data: 3
     - Name: debug
       Entry: 5
       Data: false
@@ -258,7 +292,7 @@ MonoBehaviour:
       Data: false
     - Name: GUID
       Entry: 1
-      Data: c7548c93-4aed-4f97-a5f1-44f18b825354
+      Data: 4871e590-61f8-4017-8e47-daf34d1f80c6
     - Name: nodeCustomName
       Entry: 6
       Data: 
@@ -270,47 +304,34 @@ MonoBehaviour:
       Data: UnityEngine.Rect, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 537.1739
+      Data: -550.4783
     - Name: 
       Entry: 4
-      Data: 611
+      Data: 906.043457
     - Name: 
       Entry: 4
-      Data: 170
+      Data: 146
     - Name: 
       Entry: 4
-      Data: 123
+      Data: 76
     - Name: 
       Entry: 8
       Data: 
-    - Name: executed
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: executes
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: logText
-      Entry: 1
-      Data: "\u5931\u8D25"
-    - Name: logType
+    - Name: Level
       Entry: 3
-      Data: 3
-    - Name: obj
+      Data: 0
+    - Name: PrevNode
       Entry: 6
       Data: 
-    - Name: TestDic
+    - Name: NP_ActionNodeData
       Entry: 7
-      Data: 8|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 6
+      Data: 12|NP_ActionNodeData, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: LinkedIds
+      Entry: 7
+      Data: 13|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -320,360 +341,30 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 9|CustomPortData, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 10
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 5dda3563-a36d-4596-949d-db8552e4628c
-    - Name: nodeCustomName
+    - Name: NodeDes
       Entry: 6
       Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
+    - Name: NpClassForStoreAction
       Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 124
-    - Name: 
-      Entry: 4
-      Data: 665
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 8
+      Data: 14|NP_AddBuffAction, Assembly-CSharp
+    - Name: BelongtoRuntimeTree
+      Entry: 6
       Data: 
-    - Name: output
-      Entry: 4
-      Data: 0
-    - Name: inputs
+    - Name: Action
+      Entry: 6
+      Data: 
+    - Name: Func1
+      Entry: 6
+      Data: 
+    - Name: Func2
       Entry: 6
       Data: 
     - Name: 
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 10|SwitchNode, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 7
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 625c4b75-5ed6-4d3a-bf6e-85695693515b
-    - Name: nodeCustomName
-      Entry: 6
-      Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: -36
-    - Name: 
-      Entry: 4
-      Data: 706
-    - Name: 
-      Entry: 4
-      Data: 126
-    - Name: 
-      Entry: 4
-      Data: 89
-    - Name: 
       Entry: 8
       Data: 
-    - Name: input
-      Entry: 4
-      Data: 0
-    - Name: output
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 11|SwitchNode, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 1
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 01f52f69-3974-4395-b28c-88ee6bad6782
-    - Name: nodeCustomName
-      Entry: 6
-      Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: -162
-    - Name: 
-      Entry: 4
-      Data: 543.5
-    - Name: 
-      Entry: 4
-      Data: 126
-    - Name: 
-      Entry: 4
-      Data: 89
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: input
-      Entry: 4
-      Data: 0
-    - Name: output
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 12|AbstractNodeChild2, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 5
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: c7749e45-94b8-42f6-8812-832b8838878e
-    - Name: nodeCustomName
-      Entry: 6
-      Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 360
-    - Name: 
-      Entry: 4
-      Data: 723
-    - Name: 
-      Entry: 4
-      Data: 142
-    - Name: 
-      Entry: 4
-      Data: 89
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: input
-      Entry: 4
-      Data: 0
-    - Name: output
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 13|GameObjectNode, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 9
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 6919f274-b4ba-4376-a49b-fdb8a2fd9116
-    - Name: nodeCustomName
-      Entry: 6
-      Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 55
-    - Name: 
-      Entry: 4
-      Data: 835
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: output
-      Entry: 6
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 14|ForLoopNode, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 8
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 4475ff61-ebd4-47c9-b2cf-57a2b6696ba3
-    - Name: nodeCustomName
-      Entry: 6
-      Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: -49
-    - Name: 
-      Entry: 4
-      Data: 846
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: executed
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: start
-      Entry: 3
-      Data: 0
-    - Name: end
-      Entry: 3
-      Data: 10
-    - Name: index
-      Entry: 3
-      Data: 0
-    - Name: loopBody
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: loopCompleted
-      Entry: 7
-      Data: NodeGraphProcessor.Examples.ConditionalLink, NodeGraphProcessor.Examples
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 15|SwitchNode, NodeGraphProcessor.Examples
-    - Name: computeOrder
-      Entry: 3
-      Data: 0
-    - Name: debug
-      Entry: 5
-      Data: false
-    - Name: expanded
-      Entry: 5
-      Data: false
-    - Name: GUID
-      Entry: 1
-      Data: 47cfdf37-03f7-4fab-a6e7-7da372e69e04
-    - Name: nodeCustomName
-      Entry: 6
-      Data: 
-    - Name: nodeLock
-      Entry: 5
-      Data: false
-    - Name: position
-      Entry: 7
-      Data: UnityEngine.Rect, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: -19
-    - Name: 
-      Entry: 4
-      Data: 516
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: input
-      Entry: 4
-      Data: 0
-    - Name: output
-      Entry: 4
-      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -685,14 +376,14 @@ MonoBehaviour:
       Data: 
     - Name: NpBlackBoard
       Entry: 7
-      Data: 16|Examples.Editor._05_All.NP_BlackBoard, NodeGraphProcessor.Examples
+      Data: 15|Examples.Editor._05_All.NP_BlackBoard, NodeGraphProcessor.Examples
     - Name: TestEvent
       Entry: 7
-      Data: 17|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+      Data: 16|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 18|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 17|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -708,11 +399,11 @@ MonoBehaviour:
       Data: 
     - Name: TestId
       Entry: 7
-      Data: 19|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[System.Int64,
+      Data: 18|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[System.Int64,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 20|System.Collections.Generic.GenericEqualityComparer`1[[System.Int64,
+      Data: 19|System.Collections.Generic.GenericEqualityComparer`1[[System.Int64,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -730,76 +421,28 @@ MonoBehaviour:
       Entry: 8
       Data: 
   edges:
-  - GUID: 3012ea34-f437-44d2-83f1-e506f4974e17
+  - GUID: b4c56e28-c13b-4b2b-a6da-b06aabbed4ad
     owner: {fileID: 11400000}
-    inputNodeGUID: 56f6d61f-3bc6-46a7-97b7-cb91a5ca86d0
-    outputNodeGUID: ef0c6f0d-810a-43ff-8595-ea5600b7f1b8
-    inputFieldName: condition
-    outputFieldName: compared
+    inputNodeGUID: ffd2cd51-874d-44ce-ab32-c781f22b62f7
+    outputNodeGUID: f090b9d8-cec9-4e31-8689-91057f6a9ff9
+    inputFieldName: PrevNode
+    outputFieldName: NextNode
     inputPortIdentifier: 
     outputPortIdentifier: 
-  - GUID: bceb03a7-aa8f-492b-b075-65788d025f0a
+  - GUID: 99cc047d-5f4a-49be-92c0-0d443abd95c7
     owner: {fileID: 11400000}
-    inputNodeGUID: 1a85e37e-2a0b-414a-8306-caef70f610c5
-    outputNodeGUID: 56f6d61f-3bc6-46a7-97b7-cb91a5ca86d0
-    inputFieldName: executed
-    outputFieldName: true
+    inputNodeGUID: 2a13a585-f724-47a5-a881-0b78fcb29b88
+    outputNodeGUID: f090b9d8-cec9-4e31-8689-91057f6a9ff9
+    inputFieldName: PrevNode
+    outputFieldName: NextNode
     inputPortIdentifier: 
     outputPortIdentifier: 
-  - GUID: 90beed94-b548-4103-b749-fbb9af17c3ac
+  - GUID: 3702a275-5257-43a7-b9b3-40ec8d5f0189
     owner: {fileID: 11400000}
-    inputNodeGUID: c7548c93-4aed-4f97-a5f1-44f18b825354
-    outputNodeGUID: 56f6d61f-3bc6-46a7-97b7-cb91a5ca86d0
-    inputFieldName: executed
-    outputFieldName: false
-    inputPortIdentifier: 
-    outputPortIdentifier: 
-  - GUID: 4101751c-f3d9-4df8-b932-867a9405dc77
-    owner: {fileID: 11400000}
-    inputNodeGUID: 5dda3563-a36d-4596-949d-db8552e4628c
-    outputNodeGUID: 625c4b75-5ed6-4d3a-bf6e-85695693515b
-    inputFieldName: inputs
-    outputFieldName: output
-    inputPortIdentifier: 0
-    outputPortIdentifier: 
-  - GUID: d75097fb-4e94-4565-8e7b-467ac2deb37d
-    owner: {fileID: 11400000}
-    inputNodeGUID: ef0c6f0d-810a-43ff-8595-ea5600b7f1b8
-    outputNodeGUID: 01f52f69-3974-4395-b28c-88ee6bad6782
-    inputFieldName: inA
-    outputFieldName: output
-    inputPortIdentifier: 
-    outputPortIdentifier: 
-  - GUID: 6f29edef-ad49-45ee-a59b-05aaf5d7ec8e
-    owner: {fileID: 11400000}
-    inputNodeGUID: c7548c93-4aed-4f97-a5f1-44f18b825354
-    outputNodeGUID: c7749e45-94b8-42f6-8812-832b8838878e
-    inputFieldName: obj
-    outputFieldName: output
-    inputPortIdentifier: 
-    outputPortIdentifier: 
-  - GUID: 6685d222-625d-406f-971b-0692ac3e0290
-    owner: {fileID: 11400000}
-    inputNodeGUID: 5dda3563-a36d-4596-949d-db8552e4628c
-    outputNodeGUID: 6919f274-b4ba-4376-a49b-fdb8a2fd9116
-    inputFieldName: inputs
-    outputFieldName: output
-    inputPortIdentifier: 2
-    outputPortIdentifier: 
-  - GUID: 43446c85-7ec3-437c-a699-fe3b662aed67
-    owner: {fileID: 11400000}
-    inputNodeGUID: 5dda3563-a36d-4596-949d-db8552e4628c
-    outputNodeGUID: 4475ff61-ebd4-47c9-b2cf-57a2b6696ba3
-    inputFieldName: inputs
-    outputFieldName: index
-    inputPortIdentifier: 1
-    outputPortIdentifier: 
-  - GUID: 3fa5395d-5cb7-4ea3-b7b6-80c297385565
-    owner: {fileID: 11400000}
-    inputNodeGUID: ef0c6f0d-810a-43ff-8595-ea5600b7f1b8
-    outputNodeGUID: 47cfdf37-03f7-4fab-a6e7-7da372e69e04
-    inputFieldName: inB
-    outputFieldName: output
+    inputNodeGUID: 4871e590-61f8-4017-8e47-daf34d1f80c6
+    outputNodeGUID: ffd2cd51-874d-44ce-ab32-c781f22b62f7
+    inputFieldName: PrevNode
+    outputFieldName: NextNode
     inputPortIdentifier: 
     outputPortIdentifier: 
   stackNodes: []
@@ -817,8 +460,8 @@ MonoBehaviour:
   exposedParameters: []
   serializedParameterList: []
   stickyNotes: []
-  position: {x: 232, y: -299, z: 0}
-  scale: {x: 1, y: 1, z: 1}
+  position: {x: 815, y: -442, z: 0}
+  scale: {x: 1.15, y: 1.15, z: 1}
   references:
     version: 2
     RefIds: []

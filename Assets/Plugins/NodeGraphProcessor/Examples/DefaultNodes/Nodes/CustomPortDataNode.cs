@@ -12,7 +12,8 @@ public class CustomPortData : BaseNode
         new() { displayName = "0", displayType = typeof(float), identifier = "0" },
         new() { displayName = "1", displayType = typeof(int), identifier = "1" },
         new() { displayName = "2", displayType = typeof(GameObject), identifier = "2" },
-        new() { displayName = "3", displayType = typeof(Texture2D), identifier = "3" }
+        new() { displayName = "3", displayType = typeof(Texture2D), identifier = "3" },
+        new() { displayName = "4", displayType = typeof(float), identifier = "4" },
     };
 
     [Output] public float output;
@@ -27,6 +28,15 @@ public class CustomPortData : BaseNode
         output = 0;
 
         inputs = TryGetAllInputValues<object>(nameof(inputs));
+        foreach (var inputPort in inputPorts)
+        {
+            foreach (var connectedEdge in inputPort.GetEdges())
+            {
+                object t = default;
+                connectedEdge.outputPort.GetOutputValue(inputPort, ref t);
+                Debug.Log(t);
+            }
+        }
 
         if (inputs == null)
             return;

@@ -1,6 +1,7 @@
 ﻿using GraphProcessor;
 using NodeGraphProcessor.Examples;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 [NodeCustomEditor(typeof(Comparison))]
@@ -26,7 +27,7 @@ public class ComparisonView : BaseNodeView
 
         nodeTarget.onAfterEdgeConnected += UpdateVisibleFields;
         nodeTarget.onAfterEdgeDisconnected += UpdateVisibleFields;
-
+        
         UpdateVisibleFields(null);
 
         void UpdateVisibleFields(SerializableEdge _)
@@ -37,9 +38,9 @@ public class ComparisonView : BaseNodeView
             controlsContainer.Add(inputA);
             controlsContainer.Add(inputB);
 
-            if (inA.GetEdges().Count > 0)
+            if (inA?.GetEdges().Count > 0)
                 controlsContainer.Remove(inputA);
-            if (inB.GetEdges().Count > 0)
+            if (inB?.GetEdges().Count > 0)
                 controlsContainer.Remove(inputB);
         }
     }
