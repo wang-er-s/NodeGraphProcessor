@@ -5,13 +5,13 @@ using Sirenix.OdinInspector;
 using Action = System.Action;
 
 [BoxGroup("用于包含Action的数据类"), GUIColor(0.961f, 0.902f, 0.788f, 1f)]
-[HideLabel]
+[HideReferenceObjectPicker]
 public class NP_ClassForStoreAction
 {
     /// <summary>
     /// 归属的运行时行为树实例
     /// </summary>
-    [HideInEditorMode] public Root BelongtoRuntimeTree;
+    [HideInEditorMode] public NP_RuntimeTree BelongtoRuntimeTree;
 
     [HideInEditorMode] public Action Action;
 

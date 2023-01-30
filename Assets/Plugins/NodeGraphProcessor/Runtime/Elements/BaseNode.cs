@@ -13,7 +13,6 @@ namespace GraphProcessor
         object value);
 
     [BoxGroup]
-    [HideLabel]
     public abstract class BaseNode
     {
         public delegate void ProcessDelegate();

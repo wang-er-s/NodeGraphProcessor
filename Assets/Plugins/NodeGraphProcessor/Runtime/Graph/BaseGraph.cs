@@ -107,6 +107,7 @@ namespace GraphProcessor
         /// </summary>
         /// <typeparam name="BaseNode"></typeparam>
         /// <returns></returns>
+        [ListDrawerSettings(Expanded = false, HideAddButton = true, HideRemoveButton = true)]
         public List<BaseNode> nodes = new();
 
         /// <summary>
