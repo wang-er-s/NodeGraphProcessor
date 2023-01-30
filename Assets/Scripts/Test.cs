@@ -20,7 +20,6 @@ public class Test : MonoBehaviour
 
     public NP_RuntimeTree CreateNpRuntimeTree()
     {
-        textAsset = Instantiate(textAsset);
         NP_DataSupportor npDataSupportor = BsonSerializer.Deserialize<NP_DataSupportor>(textAsset.bytes);
 
         long rootId = npDataSupportor.NpDataSupportorBase.NPBehaveTreeDataId;

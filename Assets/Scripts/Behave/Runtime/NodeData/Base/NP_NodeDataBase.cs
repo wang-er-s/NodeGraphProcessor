@@ -3,7 +3,7 @@ using NPBehave;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[HideReferenceObjectPicker]
+[BsonDeserializerRegister]
 public abstract class NP_NodeDataBase
 {
     /// <summary>
