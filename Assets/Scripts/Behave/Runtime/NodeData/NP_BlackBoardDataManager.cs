@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using ET;
 using Sirenix.OdinInspector;
 
 #if UNITY_EDITOR
-//TODO 我们是不是可以把所有数据都做到这里，实现编辑时逻辑数据分离，也就可以做到Excel和节点编辑器数据互相导出
 /// <summary>
 /// 单个Canvas数据管理器，包括但不限于黑板数据，常用字符串数据等
 /// </summary>
@@ -13,7 +11,6 @@ public class NP_BlackBoardDataManager
     [Title("黑板数据", TitleAlignment = TitleAlignments.Centered)]
     [LabelText("黑板内容")]
     [BoxGroup]
-    
     [DictionaryDrawerSettings(KeyLabel = "键(string)", ValueLabel = "值(NP_BBValue)", DisplayMode = DictionaryDisplayOptions.CollapsedFoldout)]
     public Dictionary<string, ANP_BBValue> BBValues = new Dictionary<string, ANP_BBValue>();
         
