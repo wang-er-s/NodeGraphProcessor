@@ -331,10 +331,10 @@ MonoBehaviour:
       Data: UnityEngine.Rect, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: -350.999969
+      Data: -361
     - Name: 
       Entry: 4
-      Data: 751.913
+      Data: 746.7826
     - Name: 
       Entry: 4
       Data: 110
@@ -412,16 +412,16 @@ MonoBehaviour:
       Data: UnityEngine.Rect, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: -112.173912
+      Data: -52.3043633
     - Name: 
       Entry: 4
-      Data: 666.087
+      Data: 685.2609
     - Name: 
       Entry: 4
-      Data: 100
+      Data: 179
     - Name: 
       Entry: 4
-      Data: 100
+      Data: 101
     - Name: 
       Entry: 8
       Data: 
@@ -436,7 +436,7 @@ MonoBehaviour:
       Data: 17|NormalBuffNodeData, Assembly-CSharp
     - Name: BuffDes
       Entry: 1
-      Data: "\u6CBB\u7597Buff111"
+      Data: "\u6CBB\u7597Buff"
     - Name: BuffData
       Entry: 7
       Data: 18|TreatmentBuffData, Assembly-CSharp
@@ -448,13 +448,10 @@ MonoBehaviour:
       Data: 382988626629573
     - Name: BuffTargetTypes
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: BuffBaseType
       Entry: 3
-      Data: 0
-    - Name: NetSyncSpecial
-      Entry: 5
-      Data: false
+      Data: 1
     - Name: SpriteABInfo
       Entry: 6
       Data: 
@@ -475,37 +472,20 @@ MonoBehaviour:
       Data: 0
     - Name: BuffWorkType
       Entry: 3
-      Data: 0
+      Data: 128
     - Name: BaseBuffBaseDataEffectTypes
       Entry: 3
-      Data: 0
-    - Name: ValueToBeChanged
-      Entry: 7
-      Data: 19|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Single,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 20|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
+      Data: 4
+    - Name: Compute
+      Entry: 6
       Data: 
     - Name: AdditionValue
       Entry: 7
-      Data: 21|System.Collections.Generic.Dictionary`2[[BuffAdditionTypes, Assembly-CSharp],[System.Single,
+      Data: 19|System.Collections.Generic.Dictionary`2[[BuffAdditionTypes, Assembly-CSharp],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 22|System.Collections.Generic.EnumEqualityComparer`1[[BuffAdditionTypes,
+      Data: 20|System.Collections.Generic.EnumEqualityComparer`1[[BuffAdditionTypes,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -518,7 +498,19 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
       Data: 0
+    - Name: $v
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -527,7 +519,7 @@ MonoBehaviour:
       Data: 
     - Name: TreatmentFix
       Entry: 4
-      Data: 1
+      Data: 1.18
     - Name: 
       Entry: 8
       Data: 
@@ -545,17 +537,17 @@ MonoBehaviour:
       Data: 
     - Name: NpDataSupportor_Client
       Entry: 7
-      Data: 23|NP_DataSupportorBase, Assembly-CSharp
+      Data: 21|NP_DataSupportorBase, Assembly-CSharp
     - Name: NPBehaveTreeDataId
       Entry: 3
       Data: 380196185002053
     - Name: NP_DataSupportorDic
       Entry: 7
-      Data: 24|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[NP_NodeDataBase,
+      Data: 22|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[NP_NodeDataBase,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 25|System.Collections.Generic.GenericEqualityComparer`1[[System.Int64,
+      Data: 23|System.Collections.Generic.GenericEqualityComparer`1[[System.Int64,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -619,11 +611,11 @@ MonoBehaviour:
       Data: 
     - Name: NP_BBValueManager
       Entry: 7
-      Data: 26|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
+      Data: 24|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 27|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 25|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -642,17 +634,17 @@ MonoBehaviour:
       Data: 
     - Name: NpDataSupportor_Client_Des
       Entry: 7
-      Data: 28|NP_DataSupportorBase, Assembly-CSharp
+      Data: 26|NP_DataSupportorBase, Assembly-CSharp
     - Name: NPBehaveTreeDataId
       Entry: 3
       Data: 0
     - Name: NP_DataSupportorDic
       Entry: 7
-      Data: 29|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[NP_NodeDataBase,
+      Data: 27|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[NP_NodeDataBase,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 9
-      Data: 25
+      Data: 23
     - Name: 
       Entry: 12
       Data: 0
@@ -664,11 +656,11 @@ MonoBehaviour:
       Data: 
     - Name: NP_BBValueManager
       Entry: 7
-      Data: 30|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
+      Data: 28|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 9
-      Data: 27
+      Data: 25
     - Name: 
       Entry: 12
       Data: 0
@@ -683,14 +675,14 @@ MonoBehaviour:
       Data: 
     - Name: NpBlackBoardDataManager
       Entry: 7
-      Data: 31|NP_BlackBoardDataManager, Assembly-CSharp
+      Data: 29|NP_BlackBoardDataManager, Assembly-CSharp
     - Name: BBValues
       Entry: 7
-      Data: 32|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
+      Data: 30|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 9
-      Data: 27
+      Data: 25
     - Name: 
       Entry: 12
       Data: 0
@@ -702,7 +694,7 @@ MonoBehaviour:
       Data: 
     - Name: EventValues
       Entry: 7
-      Data: 33|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
+      Data: 31|System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -714,11 +706,11 @@ MonoBehaviour:
       Data: 
     - Name: Ids
       Entry: 7
-      Data: 34|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Int64,
+      Data: 32|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Int64,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
-      Data: 27
+      Data: 25
     - Name: 
       Entry: 12
       Data: 0
@@ -733,29 +725,29 @@ MonoBehaviour:
       Data: 
     - Name: SkillDataSupportor_Client
       Entry: 7
-      Data: 35|NP_DataSupportor, Assembly-CSharp
+      Data: 33|NP_DataSupportor, Assembly-CSharp
     - Name: NpDataSupportorBase
       Entry: 9
-      Data: 23
+      Data: 21
     - Name: 
       Entry: 8
       Data: 
     - Name: SkillDataSupportor_Client_Des
       Entry: 7
-      Data: 36|NP_DataSupportor, Assembly-CSharp
+      Data: 34|NP_DataSupportor, Assembly-CSharp
     - Name: NpDataSupportorBase
       Entry: 7
-      Data: 37|NP_DataSupportorBase, Assembly-CSharp
+      Data: 35|NP_DataSupportorBase, Assembly-CSharp
     - Name: NPBehaveTreeDataId
       Entry: 3
       Data: 380193449504840
     - Name: NP_DataSupportorDic
       Entry: 7
-      Data: 38|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[NP_NodeDataBase,
+      Data: 36|System.Collections.Generic.Dictionary`2[[System.Int64, mscorlib],[NP_NodeDataBase,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 39|System.Collections.Generic.GenericEqualityComparer`1[[System.Int64,
+      Data: 37|System.Collections.Generic.GenericEqualityComparer`1[[System.Int64,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -771,13 +763,13 @@ MonoBehaviour:
       Data: 380193449504837
     - Name: $v
       Entry: 7
-      Data: 40|NP_ActionNodeData, Assembly-CSharp
+      Data: 38|NP_ActionNodeData, Assembly-CSharp
     - Name: id
       Entry: 3
       Data: 380193449504837
     - Name: LinkedIds
       Entry: 7
-      Data: 41|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
+      Data: 39|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -792,7 +784,7 @@ MonoBehaviour:
       Data: 
     - Name: NpClassForStoreAction
       Entry: 7
-      Data: 42|NP_LogAction, Assembly-CSharp
+      Data: 40|NP_LogAction, Assembly-CSharp
     - Name: BelongtoRuntimeTree
       Entry: 6
       Data: 
@@ -825,13 +817,13 @@ MonoBehaviour:
       Data: 380193449504838
     - Name: $v
       Entry: 7
-      Data: 43|NP_ActionNodeData, Assembly-CSharp
+      Data: 41|NP_ActionNodeData, Assembly-CSharp
     - Name: id
       Entry: 3
       Data: 380193449504838
     - Name: LinkedIds
       Entry: 7
-      Data: 44|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
+      Data: 42|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -846,7 +838,7 @@ MonoBehaviour:
       Data: 
     - Name: NpClassForStoreAction
       Entry: 7
-      Data: 45|NP_LogAction, Assembly-CSharp
+      Data: 43|NP_LogAction, Assembly-CSharp
     - Name: BelongtoRuntimeTree
       Entry: 6
       Data: 
@@ -879,13 +871,13 @@ MonoBehaviour:
       Data: 380193449504839
     - Name: $v
       Entry: 7
-      Data: 46|NP_SequenceNodeData, Assembly-CSharp
+      Data: 44|NP_SequenceNodeData, Assembly-CSharp
     - Name: id
       Entry: 3
       Data: 380193449504839
     - Name: LinkedIds
       Entry: 7
-      Data: 47|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
+      Data: 45|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 2
@@ -918,13 +910,13 @@ MonoBehaviour:
       Data: 380193449504840
     - Name: $v
       Entry: 7
-      Data: 48|NP_RootNodeData, Assembly-CSharp
+      Data: 46|NP_RootNodeData, Assembly-CSharp
     - Name: id
       Entry: 3
       Data: 380193449504840
     - Name: LinkedIds
       Entry: 7
-      Data: 49|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
+      Data: 47|System.Collections.Generic.List`1[[System.Int64, mscorlib]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
@@ -957,11 +949,11 @@ MonoBehaviour:
       Data: 
     - Name: NP_BBValueManager
       Entry: 7
-      Data: 50|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
+      Data: 48|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[ANP_BBValue,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 51|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+      Data: 49|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -1021,7 +1013,7 @@ MonoBehaviour:
   exposedParameters: []
   serializedParameterList: []
   stickyNotes: []
-  position: {x: 858, y: -526, z: 0}
+  position: {x: 899, y: -572, z: 0}
   scale: {x: 1.15, y: 1.15, z: 1}
   Name: skill2
   SavePathClient: Assets/Res/Config

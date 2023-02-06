@@ -60,10 +60,9 @@ public class BuffDataBase
     [LabelText("Buff基础数值影响者")] [BoxGroup("选填项")]
     public BuffBaseDataEffectTypes BaseBuffBaseDataEffectTypes;
 
-    [BoxGroup("选填项")]
-    [Tooltip("基础数值，比如技能面板伤害100/200/300这种")]
-    [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-    public Dictionary<int, float> ValueToBeChanged = new Dictionary<int, float>();
+    [LabelText("计算公式")]
+    [BoxGroup("选填项")] [Tooltip("计算公式(level*3+4)")]
+    public string Compute;
 
     [Tooltip("具体的加成(可能会一个效果多种加成方式)，例如法强加成")]
     [BoxGroup("选填项")]
