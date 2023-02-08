@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Framework;
+using ET;
+using ET.Client;
 using MongoDB.Bson.Serialization;
 using NPBehave;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Exception = System.Exception;
+using Root = NPBehave.Root;
 
 public class Test : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class Test : MonoBehaviour
     [Button]
     private void Start()
     {
+        AfterUnitCreate_CreateUnitView a;
         var tree = CreateNpRuntimeTree();
         tree.Start();
     }

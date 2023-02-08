@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ET;
-using Framework;
 using NPBehave;
 using Sirenix.OdinInspector;
 
@@ -38,6 +37,7 @@ public class NP_BlackBoardRelationData
         {
             foreach (var bbValues in NP_BlackBoardDataManager.CurrentEditedNP_BlackBoardDataManager.BBValues)
             {
+                List<int> li = new List<int>();
                 if (bbValues.Key == this.BBKey)
                 {
                     NP_BBValue = bbValues.Value.DeepCopy();

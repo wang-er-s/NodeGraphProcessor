@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Framework;
+using ET;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 using Sirenix.OdinInspector;
@@ -22,7 +22,7 @@ public class BuffDataBase
     /// 因为我们不能，也不应该关心具体Buff的Id，所以这里直接自动生成
     /// </summary>
     [HideInInspector] [LabelText("Buff的Id")] [BoxGroup("必填项")]
-    public long BuffId = IDGenerator.NextId();
+    public long BuffId = IdGenerater.Instance.GenerateId();
 
     [LabelText("Buff的添加目标")] [BoxGroup("必填项")]
     public BuffTargetTypes BuffTargetTypes;

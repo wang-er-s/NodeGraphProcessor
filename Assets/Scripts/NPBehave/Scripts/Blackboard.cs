@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Numerics;
 using ET;
-using Framework;
-using Vector3 = UnityEngine.Vector3;
 
 namespace NPBehave
 {

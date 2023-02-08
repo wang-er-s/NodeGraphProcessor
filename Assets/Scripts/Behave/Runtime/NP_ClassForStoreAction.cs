@@ -1,6 +1,5 @@
 ﻿using System;
-using Framework;
-using NPBehave;
+using ET;
 using Sirenix.OdinInspector;
 using Action = System.Action;
 
@@ -59,7 +58,7 @@ public class NP_ClassForStoreAction
             return new NPBehave.Action(this.Func2);
         }
 
-        Log.Msg($"{this.GetType()} _CreateNPBehaveAction失败，因为没有找到可以绑定的委托");
+        Log.Info($"{this.GetType()} _CreateNPBehaveAction失败，因为没有找到可以绑定的委托");
         return null;
     }
 }

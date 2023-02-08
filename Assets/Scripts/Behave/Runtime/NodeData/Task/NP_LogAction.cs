@@ -1,5 +1,5 @@
 ﻿using System;
-using Framework;
+using ET;
 using Sirenix.OdinInspector;
 
 [Title("打印信息", TitleAlignment = TitleAlignments.Centered)]
@@ -15,6 +15,6 @@ public class NP_LogAction : NP_ClassForStoreAction
 
     private void TestLog()
     {
-        Log.Msg(LogInfo);
+        Log.Info(LogInfo);
     }
 }

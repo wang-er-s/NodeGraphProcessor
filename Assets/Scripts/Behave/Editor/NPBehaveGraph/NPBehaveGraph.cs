@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Framework;
+using ET;
 using GraphProcessor;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
@@ -78,7 +78,7 @@ public class NPBehaveGraph : BaseGraph
         //配置每个节点Id
         foreach (var node in m_AllNodes)
         {
-            node.NP_GetNodeData().id = IDGenerator.NextId();
+            node.NP_GetNodeData().id = IdGenerater.Instance.GenerateId();
         }
     }
 
@@ -97,7 +97,7 @@ public class NPBehaveGraph : BaseGraph
             BsonSerializer.Serialize(new BsonBinaryWriter(file), NpDataSupportor_Client);
         }
 
-        Log.Msg($"保存 {SavePathClient}/{this.Name}.bytes 成功");
+        Log.Info($"保存 {SavePathClient}/{this.Name}.bytes 成功");
     }
 
     [Button("测试反序列化", 25), GUIColor(0.4f, 0.8f, 1)]
@@ -113,12 +113,12 @@ public class NPBehaveGraph : BaseGraph
                 this.NpDataSupportor_Client_Des =
                     SerializationUtility.DeserializeValue<NP_DataSupportorBase>(reader.BaseStream,
                         DataFormat.Binary);
-                Log.Msg($"反序列化{SavePathClient}/{this.Name}.bytes成功");
+                Log.Info($"反序列化{SavePathClient}/{this.Name}.bytes成功");
             }
         }
         catch (Exception e)
         {
-            Log.Msg(e.ToString());
+            Log.Info(e.ToString());
             throw;
         }
     }

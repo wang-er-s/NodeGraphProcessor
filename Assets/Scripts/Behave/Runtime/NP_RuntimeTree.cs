@@ -1,5 +1,6 @@
-﻿using Framework;
+﻿using ET;
 using NPBehave;
+using Root = NPBehave.Root;
 
 public class NP_RuntimeTree
 {

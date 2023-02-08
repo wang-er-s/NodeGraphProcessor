@@ -1,6 +1,6 @@
 ﻿ using System;
  using System.IO;
- using Framework;
+ using ET;
  using MongoDB.Bson.IO;
  using MongoDB.Bson.Serialization;
  using Sirenix.OdinInspector;
@@ -37,7 +37,7 @@
              BsonSerializer.Serialize(new BsonBinaryWriter(file), SkillDataSupportor_Client);
          }
 
-         Log.Msg($"保存 {SavePathClient}/{this.Name}.bytes 成功");
+         Log.Info($"保存 {SavePathClient}/{this.Name}.bytes 成功");
      }
 
      [Button("测试技能树反序列化", 25), GUIColor(0.4f, 0.8f, 1)]
@@ -46,13 +46,13 @@
          try
          {
              byte[] mClientfile = File.ReadAllBytes($"{SavePathClient}/{this.Name}.bytes");
-             if (mClientfile.Length == 0) Log.Msg("没有读取到文件");
+             if (mClientfile.Length == 0) Log.Info("没有读取到文件");
              SkillDataSupportor_Client_Des = BsonSerializer.Deserialize<NP_DataSupportor>(mClientfile);
-             Log.Msg($"反序列化 {SavePathClient}/{this.Name}.bytes 成功");
+             Log.Info($"反序列化 {SavePathClient}/{this.Name}.bytes 成功");
          }
          catch (Exception e)
          {
-             Log.Msg(e.ToString());
+             Log.Info(e.ToString());
              throw;
          }
      }
