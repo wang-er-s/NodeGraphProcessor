@@ -4,10 +4,10 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        ""
     ],
-    "includePlatforms": [],
-    "excludePlatforms": [
+    "includePlatforms": [
         "Android",
         "Editor",
         "EmbeddedLinux",
@@ -29,11 +29,12 @@
         "WindowsStandalone64",
         "XboxOne"
     ],
+    "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

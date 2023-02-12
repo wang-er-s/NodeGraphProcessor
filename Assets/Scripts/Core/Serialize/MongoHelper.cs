@@ -8,12 +8,13 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Serializers;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace ET
 {
     public static class MongoHelper
     {
-        private class StructBsonSerialize<TValue>: StructSerializerBase<TValue> where TValue : struct
+        private class StructBsonSerialize<TValue> : StructSerializerBase<TValue> where TValue : struct
         {
             public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TValue value)
             {
@@ -23,7 +24,8 @@ namespace ET
 
                 bsonWriter.WriteStartDocument();
 
-                FieldInfo[] fields = nominalType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                FieldInfo[] fields =
+                    nominalType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 foreach (FieldInfo field in fields)
                 {
                     bsonWriter.WriteName(field.Name);
@@ -78,7 +80,8 @@ namespace ET
         }
 
         [StaticField]
-        private static readonly JsonWriterSettings defaultSettings = new() { OutputMode = JsonOutputMode.RelaxedExtendedJson };
+        private static readonly JsonWriterSettings defaultSettings = new()
+            { OutputMode = JsonOutputMode.RelaxedExtendedJson };
 
         static MongoHelper()
         {
@@ -92,11 +95,15 @@ namespace ET
             RegisterStruct<float3>();
             RegisterStruct<float4>();
             RegisterStruct<quaternion>();
+            RegisterStruct<Vector2>();
+            RegisterStruct<Vector3>();
+            RegisterStruct<Vector4>();
+            RegisterStruct<Quaternion>();
 
             Dictionary<string, Type> types = EventSystem.Instance.GetTypes();
             foreach (Type type in types.Values)
             {
-                if (!type.IsSubclassOf(typeof (Object)))
+                if (!type.IsSubclassOf(typeof(Object)))
                 {
                     continue;
                 }
@@ -116,7 +123,7 @@ namespace ET
 
         public static void RegisterStruct<T>() where T : struct
         {
-            BsonSerializer.RegisterSerializer(typeof (T), new StructBsonSerialize<T>());
+            BsonSerializer.RegisterSerializer(typeof(T), new StructBsonSerialize<T>());
         }
 
         public static string ToJson(object obj)
@@ -146,6 +153,48 @@ namespace ET
             return BsonSerializer.Deserialize(str, type);
         }
 
+        public static byte[] ToBson(object obj)
+        {
+            return obj.ToBson();
+        }
+
+
+        public static object FromBson(Type type, byte[] bytes, int index, int count)
+        {
+            try
+            {
+                using (MemoryStream memoryStream = new MemoryStream(bytes, index, count))
+                {
+                    return BsonSerializer.Deserialize(memoryStream, type);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"from bson error: {type.Name}", e);
+            }
+        }
+
+        public static T FromBson<T>(byte[] bytes)
+        {
+            try
+            {
+                using (MemoryStream memoryStream = new MemoryStream(bytes))
+                {
+                    return (T)BsonSerializer.Deserialize(memoryStream, typeof(T));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"from bson error: {typeof(T).Name}", e);
+            }
+        }
+
+        public static T FromBson<T>(byte[] bytes, int index, int count)
+        {
+            return (T)FromBson(typeof(T), bytes, index, count);
+        }
+
+
         public static byte[] Serialize(object obj)
         {
             return obj.ToBson();
@@ -157,7 +206,7 @@ namespace ET
             {
                 BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
                 BsonSerializationArgs args = default;
-                args.NominalType = typeof (object);
+                args.NominalType = typeof(object);
                 IBsonSerializer serializer = BsonSerializer.LookupSerializer(args.NominalType);
                 serializer.Serialize(context, args, message);
             }
@@ -208,18 +257,18 @@ namespace ET
             {
                 using (MemoryStream memoryStream = new MemoryStream(bytes))
                 {
-                    return (T)BsonSerializer.Deserialize(memoryStream, typeof (T));
+                    return (T)BsonSerializer.Deserialize(memoryStream, typeof(T));
                 }
             }
             catch (Exception e)
             {
-                throw new Exception($"from bson error: {typeof (T).Name}", e);
+                throw new Exception($"from bson error: {typeof(T).Name}", e);
             }
         }
 
         public static T Deserialize<T>(byte[] bytes, int index, int count)
         {
-            return (T)Deserialize(typeof (T), bytes, index, count);
+            return (T)Deserialize(typeof(T), bytes, index, count);
         }
 
         public static T Clone<T>(T t)
