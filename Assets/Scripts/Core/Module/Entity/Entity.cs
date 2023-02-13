@@ -21,6 +21,7 @@ namespace ET
         private UnityEngine.GameObject viewGO;
 #endif
 
+        // 每次被重新使用的时候都会赋予新的实例id
         [BsonIgnore] public long InstanceId { get; protected set; }
 
         protected Entity()
@@ -247,6 +248,7 @@ namespace ET
         [BsonDefaultValue(0L)]
         [BsonElement]
         [BsonId]
+        // 创建时就被确认，回收还是重新使用都不会更改
         public long Id { get; set; }
 
         [BsonIgnore] protected Entity domain;
