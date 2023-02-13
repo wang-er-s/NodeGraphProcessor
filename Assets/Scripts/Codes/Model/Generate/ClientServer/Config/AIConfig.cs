@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
-    [Config]
+    // [Config]
     public partial class AIConfigCategory : ConfigSingleton<AIConfigCategory>, IMerge
     {
         [BsonIgnore] private Dictionary<int, AIConfig> dict = new Dictionary<int, AIConfig>();
