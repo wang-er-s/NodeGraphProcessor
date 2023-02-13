@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class UnOrderMultiMapSet<T, K>: Dictionary<T, HashSet<K>>
+    public class UnOrderMultiMapSet<T, K> : Dictionary<T, HashSet<K>>
     {
         // 重用HashSet
         public new HashSet<K> this[T t]
@@ -19,15 +19,16 @@ namespace ET
                 {
                     set = new HashSet<K>();
                 }
+
                 return set;
             }
         }
-        
+
         public Dictionary<T, HashSet<K>> GetDictionary()
         {
             return this;
         }
-        
+
         public void Add(T t, K k)
         {
             HashSet<K> set;
@@ -37,6 +38,7 @@ namespace ET
                 set = new HashSet<K>();
                 base[t] = set;
             }
+
             set.Add(k);
         }
 
@@ -48,14 +50,17 @@ namespace ET
             {
                 return false;
             }
+
             if (!set.Remove(k))
             {
                 return false;
             }
+
             if (set.Count == 0)
             {
                 this.Remove(t);
             }
+
             return true;
         }
 
@@ -67,6 +72,7 @@ namespace ET
             {
                 return false;
             }
+
             return set.Contains(k);
         }
 
@@ -75,10 +81,11 @@ namespace ET
             get
             {
                 int count = 0;
-                foreach (KeyValuePair<T,HashSet<K>> kv in this)
+                foreach (KeyValuePair<T, HashSet<K>> kv in this)
                 {
                     count += kv.Value.Count;
                 }
+
                 return count;
             }
         }

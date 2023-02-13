@@ -4,7 +4,7 @@ using System.Threading;
 namespace ET
 {
     [Invoke(TimerCoreInvokeType.CoroutineTimeout)]
-    public class WaitCoroutineLockTimer: ATimer<WaitCoroutineLock>
+    public class WaitCoroutineLockTimer : ATimer<WaitCoroutineLock>
     {
         protected override void Run(WaitCoroutineLock waitCoroutineLock)
         {
@@ -12,10 +12,11 @@ namespace ET
             {
                 return;
             }
+
             waitCoroutineLock.SetException(new Exception("coroutine is timeout!"));
         }
     }
-    
+
     public class WaitCoroutineLock
     {
         public static WaitCoroutineLock Create()
@@ -24,7 +25,7 @@ namespace ET
             waitCoroutineLock.tcs = ETTask<CoroutineLock>.Create(true);
             return waitCoroutineLock;
         }
-        
+
         private ETTask<CoroutineLock> tcs;
 
         public void SetResult(CoroutineLock coroutineLock)
@@ -33,6 +34,7 @@ namespace ET
             {
                 throw new NullReferenceException("SetResult tcs is null");
             }
+
             var t = this.tcs;
             this.tcs = null;
             t.SetResult(coroutineLock);
@@ -44,6 +46,7 @@ namespace ET
             {
                 throw new NullReferenceException("SetException tcs is null");
             }
+
             var t = this.tcs;
             this.tcs = null;
             t.SetException(exception);

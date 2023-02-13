@@ -4,11 +4,11 @@ using UnityEditor;
 namespace ET
 {
     [TypeDrawer]
-    public class DateTimeTypeDrawer: ITypeDrawer
+    public class DateTimeTypeDrawer : ITypeDrawer
     {
         public bool HandlesType(Type type)
         {
-            return type == typeof (DateTime);
+            return type == typeof(DateTime);
         }
 
         // Note: This is a very basic implementation. The ToString() method conversion will cut off milliseconds.
@@ -18,8 +18,8 @@ namespace ET
             var newDateString = EditorGUILayout.TextField(memberName, dateString);
 
             return newDateString != dateString
-                    ? DateTime.Parse(newDateString)
-                    : value;
+                ? DateTime.Parse(newDateString)
+                : value;
         }
     }
 }

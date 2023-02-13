@@ -13,7 +13,7 @@ namespace ET
         public int Min;
 
         public int Max;
-        
+
         public UniqueIdAttribute(int min = int.MinValue, int max = int.MaxValue)
         {
             this.Min = min;
@@ -21,4 +21,3 @@ namespace ET
         }
     }
 }
-

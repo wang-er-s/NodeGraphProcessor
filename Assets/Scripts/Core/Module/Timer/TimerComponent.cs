@@ -12,7 +12,8 @@ namespace ET
 
     public class TimerAction
     {
-        public static TimerAction Create(long id, TimerClass timerClass, long startTime, long time, int type, object obj)
+        public static TimerAction Create(long id, TimerClass timerClass, long startTime, long time, int type,
+            object obj)
         {
             TimerAction timerAction = ObjectPool.Instance.Fetch<TimerAction>();
             timerAction.Id = id;
@@ -25,7 +26,7 @@ namespace ET
         }
 
         public long Id;
-        
+
         public TimerClass TimerClass;
 
         public object Object;
@@ -35,7 +36,7 @@ namespace ET
         public long Time;
 
         public int Type;
-        
+
         public void Recycle()
         {
             this.Id = 0;
@@ -53,7 +54,7 @@ namespace ET
         public object Args;
     }
 
-    public class TimerComponent: Singleton<TimerComponent>, ISingletonUpdate
+    public class TimerComponent : Singleton<TimerComponent>, ISingletonUpdate
     {
         /// <summary>
         /// key: time, value: timer id
@@ -116,6 +117,7 @@ namespace ET
                     long timerId = list[i];
                     this.timeOutTimerIds.Enqueue(timerId);
                 }
+
                 this.TimeId.Remove(time);
             }
 
@@ -127,7 +129,7 @@ namespace ET
                 {
                     continue;
                 }
-                
+
                 this.Run(timerAction);
             }
         }
@@ -150,7 +152,7 @@ namespace ET
                     break;
                 }
                 case TimerClass.RepeatedTimer:
-                {                    
+                {
                     long timeNow = GetNow();
                     timerAction.StartTime = timeNow;
                     this.AddTimer(timerAction);
@@ -189,6 +191,7 @@ namespace ET
             {
                 return false;
             }
+
             timerAction.Recycle();
             return true;
         }
@@ -202,7 +205,8 @@ namespace ET
             }
 
             ETTask tcs = ETTask.Create(true);
-            TimerAction timer = TimerAction.Create(this.GetId(), TimerClass.OnceWaitTimer, timeNow, tillTime - timeNow, 0, tcs);
+            TimerAction timer = TimerAction.Create(this.GetId(), TimerClass.OnceWaitTimer, timeNow, tillTime - timeNow,
+                0, tcs);
             this.AddTimer(timer);
             long timerId = timer.Id;
 
@@ -274,7 +278,8 @@ namespace ET
                 Log.Error($"new once time too small: {tillTime}");
             }
 
-            TimerAction timer = TimerAction.Create(this.GetId(), TimerClass.OnceTimer, timeNow, tillTime - timeNow, type, args);
+            TimerAction timer = TimerAction.Create(this.GetId(), TimerClass.OnceTimer, timeNow, tillTime - timeNow,
+                type, args);
             this.AddTimer(timer);
             return timer.Id;
         }
@@ -299,7 +304,7 @@ namespace ET
                 throw new Exception($"repeated timer < 100, timerType: time: {time}");
             }
 #endif
-            
+
             long timeNow = GetNow();
             TimerAction timer = TimerAction.Create(this.GetId(), TimerClass.RepeatedTimer, timeNow, time, type, args);
 

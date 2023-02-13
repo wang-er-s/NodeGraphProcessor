@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class InvokeAttribute: BaseAttribute
+    public class InvokeAttribute : BaseAttribute
     {
         public int Type { get; }
 

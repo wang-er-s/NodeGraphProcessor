@@ -43,7 +43,7 @@ namespace ET
         {
             Logger.Instance.Console(message);
         }
-        
+
 #if DOTNET
         public static void Trace(ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler message)
         {

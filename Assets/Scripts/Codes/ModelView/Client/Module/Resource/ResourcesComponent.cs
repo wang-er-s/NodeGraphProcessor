@@ -11,7 +11,7 @@ namespace ET.Client
     public static class ABInfoSystem
     {
         [ObjectSystem]
-        public class ABInfoAwakeSystem: AwakeSystem<ABInfo, string, AssetBundle>
+        public class ABInfoAwakeSystem : AwakeSystem<ABInfo, string, AssetBundle>
         {
             protected override void Awake(ABInfo self, string abName, AssetBundle a)
             {
@@ -23,7 +23,7 @@ namespace ET.Client
         }
 
         [ObjectSystem]
-        public class ABInfoDestroySystem: DestroySystem<ABInfo>
+        public class ABInfoDestroySystem : DestroySystem<ABInfo>
         {
             protected override void Destroy(ABInfo self)
             {
@@ -35,7 +35,7 @@ namespace ET.Client
                 self.AssetBundle = null;
             }
         }
-        
+
         public static void Destroy(this ABInfo self, bool unload = true)
         {
             if (self.AssetBundle != null)
@@ -48,7 +48,7 @@ namespace ET.Client
     }
 
     [ChildOf(typeof(ResourcesComponent))]
-    public class ABInfo: Entity, IAwake<string, AssetBundle>, IDestroy
+    public class ABInfo : Entity, IAwake<string, AssetBundle>, IDestroy
     {
         public string Name { get; set; }
 
@@ -109,13 +109,12 @@ namespace ET.Client
     }
 
 
-
     [FriendOf(typeof(ABInfo))]
     [FriendOf(typeof(ResourcesComponent))]
     public static class ResourcesComponentSystem
     {
         [ObjectSystem]
-        public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
+        public class ResourcesComponentAwakeSystem : AwakeSystem<ResourcesComponent>
         {
             protected override void Awake(ResourcesComponent self)
             {
@@ -123,14 +122,15 @@ namespace ET.Client
                 if (Define.IsAsync)
                 {
                     self.LoadOneBundle("StreamingAssets");
-                    self.AssetBundleManifestObject = (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
+                    self.AssetBundleManifestObject =
+                        (AssetBundleManifest)self.GetAsset("StreamingAssets", "AssetBundleManifest");
                     self.UnloadBundle("StreamingAssets", false);
                 }
             }
         }
-        
+
         [ObjectSystem]
-        public class ResourcesComponentDestroySystem: DestroySystem<ResourcesComponent>
+        public class ResourcesComponentDestroySystem : DestroySystem<ResourcesComponent>
         {
             protected override void Destroy(ResourcesComponent self)
             {
@@ -187,7 +187,8 @@ namespace ET.Client
             return ss;
         }
 
-        private static void CollectDependencies(this ResourcesComponent self, List<string> parents, string assetBundleName, Dictionary<string, int> info)
+        private static void CollectDependencies(this ResourcesComponent self, List<string> parents,
+            string assetBundleName, Dictionary<string, int> info)
         {
             parents.Add(assetBundleName);
             string[] deps = self.GetDependencies(assetBundleName);
@@ -215,7 +216,6 @@ namespace ET.Client
         }
 
 
-
         public static bool Contains(this ResourcesComponent self, string bundleName)
         {
             return self.bundles.ContainsKey(bundleName);
@@ -239,7 +239,8 @@ namespace ET.Client
         }
 
         // 一帧卸载一个包，避免卡死
-        public static async ETTask UnloadBundleAsync(this ResourcesComponent self, string assetBundleName, bool unload = true)
+        public static async ETTask UnloadBundleAsync(this ResourcesComponent self, string assetBundleName,
+            bool unload = true)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
 
@@ -248,7 +249,8 @@ namespace ET.Client
             //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
             foreach (string dependency in dependencies)
             {
-                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode()))
+                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources,
+                           assetBundleName.GetHashCode()))
                 {
                     self.UnloadOneBundle(dependency, unload);
                     await TimerComponent.Instance.WaitFrameAsync();
@@ -323,7 +325,8 @@ namespace ET.Client
             //Log.Debug($"-----------dep load finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
         }
 
-        private static void AddResource(this ResourcesComponent self, string bundleName, string assetName, UnityEngine.Object resource)
+        private static void AddResource(this ResourcesComponent self, string bundleName, string assetName,
+            UnityEngine.Object resource)
         {
             Dictionary<string, UnityEngine.Object> dict;
             if (!self.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
@@ -423,8 +426,10 @@ namespace ET.Client
             {
                 async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
-                    using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode());
-                    
+                    using CoroutineLock coroutineLock =
+                        await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources,
+                            dependency.GetHashCode());
+
                     ABInfo abInfo = await self.LoadOneBundleAsync(dependency);
                     if (abInfo == null || abInfo.RefCount > 1)
                     {
@@ -441,6 +446,7 @@ namespace ET.Client
                     {
                         tasks.Add(LoadDependency(dependency, abInfos));
                     }
+
                     await ETTaskHelper.WaitAll(tasks);
 
                     // ab包从硬盘加载完成，可以再并发加载all assets
@@ -449,6 +455,7 @@ namespace ET.Client
                     {
                         tasks.Add(self.LoadOneBundleAllAssets(abInfo));
                     }
+
                     await ETTaskHelper.WaitAll(tasks);
                 }
             }
@@ -464,6 +471,7 @@ namespace ET.Client
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 return null;
             }
+
             string p = "";
             AssetBundle assetBundle = null;
 
@@ -496,11 +504,13 @@ namespace ET.Client
                     return abInfo;
                 }
             }
+
             p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
             if (!File.Exists(p))
             {
                 p = Path.Combine(PathHelper.AppResPath, assetBundleName);
             }
+
             Log.Debug("Async load bundle BundleName : " + p);
 
             // if (!File.Exists(p))
@@ -517,6 +527,7 @@ namespace ET.Client
                 Log.Warning($"assets bundle not found: {assetBundleName}");
                 return null;
             }
+
             abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
             self.bundles[assetBundleName] = abInfo;
             return abInfo;
@@ -526,8 +537,9 @@ namespace ET.Client
         // 加载ab包中的all assets
         private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
-            using CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
-            
+            using CoroutineLock coroutineLock =
+                await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
+
             if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
             {
                 return;
@@ -560,9 +572,9 @@ namespace ET.Client
             return sb.ToString();
         }
     }
-    
+
     [ComponentOf]
-    public class ResourcesComponent: Entity, IAwake, IDestroy
+    public class ResourcesComponent : Entity, IAwake, IDestroy
     {
         public static ResourcesComponent Instance { get; set; }
 
@@ -572,13 +584,14 @@ namespace ET.Client
 
         public Dictionary<string, string> StringToABDict = new Dictionary<string, string>();
 
-        public Dictionary<string, string> BundleNameToLowerDict = new Dictionary<string, string>() { { "StreamingAssets", "StreamingAssets" } };
+        public Dictionary<string, string> BundleNameToLowerDict = new Dictionary<string, string>()
+            { { "StreamingAssets", "StreamingAssets" } };
 
         public readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache =
-                new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
+            new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
 
         public readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
-        
+
         // 缓存包依赖，不用每次计算
         public readonly Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class MultiMap<T, K>: SortedDictionary<T, List<K>>
+    public class MultiMap<T, K> : SortedDictionary<T, List<K>>
     {
         private readonly List<K> Empty = new List<K>();
 
@@ -16,6 +16,7 @@ namespace ET
                 list = new List<K>();
                 this.Add(t, list);
             }
+
             list.Add(k);
         }
 
@@ -27,14 +28,17 @@ namespace ET
             {
                 return false;
             }
+
             if (!list.Remove(k))
             {
                 return false;
             }
+
             if (list.Count == 0)
             {
                 this.Remove(t);
             }
+
             return true;
         }
 
@@ -51,6 +55,7 @@ namespace ET
             {
                 return Array.Empty<K>();
             }
+
             return list.ToArray();
         }
 
@@ -76,6 +81,7 @@ namespace ET
             {
                 return list[0];
             }
+
             return default;
         }
 
@@ -87,6 +93,7 @@ namespace ET
             {
                 return false;
             }
+
             return list.Contains(k);
         }
     }

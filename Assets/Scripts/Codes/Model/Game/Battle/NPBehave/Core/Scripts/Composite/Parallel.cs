@@ -7,10 +7,8 @@ namespace NPBehave
     {
         public enum Policy
         {
-            [LabelText("一个成功(失败)就返回成功(失败)")]
-            ONE,
-            [LabelText("所有成功(失败)才返回成功(失败)")]
-            ALL,
+            [LabelText("一个成功(失败)就返回成功(失败)")] ONE,
+            [LabelText("所有成功(失败)才返回成功(失败)")] ALL,
         }
 
         // public enum Wait
@@ -32,7 +30,8 @@ namespace NPBehave
         private bool successState;
         private bool childrenAborted;
 
-        public Parallel(Policy successPolicy, Policy failurePolicy, /*Wait waitForPendingChildrenRule,*/ params Node[] children) : base("Parallel", children)
+        public Parallel(Policy successPolicy, Policy failurePolicy, /*Wait waitForPendingChildrenRule,*/
+            params Node[] children) : base("Parallel", children)
         {
             this.successPolicy = successPolicy;
             this.failurePolicy = failurePolicy;
@@ -83,6 +82,7 @@ namespace NPBehave
             {
                 failedCount++;
             }
+
             this.childrenResults[child] = result;
 
             bool allChildrenStarted = runningCount + succeededCount + failedCount == childrenCount;
@@ -109,6 +109,7 @@ namespace NPBehave
                             successState = false;
                         }
                     }
+
                     Stopped(successState);
                 }
                 else if (!this.childrenAborted)
@@ -116,12 +117,19 @@ namespace NPBehave
                     Debug.Assert(succeededCount != childrenCount);
                     Debug.Assert(failedCount != childrenCount);
 
-                    if (failurePolicy == Policy.ONE && failedCount > 0/* && waitForPendingChildrenRule != Wait.ON_FAILURE && waitForPendingChildrenRule != Wait.BOTH*/)
+                    if (failurePolicy == Policy.ONE &&
+                        failedCount >
+                        0 /* && waitForPendingChildrenRule != Wait.ON_FAILURE && waitForPendingChildrenRule != Wait.BOTH*/
+                       )
                     {
                         successState = false;
                         childrenAborted = true;
                     }
-                    else if (successPolicy == Policy.ONE && succeededCount > 0/* && waitForPendingChildrenRule != Wait.ON_SUCCESS && waitForPendingChildrenRule != Wait.BOTH*/)
+                    else if
+                        (successPolicy == Policy.ONE &&
+                         succeededCount >
+                         0 /* && waitForPendingChildrenRule != Wait.ON_SUCCESS && waitForPendingChildrenRule != Wait.BOTH*/
+                        )
                     {
                         successState = true;
                         childrenAborted = true;
@@ -154,12 +162,14 @@ namespace NPBehave
                 {
                     failedCount--;
                 }
+
                 runningCount++;
                 abortForChild.Start();
             }
             else
             {
-                throw new Exception("On Parallel Nodes all children have the same priority, thus the method does nothing if you pass false to 'immediateRestart'!");
+                throw new Exception(
+                    "On Parallel Nodes all children have the same priority, thus the method does nothing if you pass false to 'immediateRestart'!");
             }
         }
     }

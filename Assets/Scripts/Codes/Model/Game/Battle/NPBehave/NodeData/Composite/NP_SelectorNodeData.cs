@@ -1,10 +1,9 @@
 ﻿using NPBehave;
 using Sirenix.OdinInspector;
 
-public class NP_SelectorNodeData:NP_NodeDataBase
+public class NP_SelectorNodeData : NP_NodeDataBase
 {
-    [HideInEditorMode]
-    private Selector m_SelectorNode;
+    [HideInEditorMode] private Selector m_SelectorNode;
 
     public override Composite CreateComposite(Node[] nodes)
     {

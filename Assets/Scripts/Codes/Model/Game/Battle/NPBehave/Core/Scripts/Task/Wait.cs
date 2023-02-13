@@ -9,14 +9,8 @@
 
         public float RandomVariance
         {
-            get
-            {
-                return randomVariance;
-            }
-            set
-            {
-                randomVariance = value;
-            }
+            get { return randomVariance; }
+            set { randomVariance = value; }
         }
 
         public Wait(float seconds, float randomVariance) : base("Wait")
@@ -58,6 +52,7 @@
                     seconds = this.function();
                 }
             }
+
 //            UnityEngine.Assertions.Assert.IsTrue(seconds >= 0);
             if (seconds < 0)
             {

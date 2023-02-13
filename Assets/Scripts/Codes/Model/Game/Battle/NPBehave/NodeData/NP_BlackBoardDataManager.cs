@@ -11,21 +11,23 @@ public class NP_BlackBoardDataManager
     [Title("黑板数据", TitleAlignment = TitleAlignments.Centered)]
     [LabelText("黑板内容")]
     [BoxGroup]
-    [DictionaryDrawerSettings(KeyLabel = "键(string)", ValueLabel = "值(NP_BBValue)", DisplayMode = DictionaryDisplayOptions.CollapsedFoldout)]
+    [DictionaryDrawerSettings(KeyLabel = "键(string)", ValueLabel = "值(NP_BBValue)",
+        DisplayMode = DictionaryDisplayOptions.CollapsedFoldout)]
     public Dictionary<string, ANP_BBValue> BBValues = new Dictionary<string, ANP_BBValue>();
-        
+
     [InfoBox("这是这个NPBehaveCanvas的所有事件数据")]
     [Title("事件名", TitleAlignment = TitleAlignments.Centered)]
     [LabelText("事件内容")]
     [BoxGroup]
     public List<string> EventValues = new List<string>();
-        
+
     [InfoBox("这是这个NPBehaveCanvas的所有ID相关的映射数据，key为ID描述，value为Id的值")]
     [Title("Id描述映射", TitleAlignment = TitleAlignments.Centered)]
     [LabelText("Id描述与值")]
     [BoxGroup]
-    [DictionaryDrawerSettings(KeyLabel = "键(string)", ValueLabel = "值(long)", DisplayMode = DictionaryDisplayOptions.CollapsedFoldout)]
-    public Dictionary<string,long> Ids = new Dictionary<string, long>();
+    [DictionaryDrawerSettings(KeyLabel = "键(string)", ValueLabel = "值(long)",
+        DisplayMode = DictionaryDisplayOptions.CollapsedFoldout)]
+    public Dictionary<string, long> Ids = new Dictionary<string, long>();
 
 #if UNITY_EDITOR
     /// <summary>

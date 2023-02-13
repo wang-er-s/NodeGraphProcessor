@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public enum UnitType: byte
+    public enum UnitType : byte
     {
         Player = 1,
         Monster = 2,

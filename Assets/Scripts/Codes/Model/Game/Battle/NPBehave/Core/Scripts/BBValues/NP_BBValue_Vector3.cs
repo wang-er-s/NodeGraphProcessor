@@ -6,14 +6,11 @@ namespace ET
 {
     [HideLabel]
     [HideReferenceObjectPicker]
-    public class NP_BBValue_Vector3: NP_BBValueBase<Vector3>, IEquatable<NP_BBValue_Vector3>
+    public class NP_BBValue_Vector3 : NP_BBValueBase<Vector3>, IEquatable<NP_BBValue_Vector3>
     {
         public override Type NP_BBValueType
         {
-            get
-            {
-                return typeof (Vector3);
-            }
+            get { return typeof(Vector3); }
         }
 
         #region 对比函数
@@ -61,7 +58,7 @@ namespace ET
                 return false;
             }
 
-            return Equals((NP_BBValue_Vector3) obj);
+            return Equals((NP_BBValue_Vector3)obj);
         }
 
         public override int GetHashCode()

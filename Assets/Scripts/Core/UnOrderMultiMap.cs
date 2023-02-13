@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class UnOrderMultiMap<T, K>: Dictionary<T, List<K>>
+    public class UnOrderMultiMap<T, K> : Dictionary<T, List<K>>
     {
         public void Add(T t, K k)
         {
@@ -81,7 +81,7 @@ namespace ET
                 return list[0];
             }
 
-            return default (K);
+            return default(K);
         }
 
         public bool Contains(T t, K k)

@@ -2,8 +2,8 @@
 
 namespace ET
 {
-	[AttributeUsage(AttributeTargets.Class)]
-	public class ConfigAttribute: BaseAttribute
-	{
-	}
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ConfigAttribute : BaseAttribute
+    {
+    }
 }

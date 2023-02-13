@@ -90,7 +90,7 @@ namespace ET
                 return false;
             }
 
-            return Equals((NP_BBValue_List_Long) obj);
+            return Equals((NP_BBValue_List_Long)obj);
         }
 
         public override int GetHashCode()
@@ -147,6 +147,5 @@ namespace ET
         }
 
         #endregion
-        
     }
 }

@@ -9,7 +9,7 @@ namespace ET
         public static long GetLongHashCode(this string str)
         {
             const uint seed = 1313; // 31 131 1313 13131 131313 etc..
-            
+
             ulong hash = 0;
             for (int i = 0; i < str.Length; ++i)
             {
@@ -19,6 +19,7 @@ namespace ET
                 hash = hash * seed + high;
                 hash = hash * seed + low;
             }
+
             return (long)hash;
         }
 
@@ -28,6 +29,7 @@ namespace ET
             {
                 throw new Exception($"string mode < 0: {strText} {mode}");
             }
+
             return (int)((ulong)strText.GetLongHashCode() % (uint)mode);
         }
     }

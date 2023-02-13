@@ -16,7 +16,7 @@ namespace ET
             }
         }
 
-	
+
         public class NumericWatcherComponentLoadSystem : LoadSystem<NumericWatcherComponent>
         {
             protected override void Load(NumericWatcherComponent self)
@@ -38,11 +38,13 @@ namespace ET
                 {
                     NumericWatcherAttribute numericWatcherAttribute = (NumericWatcherAttribute)attr;
                     INumericWatcher obj = (INumericWatcher)Activator.CreateInstance(type);
-                    NumericWatcherInfo numericWatcherInfo = new NumericWatcherInfo(numericWatcherAttribute.SceneType, obj);
+                    NumericWatcherInfo numericWatcherInfo =
+                        new NumericWatcherInfo(numericWatcherAttribute.SceneType, obj);
                     if (!self.allWatchers.ContainsKey(numericWatcherAttribute.NumericType))
                     {
                         self.allWatchers.Add(numericWatcherAttribute.NumericType, new List<NumericWatcherInfo>());
                     }
+
                     self.allWatchers[numericWatcherAttribute.NumericType].Add(numericWatcherInfo);
                 }
             }
@@ -63,6 +65,7 @@ namespace ET
                 {
                     continue;
                 }
+
                 numericWatcher.INumericWatcher.Run(unit, args);
             }
         }
@@ -79,8 +82,8 @@ namespace ET
             this.INumericWatcher = numericWatcher;
         }
     }
-    
-    
+
+
     /// <summary>
     /// 监视数值变化组件,分发监听
     /// </summary>
@@ -88,7 +91,7 @@ namespace ET
     public class NumericWatcherComponent : Entity, IAwake, ILoad
     {
         public static NumericWatcherComponent Instance { get; set; }
-		
+
         public Dictionary<int, List<NumericWatcherInfo>> allWatchers;
     }
 }

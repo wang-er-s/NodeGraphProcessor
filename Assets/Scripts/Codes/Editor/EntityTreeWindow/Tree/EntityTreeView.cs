@@ -11,7 +11,7 @@ namespace ET
         private EntityTreeViewItem root;
         private int                id;
 
-        private readonly Dictionary<int, Entity> all             = new();
+        private readonly Dictionary<int, Entity> all = new();
         private readonly Dictionary<Entity, int> entityHistoryID = new();
 
         public EntityTreeView(TreeViewState state): base(state)
@@ -32,7 +32,7 @@ namespace ET
         {
             this.id = 0;
 
-            this.root       = PreOrder(Root.Instance.Scene);
+            this.root = PreOrder(Root.Instance.Scene);
             this.root.depth = -1;
 
             SetupDepthsFromParentsAndChildren(this.root);
@@ -108,7 +108,7 @@ namespace ET
             }
 
             EntityTreeWindow.VIEW_MONO.Component = entity;
-            Selection.activeObject               = null;
+            Selection.activeObject = null;
 
             // 刷新 Inspector 显示
             EditorApplication.delayCall += () => { Selection.activeObject = EntityTreeWindow.VIEW_MONO; };

@@ -7,7 +7,7 @@ namespace ET.Client
     public static class UILobbyComponentSystem
     {
         [ObjectSystem]
-        public class UILobbyComponentAwakeSystem: AwakeSystem<UILobbyComponent>
+        public class UILobbyComponentAwakeSystem : AwakeSystem<UILobbyComponent>
         {
             protected override void Awake(UILobbyComponent self)
             {
@@ -17,7 +17,7 @@ namespace ET.Client
                 self.enterMap.GetComponent<Button>().onClick.AddListener(() => { self.EnterMap().Coroutine(); });
             }
         }
-        
+
         public static async ETTask EnterMap(this UILobbyComponent self)
         {
             await UIHelper.Remove(self.ClientScene(), UIType.UILobby);

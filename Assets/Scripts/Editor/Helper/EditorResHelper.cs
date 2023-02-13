@@ -15,7 +15,7 @@ namespace ET
         {
             List<string> paths = new List<string>();
             FileHelper.GetAllFiles(paths, srcPath);
-            
+
             List<string> files = new List<string>();
             foreach (string str in paths)
             {
@@ -24,9 +24,10 @@ namespace ET
                     files.Add(str);
                 }
             }
+
             return files;
         }
-        
+
         /// <summary>
         /// 获取文件夹内所有资源路径
         /// </summary>
@@ -43,8 +44,10 @@ namespace ET
                 {
                     continue;
                 }
+
                 paths.Add(str);
             }
+
             if (subDire)
             {
                 foreach (string subPath in Directory.GetDirectories(srcPath))
@@ -53,6 +56,7 @@ namespace ET
                     paths.AddRange(subFiles);
                 }
             }
+
             return paths;
         }
     }

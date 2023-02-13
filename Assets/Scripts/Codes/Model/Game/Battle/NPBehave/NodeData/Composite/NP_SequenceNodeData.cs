@@ -1,10 +1,9 @@
 ﻿using NPBehave;
 using Sirenix.OdinInspector;
 
-public class NP_SequenceNodeData: NP_NodeDataBase
+public class NP_SequenceNodeData : NP_NodeDataBase
 {
-    [HideInEditorMode]
-    private Sequence m_SequenceNode;
+    [HideInEditorMode] private Sequence m_SequenceNode;
 
     public override NodeType BelongNodeType => NodeType.Composite;
 

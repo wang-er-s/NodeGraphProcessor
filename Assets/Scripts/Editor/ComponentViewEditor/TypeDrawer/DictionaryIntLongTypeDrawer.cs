@@ -5,11 +5,11 @@ using UnityEditor;
 namespace ET
 {
     [TypeDrawer]
-    public class DictionaryIntLongTypeDrawer: ITypeDrawer
+    public class DictionaryIntLongTypeDrawer : ITypeDrawer
     {
         public bool HandlesType(Type type)
         {
-            return type == typeof (Dictionary<int, long>);
+            return type == typeof(Dictionary<int, long>);
         }
 
         public object DrawAndGetNewValue(Type memberType, string memberName, object value, object target)
@@ -23,8 +23,10 @@ namespace ET
                 {
                     continue;
                 }
+
                 EditorGUILayout.LongField($"    {k} :", v);
             }
+
             return value;
         }
     }

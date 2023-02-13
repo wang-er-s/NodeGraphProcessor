@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace NPBehave
 {
-
     public class Clock
     {
         private List<System.Action> updateObservers = new List<System.Action>();
@@ -18,14 +17,14 @@ namespace NPBehave
             public double scheduledTime = 0f;
             public int repeat = 0;
             public bool used = false;
-			public double delay = 0f;
-			public float randomVariance = 0.0f;
+            public double delay = 0f;
+            public float randomVariance = 0.0f;
 
-			public void ScheduleAbsoluteTime(double elapsedTime)
-			{
-				// scheduledTime = elapsedTime + delay - randomVariance * 0.5f + randomVariance * UnityEngine.Random.value;
-				scheduledTime = elapsedTime + delay - randomVariance * 0.5f + randomVariance;
-			}
+            public void ScheduleAbsoluteTime(double elapsedTime)
+            {
+                // scheduledTime = elapsedTime + delay - randomVariance * 0.5f + randomVariance * UnityEngine.Random.value;
+                scheduledTime = elapsedTime + delay - randomVariance * 0.5f + randomVariance;
+            }
         }
 
         private double elapsedTime = 0f;
@@ -47,26 +46,27 @@ namespace NPBehave
         /// <param name="randomVariance">deviate from time on a random basis</param>
         /// <param name="repeat">number of times to repeat, set to -1 to repeat until unregistered.</param>
         /// <param name="action">method to invoke</param>
-        public void AddTimer(float delay, float randomVariance,System.Action action, int repeat = 1) 
+        public void AddTimer(float delay, float randomVariance, System.Action action, int repeat = 1)
         {
-			
-			Timer timer = null;
+            Timer timer = null;
 
             if (!isInUpdate)
             {
                 if (!this.timers.ContainsKey(action))
                 {
-					this.timers[action] = getTimerFromPool();
+                    this.timers[action] = getTimerFromPool();
                 }
-				timer = this.timers[action];
+
+                timer = this.timers[action];
             }
             else
             {
                 if (!this.addTimers.ContainsKey(action))
                 {
-					this.addTimers[action] = getTimerFromPool();
+                    this.addTimers[action] = getTimerFromPool();
                 }
-				timer = this.addTimers [action];
+
+                timer = this.addTimers[action];
 
                 if (this.removeTimers.Contains(action))
                 {
@@ -74,11 +74,11 @@ namespace NPBehave
                 }
             }
 
-			Debug.Assert(timer.used);
-			timer.delay = delay;
-			timer.randomVariance = randomVariance;
-			timer.repeat = repeat;
-			timer.ScheduleAbsoluteTime(elapsedTime);
+            Debug.Assert(timer.used);
+            timer.delay = delay;
+            timer.randomVariance = randomVariance;
+            timer.repeat = repeat;
+            timer.ScheduleAbsoluteTime(elapsedTime);
         }
 
         public void RemoveTimer(System.Action action)
@@ -97,6 +97,7 @@ namespace NPBehave
                 {
                     this.removeTimers.Add(action);
                 }
+
                 if (this.addTimers.ContainsKey(action))
                 {
                     Debug.Assert(this.addTimers[action].used);
@@ -143,6 +144,7 @@ namespace NPBehave
                 {
                     this.addObservers.Add(action);
                 }
+
                 if (this.removeObservers.Contains(action))
                 {
                     this.removeObservers.Remove(action);
@@ -162,6 +164,7 @@ namespace NPBehave
                 {
                     this.removeObservers.Add(action);
                 }
+
                 if (this.addObservers.Contains(action))
                 {
                     this.addObservers.Remove(action);
@@ -207,14 +210,14 @@ namespace NPBehave
             }
 
             Dictionary<System.Action, Timer>.KeyCollection keys = timers.Keys;
-			foreach (System.Action callback in keys)
+            foreach (System.Action callback in keys)
             {
                 if (this.removeTimers.Contains(callback))
                 {
                     continue;
                 }
 
-				Timer timer = timers[callback];
+                Timer timer = timers[callback];
                 if (timer.scheduledTime <= this.elapsedTime)
                 {
                     if (timer.repeat > 0)
@@ -236,10 +239,12 @@ namespace NPBehave
             {
                 this.updateObservers.Add(action);
             }
+
             foreach (System.Action action in this.removeObservers)
             {
                 this.updateObservers.Remove(action);
             }
+
             foreach (System.Action action in this.addTimers.Keys)
             {
                 if (this.timers.ContainsKey(action))
@@ -247,15 +252,18 @@ namespace NPBehave
                     Debug.Assert(this.timers[action] != this.addTimers[action]);
                     this.timers[action].used = false;
                 }
+
                 Debug.Assert(this.addTimers[action].used);
                 this.timers[action] = this.addTimers[action];
             }
+
             foreach (System.Action action in this.removeTimers)
             {
                 Debug.Assert(this.timers[action].used);
                 timers[action].used = false;
                 this.timers.Remove(action);
             }
+
             this.addObservers.Clear();
             this.removeObservers.Clear();
             this.addTimers.Clear();
@@ -266,26 +274,17 @@ namespace NPBehave
 
         public int NumUpdateObservers
         {
-            get
-            {
-                return updateObservers.Count;
-            }
+            get { return updateObservers.Count; }
         }
 
         public int NumTimers
         {
-            get
-            {
-                return timers.Count;
-            }
+            get { return timers.Count; }
         }
 
         public double ElapsedTime
         {
-            get
-            {
-                return elapsedTime;
-            }
+            get { return elapsedTime; }
         }
 
         private Timer getTimerFromPool()
@@ -302,6 +301,7 @@ namespace NPBehave
                     timer = timerPool[timerIndex];
                     break;
                 }
+
                 i++;
             }
 
@@ -318,10 +318,7 @@ namespace NPBehave
 
         public int DebugPoolSize
         {
-            get
-            {
-                return this.timerPool.Count;
-            }
+            get { return this.timerPool.Count; }
         }
     }
 }

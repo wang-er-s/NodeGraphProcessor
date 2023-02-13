@@ -55,8 +55,9 @@ namespace ET
             if (type.IsGenericType)
             {
                 string str1 = type.FullName.Split('`')[0];
-                string[] array = ((IEnumerable<Type>) type.GetGenericArguments())
-                        .Select<Type, string>((Func<Type, string>) (argType => argType.ToCompilableString())).ToArray<string>();
+                string[] array = ((IEnumerable<Type>)type.GetGenericArguments())
+                    .Select<Type, string>((Func<Type, string>)(argType => argType.ToCompilableString()))
+                    .ToArray<string>();
                 string str2 = "<";
                 string str3 = string.Join(", ", array);
                 string str4 = ">";
@@ -64,7 +65,8 @@ namespace ET
             }
 
             if (type.IsArray)
-                return type.GetElementType().ToCompilableString() + "[" + new string(',', type.GetArrayRank() - 1) + "]";
+                return type.GetElementType().ToCompilableString() + "[" + new string(',', type.GetArrayRank() - 1) +
+                       "]";
             if (type.IsNested)
                 return type.FullName.Replace('+', '.');
             return type.FullName;
@@ -83,7 +85,7 @@ namespace ET
                     return type2;
             }
 
-            return (Type) null;
+            return (Type)null;
         }
 
         public static string ShortTypeName(this string fullTypeName)
@@ -115,10 +117,11 @@ namespace ET
         private static string generateGenericArguments(string typeString)
         {
             string[] separator = new string[1] { ", " };
-            typeString = Regex.Replace(typeString, "<(?<arg>.*)>", (MatchEvaluator) (m =>
+            typeString = Regex.Replace(typeString, "<(?<arg>.*)>", (MatchEvaluator)(m =>
             {
                 string typeString1 = SerializationTypeExtension.generateTypeString(m.Groups["arg"].Value);
-                return "`" + (object) typeString1.Split(separator, StringSplitOptions.None).Length + "[" + typeString1 + "]";
+                return "`" + (object)typeString1.Split(separator, StringSplitOptions.None).Length + "[" + typeString1 +
+                       "]";
             }));
             return typeString;
         }
@@ -126,7 +129,8 @@ namespace ET
         private static string generateArray(string typeString)
         {
             typeString = Regex.Replace(typeString, "(?<type>[^\\[]*)(?<rank>\\[,*\\])",
-                (MatchEvaluator) (m => SerializationTypeExtension.generateTypeString(m.Groups["type"].Value) + m.Groups["rank"].Value));
+                (MatchEvaluator)(m =>
+                    SerializationTypeExtension.generateTypeString(m.Groups["type"].Value) + m.Groups["rank"].Value));
             return typeString;
         }
     }

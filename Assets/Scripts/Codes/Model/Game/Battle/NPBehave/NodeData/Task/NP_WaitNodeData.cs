@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 public class NP_WaitNodeData : NP_NodeDataBase
 {
     [HideInEditorMode] private Wait m_WaitNode;
-    
+
     public override NodeType BelongNodeType => NodeType.Task;
 
     public NP_BlackBoardRelationData NPBalckBoardRelationData = new NP_BlackBoardRelationData();

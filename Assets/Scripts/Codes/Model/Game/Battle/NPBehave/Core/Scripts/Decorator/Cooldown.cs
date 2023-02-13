@@ -1,12 +1,10 @@
-﻿
-namespace NPBehave
+﻿namespace NPBehave
 {
-
     public class Cooldown : Decorator
     {
         private bool startAfterDecoratee = false;
         private bool resetOnFailiure = false;
-	    private bool failOnCooldown = false;
+        private bool failOnCooldown = false;
         private float cooldownTime = 0.0f;
         private float randomVariation = 0.05f;
         private bool isReady = true;
@@ -28,36 +26,40 @@ namespace NPBehave
         /// <param name="resetOnFailiure">If set to <c>true</c> the timer will be reset in case the underlying node fails.</param>
         /// <param name="failOnCooldown">If currently on cooldown and this parameter is set to <c>true</c>, the decorator will immmediately fail instead of waiting for the cooldown.</param>
         /// <param name="decoratee">Decoratee node.</param>
-        public Cooldown(float cooldownTime, float randomVariation, bool startAfterDecoratee, bool resetOnFailiure, bool failOnCooldown, Node decoratee) : base("TimeCooldown", decoratee)
+        public Cooldown(float cooldownTime, float randomVariation, bool startAfterDecoratee, bool resetOnFailiure,
+            bool failOnCooldown, Node decoratee) : base("TimeCooldown", decoratee)
         {
-        	this.startAfterDecoratee = startAfterDecoratee;
-        	this.cooldownTime = cooldownTime;
-        	this.resetOnFailiure = resetOnFailiure;
-        	this.randomVariation = randomVariation;
-        	this.failOnCooldown = failOnCooldown;
-        	Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
+            this.startAfterDecoratee = startAfterDecoratee;
+            this.cooldownTime = cooldownTime;
+            this.resetOnFailiure = resetOnFailiure;
+            this.randomVariation = randomVariation;
+            this.failOnCooldown = failOnCooldown;
+            Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
         }
 
-        public Cooldown(float cooldownTime, bool startAfterDecoratee, bool resetOnFailiure, bool failOnCooldown, Node decoratee) : base("TimeCooldown", decoratee)
+        public Cooldown(float cooldownTime, bool startAfterDecoratee, bool resetOnFailiure, bool failOnCooldown,
+            Node decoratee) : base("TimeCooldown", decoratee)
         {
-        	this.startAfterDecoratee = startAfterDecoratee;
-        	this.cooldownTime = cooldownTime;
-        	this.randomVariation = cooldownTime * 0.1f;
-        	this.resetOnFailiure = resetOnFailiure;
-        	this.failOnCooldown = failOnCooldown;
-        	Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
+            this.startAfterDecoratee = startAfterDecoratee;
+            this.cooldownTime = cooldownTime;
+            this.randomVariation = cooldownTime * 0.1f;
+            this.resetOnFailiure = resetOnFailiure;
+            this.failOnCooldown = failOnCooldown;
+            Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
         }
 
-        public Cooldown(float cooldownTime, float randomVariation, bool startAfterDecoratee, bool resetOnFailiure, Node decoratee) : base("TimeCooldown", decoratee)
+        public Cooldown(float cooldownTime, float randomVariation, bool startAfterDecoratee, bool resetOnFailiure,
+            Node decoratee) : base("TimeCooldown", decoratee)
         {
-        	this.startAfterDecoratee = startAfterDecoratee;
-        	this.cooldownTime = cooldownTime;
-        	this.resetOnFailiure = resetOnFailiure;
-        	this.randomVariation = randomVariation;
-        	Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
+            this.startAfterDecoratee = startAfterDecoratee;
+            this.cooldownTime = cooldownTime;
+            this.resetOnFailiure = resetOnFailiure;
+            this.randomVariation = randomVariation;
+            Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
         }
 
-        public Cooldown(float cooldownTime, bool startAfterDecoratee, bool resetOnFailiure, Node decoratee) : base("TimeCooldown", decoratee)
+        public Cooldown(float cooldownTime, bool startAfterDecoratee, bool resetOnFailiure, Node decoratee) : base(
+            "TimeCooldown", decoratee)
         {
             this.startAfterDecoratee = startAfterDecoratee;
             this.cooldownTime = cooldownTime;
@@ -72,7 +74,7 @@ namespace NPBehave
             this.cooldownTime = cooldownTime;
             this.resetOnFailiure = false;
             this.randomVariation = randomVariation;
-        	Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
+            Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
         }
 
         public Cooldown(float cooldownTime, Node decoratee) : base("TimeCooldown", decoratee)
@@ -81,7 +83,7 @@ namespace NPBehave
             this.cooldownTime = cooldownTime;
             this.resetOnFailiure = false;
             this.randomVariation = cooldownTime * 0.1f;
-        	Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
+            Debug.Assert(cooldownTime > 0f, "cooldownTime has to be set");
         }
 
         protected override void DoStart()
@@ -93,6 +95,7 @@ namespace NPBehave
                 {
                     Clock.AddTimer(cooldownTime, randomVariation, TimeoutReached);
                 }
+
                 Decoratee.Start();
             }
             else
@@ -131,6 +134,7 @@ namespace NPBehave
             {
                 Clock.AddTimer(cooldownTime, randomVariation, TimeoutReached);
             }
+
             Stopped(result);
         }
 

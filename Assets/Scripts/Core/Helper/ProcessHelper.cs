@@ -22,14 +22,14 @@ namespace ET
                     redirectStandardError = false;
                     useShellExecute = true;
                 }
-                
+
                 if (waitExit)
                 {
                     redirectStandardOutput = true;
                     redirectStandardError = true;
                     useShellExecute = false;
                 }
-                
+
                 ProcessStartInfo info = new ProcessStartInfo
                 {
                     FileName = exe,
@@ -55,15 +55,16 @@ namespace ET
                 throw new Exception($"dir: {Path.GetFullPath(workingDirectory)}, command: {exe} {arguments}", e);
             }
         }
-        
+
         private static async ETTask WaitExitAsync(Process process)
         {
             await process.WaitForExitAsync();
 #if UNITY
-            Log.Info($"process exit, exitcode: {process.ExitCode} {process.StandardOutput.ReadToEnd()} {process.StandardError.ReadToEnd()}");
+            Log.Info(
+                $"process exit, exitcode: {process.ExitCode} {process.StandardOutput.ReadToEnd()} {process.StandardError.ReadToEnd()}");
 #endif
         }
-        
+
 #if UNITY
         private static async Task WaitForExitAsync(this Process self)
         {
@@ -82,13 +83,14 @@ namespace ET
                 {
                     return;
                 }
+
                 throw;
             }
 
             var tcs = new TaskCompletionSource<bool>();
 
             void Handler(object s, EventArgs e) => tcs.TrySetResult(true);
-            
+
             self.Exited += Handler;
 
             try
@@ -97,6 +99,7 @@ namespace ET
                 {
                     return;
                 }
+
                 await tcs.Task;
             }
             finally

@@ -6,17 +6,14 @@ using System.Runtime.ExceptionServices;
 
 namespace ET
 {
-    [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
-    public class ETTask: ICriticalNotifyCompletion
+    [AsyncMethodBuilder(typeof(ETAsyncTaskMethodBuilder))]
+    public class ETTask : ICriticalNotifyCompletion
     {
         public static Action<Exception> ExceptionHandler;
-        
+
         public static ETTaskCompleted CompletedTask
         {
-            get
-            {
-                return new ETTaskCompleted();
-            }
+            get { return new ETTaskCompleted(); }
         }
 
         private static readonly Queue<ETTask> queue = new Queue<ETTask>();
@@ -32,11 +29,12 @@ namespace ET
             {
                 return new ETTask();
             }
-            
+
             if (queue.Count == 0)
             {
-                return new ETTask() {fromPool = true};    
+                return new ETTask() { fromPool = true };
             }
+
             return queue.Dequeue();
         }
 
@@ -46,7 +44,7 @@ namespace ET
             {
                 return;
             }
-            
+
             this.state = AwaiterStatus.Pending;
             this.callback = null;
             // 太多了
@@ -54,6 +52,7 @@ namespace ET
             {
                 return;
             }
+
             queue.Enqueue(this);
         }
 
@@ -64,7 +63,7 @@ namespace ET
         private ETTask()
         {
         }
-        
+
         [DebuggerHidden]
         private async ETVoid InnerCoroutine()
         {
@@ -83,14 +82,10 @@ namespace ET
             return this;
         }
 
-        
+
         public bool IsCompleted
         {
-            [DebuggerHidden]
-            get
-            {
-                return this.state != AwaiterStatus.Pending;
-            }
+            [DebuggerHidden] get { return this.state != AwaiterStatus.Pending; }
         }
 
         [DebuggerHidden]
@@ -126,7 +121,8 @@ namespace ET
                     c?.Throw();
                     break;
                 default:
-                    throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
+                    throw new NotSupportedException(
+                        "ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
             }
         }
 
@@ -162,11 +158,11 @@ namespace ET
         }
     }
 
-    [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder<>))]
-    public class ETTask<T>: ICriticalNotifyCompletion
+    [AsyncMethodBuilder(typeof(ETAsyncTaskMethodBuilder<>))]
+    public class ETTask<T> : ICriticalNotifyCompletion
     {
         private static readonly Queue<ETTask<T>> queue = new Queue<ETTask<T>>();
-        
+
         /// <summary>
         /// 请不要随便使用ETTask的对象池，除非你完全搞懂了ETTask!!!
         /// 假如开启了池,await之后不能再操作ETTask，否则可能操作到再次从池中分配出来的ETTask，产生灾难性的后果
@@ -178,20 +174,22 @@ namespace ET
             {
                 return new ETTask<T>();
             }
-            
+
             if (queue.Count == 0)
             {
-                return new ETTask<T>() { fromPool = true };    
+                return new ETTask<T>() { fromPool = true };
             }
+
             return queue.Dequeue();
         }
-        
+
         private void Recycle()
         {
             if (!this.fromPool)
             {
                 return;
             }
+
             this.callback = null;
             this.value = default;
             this.state = AwaiterStatus.Pending;
@@ -200,6 +198,7 @@ namespace ET
             {
                 return;
             }
+
             queue.Enqueue(this);
         }
 
@@ -245,19 +244,16 @@ namespace ET
                     c?.Throw();
                     return default;
                 default:
-                    throw new NotSupportedException("ETask does not allow call GetResult directly when task not completed. Please use 'await'.");
+                    throw new NotSupportedException(
+                        "ETask does not allow call GetResult directly when task not completed. Please use 'await'.");
             }
         }
 
 
         public bool IsCompleted
         {
-            [DebuggerHidden]
-            get
-            {
-                return state != AwaiterStatus.Pending;
-            }
-        } 
+            [DebuggerHidden] get { return state != AwaiterStatus.Pending; }
+        }
 
         [DebuggerHidden]
         public void UnsafeOnCompleted(Action action)
@@ -293,7 +289,7 @@ namespace ET
             this.callback = null;
             c?.Invoke();
         }
-        
+
         [DebuggerHidden]
         public void SetException(Exception e)
         {

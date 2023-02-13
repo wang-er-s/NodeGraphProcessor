@@ -23,6 +23,7 @@ namespace ET
                         objects.Add(resource.name, resource);
                     }
                 }
+
                 return objects;
             }
 
@@ -50,6 +51,7 @@ namespace ET
             {
                 objects.Add(asset.name, asset);
             }
+
             assetBundle.Unload(false);
             return objects;
         }

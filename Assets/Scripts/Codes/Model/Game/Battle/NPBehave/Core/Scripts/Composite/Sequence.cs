@@ -81,6 +81,7 @@
                     {
                         currentIndex = Children.Length;
                     }
+
                     currentChild.Stop();
                     break;
                 }

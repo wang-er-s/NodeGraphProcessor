@@ -79,8 +79,7 @@ namespace ET
             }
         }
 
-        [StaticField]
-        private static readonly JsonWriterSettings defaultSettings = new()
+        [StaticField] private static readonly JsonWriterSettings defaultSettings = new()
             { OutputMode = JsonOutputMode.RelaxedExtendedJson };
 
         static MongoHelper()

@@ -6,14 +6,11 @@ namespace ET
 {
     [HideLabel]
     [HideReferenceObjectPicker]
-    public class NP_BBValue_Bool: NP_BBValueBase<bool>, IEquatable<NP_BBValue_Bool>
+    public class NP_BBValue_Bool : NP_BBValueBase<bool>, IEquatable<NP_BBValue_Bool>
     {
         public override Type NP_BBValueType
         {
-            get
-            {
-                return typeof (bool);
-            }
+            get { return typeof(bool); }
         }
 
         #region 对比函数
@@ -61,7 +58,7 @@ namespace ET
                 return false;
             }
 
-            return Equals((NP_BBValue_Bool) obj);
+            return Equals((NP_BBValue_Bool)obj);
         }
 
         public override int GetHashCode()

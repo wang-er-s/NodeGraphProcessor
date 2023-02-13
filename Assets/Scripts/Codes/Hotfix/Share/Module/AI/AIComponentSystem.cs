@@ -7,7 +7,7 @@ namespace ET
     public static class AIComponentSystem
     {
         [Invoke(TimerInvokeType.AITimer)]
-        public class AITimer: ATimer<AIComponent>
+        public class AITimer : ATimer<AIComponent>
         {
             protected override void Run(AIComponent self)
             {
@@ -21,9 +21,9 @@ namespace ET
                 }
             }
         }
-    
+
         [ObjectSystem]
-        public class AIComponentAwakeSystem: AwakeSystem<AIComponent, int>
+        public class AIComponentAwakeSystem : AwakeSystem<AIComponent, int>
         {
             protected override void Awake(AIComponent self, int aiConfigId)
             {
@@ -33,7 +33,7 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class AIComponentDestroySystem: DestroySystem<AIComponent>
+        public class AIComponentDestroySystem : DestroySystem<AIComponent>
         {
             protected override void Destroy(AIComponent self)
             {
@@ -43,7 +43,7 @@ namespace ET
                 self.Current = 0;
             }
         }
-        
+
         public static void Check(this AIComponent self)
         {
             if (self.Parent == null)
@@ -56,7 +56,6 @@ namespace ET
 
             foreach (AIConfig aiConfig in oneAI.Values)
             {
-
                 AIDispatcherComponent.Instance.AIHandlers.TryGetValue(aiConfig.Name, out AAIHandler aaiHandler);
 
                 if (aaiHandler == null)
@@ -84,7 +83,6 @@ namespace ET
                 aaiHandler.Execute(self, aiConfig, cancellationToken).Coroutine();
                 return;
             }
-            
         }
 
         private static void Cancel(this AIComponent self)
@@ -94,4 +92,4 @@ namespace ET
             self.CancellationToken = null;
         }
     }
-} 
+}

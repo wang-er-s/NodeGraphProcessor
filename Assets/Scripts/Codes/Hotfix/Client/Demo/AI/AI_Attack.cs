@@ -1,6 +1,6 @@
 namespace ET.Client
 {
-    public class AI_Attack: AAIHandler
+    public class AI_Attack : AAIHandler
     {
         public override int Check(AIComponent aiComponent, AIConfig aiConfig)
         {
@@ -9,10 +9,12 @@ namespace ET.Client
             {
                 return 0;
             }
+
             return 1;
         }
 
-        public override async ETTask Execute(AIComponent aiComponent, AIConfig aiConfig, ETCancellationToken cancellationToken)
+        public override async ETTask Execute(AIComponent aiComponent, AIConfig aiConfig,
+            ETCancellationToken cancellationToken)
         {
             Scene clientScene = aiComponent.DomainScene();
 

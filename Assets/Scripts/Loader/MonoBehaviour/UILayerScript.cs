@@ -9,8 +9,8 @@ namespace ET
         Mid = 20,
         High = 30,
     }
-    
-    public class UILayerScript: MonoBehaviour
+
+    public class UILayerScript : MonoBehaviour
     {
         public UILayer UILayer;
     }

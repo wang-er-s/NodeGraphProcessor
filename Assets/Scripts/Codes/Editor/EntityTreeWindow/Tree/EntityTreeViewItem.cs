@@ -1,5 +1,4 @@
 #if ENABLE_VIEW
-
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.CSharp.RuntimeBinder;
@@ -14,7 +13,7 @@ namespace ET
         public EntityTreeViewItem(Entity entity, int id)
         {
             this.entity = entity;
-            base.id     = id;
+            base.id = id;
         }
 
         public override string displayName

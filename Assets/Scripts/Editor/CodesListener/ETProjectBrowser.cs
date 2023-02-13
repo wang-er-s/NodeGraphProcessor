@@ -6,6 +6,7 @@ using Unity.CodeEditor;
 using UnityEditor;
 using UnityEditor.Build.Content;
 using UnityEngine;
+
 public class ETProjectBrowser : EditorWindow
 {
     //[MenuItem("ET/ET Project")]
@@ -15,6 +16,7 @@ public class ETProjectBrowser : EditorWindow
         window.Show();
         return window;
     }
+
     private string _settingsAssetPath = "Assets/Resources/ETProjectBrowserSettings.asset";
     private ETProjectBrowserSettings _settings;
     private List<string> _ignoreDirs = new List<string>() { "Analyzer" };
@@ -41,8 +43,10 @@ public class ETProjectBrowser : EditorWindow
             _watcher.Created += SetTreeNodes;
             _watcher.Deleted += SetTreeNodes;
         }
+
         Refresh();
     }
+
     private void OnDisable()
     {
         if (_watcher != null)
@@ -50,6 +54,7 @@ public class ETProjectBrowser : EditorWindow
             _watcher.Dispose();
         }
     }
+
     //Layout members
     private void OnGUI()
     {
@@ -62,11 +67,14 @@ public class ETProjectBrowser : EditorWindow
                 {
                     fi.Directory.Create();
                 }
+
                 _settings = CreateInstance<ETProjectBrowserSettings>();
                 AssetDatabase.CreateAsset(_settings, _settingsAssetPath);
             }
+
             return;
         }
+
         if (string.IsNullOrEmpty(_settings.ListenFolderPath))
         {
             GUILayout.BeginHorizontal();
@@ -109,13 +117,16 @@ public class ETProjectBrowser : EditorWindow
                         Vector2 pos = evt.mousePosition;
                         ETProjectBrowserMenusItem.Path = node.FullName;
                         ETProjectBrowserMenusItem.Refresh = EditFolder;
-                        EditorUtility.DisplayPopupMenu(new Rect(pos.x, pos.y, 0, 0), "ET/ET Project Menus/Folder", null);
+                        EditorUtility.DisplayPopupMenu(new Rect(pos.x, pos.y, 0, 0), "ET/ET Project Menus/Folder",
+                            null);
                     }
+
                     var icon = EditorGUIUtility.IconContent("Folder Icon");
                     if (node.Children == null || node.Children.Count == 0)
                     {
                         icon = EditorGUIUtility.IconContent("FolderEmpty Icon");
                     }
+
                     icon.text = node.Name;
                     node.Selected = EditorGUILayout.Foldout(node.Selected, icon, true);
                     if (node.Selected)
@@ -132,8 +143,10 @@ public class ETProjectBrowser : EditorWindow
                             _selectedPaths.Remove(node.FullName);
                         }
                     }
+
                     EditorGUILayout.EndHorizontal();
                 }
+
                 if (node.Selected)
                 {
                     DrawTreeNodes(node, ref index, min, max);
@@ -148,6 +161,7 @@ public class ETProjectBrowser : EditorWindow
                     {
                         style.normal.background = _texture;
                     }
+
                     EditorGUILayout.BeginHorizontal(style);
                     GUILayout.Space(10 * node.Level);
                     if (GUILayout.Button("…", GUILayout.MaxWidth(20)))
@@ -156,19 +170,25 @@ public class ETProjectBrowser : EditorWindow
                         Vector2 pos = evt.mousePosition;
                         ETProjectBrowserMenusItem.Path = node.FullName;
                         ETProjectBrowserMenusItem.Refresh = EditFolder;
-                        EditorUtility.DisplayPopupMenu(new Rect(pos.x, pos.y, 0, 0), "ET/ET Project Menus/Script", null);
+                        EditorUtility.DisplayPopupMenu(new Rect(pos.x, pos.y, 0, 0), "ET/ET Project Menus/Script",
+                            null);
                     }
-                    GUILayout.Label(EditorGUIUtility.IconContent("cs Script Icon"), GUILayout.MaxHeight(20), GUILayout.MaxWidth(20));
+
+                    GUILayout.Label(EditorGUIUtility.IconContent("cs Script Icon"), GUILayout.MaxHeight(20),
+                        GUILayout.MaxWidth(20));
                     if (GUILayout.Button(node.Name, new GUIStyle("Label")))
                     {
                         currentNode = node;
                         DateTime lastClickTime = _clickToken.time;
-                        if ((DateTime.Now - lastClickTime).TotalSeconds < 0.5 && !string.IsNullOrEmpty(_clickToken.name) && _clickToken.name == node.FullName)
+                        if ((DateTime.Now - lastClickTime).TotalSeconds < 0.5 &&
+                            !string.IsNullOrEmpty(_clickToken.name) && _clickToken.name == node.FullName)
                         {
                             CodeEditor.CurrentEditor.OpenProject(node.FullName);
                         }
+
                         _clickToken = (node.FullName, DateTime.Now);
                     }
+
                     EditorGUILayout.EndHorizontal();
                 }
             }
@@ -184,6 +204,7 @@ public class ETProjectBrowser : EditorWindow
                 _selectedPaths.Add(dirName);
             }
         }
+
         Refresh();
     }
 
@@ -195,16 +216,19 @@ public class ETProjectBrowser : EditorWindow
         //    RefreshCsprojs();
         //}
     }
+
     private void RefreshCsprojs()
     {
         CodesListenerExecutor.Refresh();
     }
+
     private void SetTreeNodes(object sender, FileSystemEventArgs e)
     {
         if (!Directory.Exists(_settings.ListenFolderPath))
         {
             return;
         }
+
         TreeNode root = new TreeNode(_settings.ListenFolderInfo.FullName);
         List<TreeNode> nodes = new List<TreeNode>(512) { root };
         List<string> selectedPaths = new List<string>(10);
@@ -220,6 +244,7 @@ public class ETProjectBrowser : EditorWindow
         {
             return;
         }
+
         //深度优先,文件夹在上面
         foreach (string dir in Directory.GetDirectories(parent.FullName))
         {
@@ -227,23 +252,27 @@ public class ETProjectBrowser : EditorWindow
             {
                 continue;
             }
+
             TreeNode node = new TreeNode(parent, dir, TreeNode.NodeType.Folder);
             if (_selectedPaths.Contains(dir))
             {
                 node.Selected = true;
                 selectedPaths.Add(dir);
             }
+
             list.Add(node);
             node.Level = level;
             GetTreeNodes(node, list, selectedPaths, level + 1);
             node.Parent = parent;
         }
+
         foreach (string dir in Directory.GetFiles(parent.FullName, "*.cs"))
         {
             if (_ignoreDirs.Contains(Path.GetFileName(dir)))
             {
                 continue;
             }
+
             TreeNode node = new TreeNode(parent, dir, TreeNode.NodeType.Item);
             node.Parent = parent;
             node.Level = level;
@@ -268,6 +297,7 @@ public class TreeNode
         Folder,
         Item,
     }
+
     public TreeNode(string path)
     {
         Name = Path.GetFileName(path);
@@ -275,6 +305,7 @@ public class TreeNode
         Type = NodeType.Folder;
         Children = new List<TreeNode>();
     }
+
     public TreeNode(TreeNode parent, string path, NodeType type)
     {
         Parent = parent;
@@ -285,6 +316,7 @@ public class TreeNode
         {
             Children = new List<TreeNode>();
         }
+
         Parent.AddChild(this);
     }
 
@@ -292,6 +324,7 @@ public class TreeNode
     {
         Children.Add(node);
     }
+
     public override string ToString()
     {
         return FullName;

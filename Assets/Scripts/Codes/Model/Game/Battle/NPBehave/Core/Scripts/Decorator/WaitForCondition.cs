@@ -8,7 +8,8 @@ namespace NPBehave
         private float checkInterval;
         private float checkVariance;
 
-        public WaitForCondition(Func<bool> condition, float checkInterval, float randomVariance, Node decoratee) : base("WaitForCondition", decoratee)
+        public WaitForCondition(Func<bool> condition, float checkInterval, float randomVariance, Node decoratee) : base(
+            "WaitForCondition", decoratee)
         {
             this.condition = condition;
 

@@ -13,7 +13,7 @@ namespace ET
             asyncOperation.completed += _ => { task.SetResult(); };
             await task;
         }
-        
+
         public static async ETTask<string> HttpGet(string link)
         {
             try
@@ -24,7 +24,7 @@ namespace ET
             }
             catch (Exception e)
             {
-                throw new Exception($"http request fail: {link.Substring(0,link.IndexOf('?'))}\n{e}");
+                throw new Exception($"http request fail: {link.Substring(0, link.IndexOf('?'))}\n{e}");
             }
         }
     }

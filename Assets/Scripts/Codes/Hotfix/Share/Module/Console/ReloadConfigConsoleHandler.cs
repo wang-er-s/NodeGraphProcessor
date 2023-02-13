@@ -3,7 +3,7 @@ using System;
 namespace ET
 {
     [ConsoleHandler(ConsoleMode.ReloadConfig)]
-    public class ReloadConfigConsoleHandler: IConsoleHandler
+    public class ReloadConfigConsoleHandler : IConsoleHandler
     {
         public async ETTask Run(ModeContex contex, string content)
         {
@@ -23,11 +23,12 @@ namespace ET
                         Log.Console($"reload config but not find {category}");
                         return;
                     }
+
                     ConfigComponent.Instance.LoadOneConfig(type);
                     Log.Console($"reload config {configName} finish!");
                     break;
             }
-            
+
             await ETTask.CompletedTask;
         }
     }

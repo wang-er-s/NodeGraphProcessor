@@ -15,7 +15,8 @@
             Debug.Assert(limit > 0f, "limit has to be set");
         }
 
-        public TimeMax(float limit, float randomVariation, bool waitForChildButFailOnLimitReached, Node decoratee) : base("TimeMax", decoratee)
+        public TimeMax(float limit, float randomVariation, bool waitForChildButFailOnLimitReached, Node decoratee) :
+            base("TimeMax", decoratee)
         {
             this.limit = limit;
             this.randomVariation = randomVariation;

@@ -1,7 +1,7 @@
 namespace ET
 {
     [ObjectSystem]
-    public class UnitSystem: AwakeSystem<Unit, int>
+    public class UnitSystem : AwakeSystem<Unit, int>
     {
         protected override void Awake(Unit self, int configId)
         {

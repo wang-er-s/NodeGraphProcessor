@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace ET
 {
-    public abstract class ProtoObject: Object, ISupportInitialize
+    public abstract class ProtoObject : Object, ISupportInitialize
     {
         public object Clone()
         {
@@ -11,17 +11,17 @@ namespace ET
             //return SerializeHelper.Deserialize(this.GetType(), bytes, 0, bytes.Length);
             return this;
         }
-        
+
         public virtual void BeginInit()
         {
         }
-        
-        
+
+
         public virtual void EndInit()
         {
         }
-        
-        
+
+
         public virtual void AfterEndInit()
         {
         }

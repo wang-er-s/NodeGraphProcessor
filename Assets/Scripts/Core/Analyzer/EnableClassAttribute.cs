@@ -1,6 +1,6 @@
 namespace ET
 {
-    public class EnableClassAttribute: BaseAttribute
+    public class EnableClassAttribute : BaseAttribute
     {
     }
 }

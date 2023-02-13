@@ -5,16 +5,13 @@ namespace ET
 {
     [HideLabel]
     [HideReferenceObjectPicker]
-    public class NP_BBValue_Long: NP_BBValueBase<long>, IEquatable<NP_BBValue_Long>
+    public class NP_BBValue_Long : NP_BBValueBase<long>, IEquatable<NP_BBValue_Long>
     {
         public override Type NP_BBValueType
         {
-            get
-            {
-                return typeof (long);
-            }
+            get { return typeof(long); }
         }
-        
+
         #region 对比函数
 
         public bool Equals(NP_BBValue_Long other)
@@ -60,7 +57,7 @@ namespace ET
                 return false;
             }
 
-            return Equals((NP_BBValue_Long) obj);
+            return Equals((NP_BBValue_Long)obj);
         }
 
         public override int GetHashCode()

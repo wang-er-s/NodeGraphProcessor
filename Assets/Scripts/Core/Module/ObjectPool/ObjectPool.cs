@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class ObjectPool: Singleton<ObjectPool>
+    public class ObjectPool : Singleton<ObjectPool>
     {
         private readonly Dictionary<Type, Queue<object>> pool = new Dictionary<Type, Queue<object>>();
-        
-        public T Fetch<T>() where T: class
+
+        public T Fetch<T>() where T : class
         {
-            return this.Fetch(typeof (T)) as T;
+            return this.Fetch(typeof(T)) as T;
         }
 
         public object Fetch(Type type)
@@ -24,6 +24,7 @@ namespace ET
             {
                 return Activator.CreateInstance(type);
             }
+
             return queue.Dequeue();
         }
 
@@ -42,6 +43,7 @@ namespace ET
             {
                 return;
             }
+
             queue.Enqueue(obj);
         }
     }

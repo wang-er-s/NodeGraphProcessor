@@ -33,7 +33,7 @@
         override protected void DoStop()
         {
             this.Clock.RemoveTimer(restartDecoratee);
-            
+
             if (Decoratee.IsActive)
             {
                 Decoratee.Stop();

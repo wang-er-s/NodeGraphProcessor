@@ -7,7 +7,8 @@
         private float interval = -1.0f;
         private float randomVariation;
 
-        public Service(float interval, float randomVariation, System.Action service, Node decoratee) : base("Service", decoratee)
+        public Service(float interval, float randomVariation, System.Action service, Node decoratee) : base("Service",
+            decoratee)
         {
             this.serviceMethod = service;
             this.interval = interval;
@@ -46,6 +47,7 @@
             {
                 InvokeServiceMethodWithRandomVariation();
             }
+
             Decoratee.Start();
         }
 
@@ -68,6 +70,7 @@
             {
                 this.Clock.RemoveTimer(InvokeServiceMethodWithRandomVariation);
             }
+
             Stopped(result);
         }
 

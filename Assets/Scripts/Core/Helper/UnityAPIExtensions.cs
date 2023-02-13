@@ -46,7 +46,7 @@ public static class CameraExtension
 
         RenderTexture.active = renderTexture;
 
-        var screenShot = new Texture2D((int) rect.width, (int) rect.height, TextureFormat.RGB24, false);
+        var screenShot = new Texture2D((int)rect.width, (int)rect.height, TextureFormat.RGB24, false);
         screenShot.ReadPixels(rect, 0, 0);
         screenShot.Apply();
 
@@ -142,7 +142,7 @@ public static class GameObjectExtension
         boxCollider.Layer("Default");
         transform.Layer("Default");
     }
-    
+
     #region CEGO001 Show
 
     public static GameObject ActiveShow(this GameObject selfObj)
@@ -250,19 +250,20 @@ public static class GameObjectExtension
         {
             return;
         }
-       
+
         obj.layer = newLayer;
-       
+
         foreach (Transform child in obj.transform)
         {
             if (null == child)
             {
                 continue;
             }
+
             SetLayerRecursively(child.gameObject, newLayer);
         }
     }
-    
+
     public static GameObject Layer(this GameObject selfObj, int layer)
     {
         selfObj.layer = layer;
@@ -302,6 +303,7 @@ public static class GameObjectExtension
         var comp = selfComponent.gameObject.GetComponent(type);
         return comp ? comp : selfComponent.gameObject.AddComponent(type);
     }
+
     #endregion
 }
 
@@ -615,17 +617,23 @@ public static class TransformExtension
         var transform = selfScript.transform;
 
         transform.Parent(null).LocalIdentity().LocalPositionIdentity().LocalRotationIdentity().LocalScaleIdentity()
-            .SetLocalPosition(Vector3.zero).SetLocalPosition(0, 0, 0).SetLocalPosition(0, 0).SetLocalPositionX(0).SetLocalPositionY(0)
+            .SetLocalPosition(Vector3.zero).SetLocalPosition(0, 0, 0).SetLocalPosition(0, 0).SetLocalPositionX(0)
+            .SetLocalPositionY(0)
             .SetLocalPositionZ(0).SetLocalRotation(Quaternion.identity).SetLocalScale(Vector3.one).SetLocalScaleX(1.0f)
-            .SetLocalScaleY(1.0f).Identity().PositionIdentity().RotationIdentity().Position(Vector3.zero).SetPositionX(0)
-            .SetPositionY(0).SetPositionZ(0).Rotation(Quaternion.identity).DestroyAllChild().AsLastSibling().AsFirstSibling()
+            .SetLocalScaleY(1.0f).Identity().PositionIdentity().RotationIdentity().Position(Vector3.zero)
+            .SetPositionX(0)
+            .SetPositionY(0).SetPositionZ(0).Rotation(Quaternion.identity).DestroyAllChild().AsLastSibling()
+            .AsFirstSibling()
             .SiblingIndex(0);
 
         selfScript.Parent(null).LocalIdentity().LocalPositionIdentity().LocalRotationIdentity().LocalScaleIdentity()
-            .SetLocalPosition(Vector3.zero).SetLocalPosition(0, 0, 0).SetLocalPosition(0, 0).SetLocalPositionX(0).SetLocalPositionY(0)
+            .SetLocalPosition(Vector3.zero).SetLocalPosition(0, 0, 0).SetLocalPosition(0, 0).SetLocalPositionX(0)
+            .SetLocalPositionY(0)
             .SetLocalPositionZ(0).SetLocalRotation(Quaternion.identity).SetLocalScale(Vector3.one).SetLocalScaleX(1.0f)
-            .SetLocalScaleY(1.0f).Identity().PositionIdentity().RotationIdentity().Position(Vector3.zero).SetPositionX(0)
-            .SetPositionY(0).SetPositionZ(0).Rotation(Quaternion.identity).DestroyAllChild().AsLastSibling().AsFirstSibling()
+            .SetLocalScaleY(1.0f).Identity().PositionIdentity().RotationIdentity().Position(Vector3.zero)
+            .SetPositionX(0)
+            .SetPositionY(0).SetPositionZ(0).Rotation(Quaternion.identity).DestroyAllChild().AsLastSibling()
+            .AsFirstSibling()
             .SiblingIndex(0);
     }
 
@@ -757,17 +765,17 @@ public static class TransformExtension
     {
         return self.transform.localPosition.x;
     }
-    
+
     public static float GetLocalPositionY<T>(this T self) where T : Component
     {
         return self.transform.localPosition.y;
     }
-    
+
     public static float GetLocalPositionZ<T>(this T self) where T : Component
     {
         return self.transform.localPosition.z;
-    } 
-    
+    }
+
     public static T LocalPositionIdentity<T>(this T selfComponent) where T : Component
     {
         selfComponent.transform.localPosition = Vector3.zero;
@@ -863,12 +871,12 @@ public static class TransformExtension
     {
         return self.transform.localScale.x;
     }
-    
+
     public static float GetLocalScaleY<T>(this T self) where T : Component
     {
         return self.transform.localScale.y;
     }
-    
+
     public static float GetLocalScaleZ<T>(this T self) where T : Component
     {
         return self.transform.localScale.z;
@@ -980,12 +988,12 @@ public static class TransformExtension
     {
         return self.transform.position.x;
     }
-    
+
     public static float GetPositionY<T>(this T self) where T : Component
     {
         return self.transform.position.y;
     }
-    
+
     public static float GetPositionZ<T>(this T self) where T : Component
     {
         return self.transform.position.z;
@@ -1175,7 +1183,7 @@ public static class TransformExtension
             result.AddRange(childChild);
         }
     }
-    
+
     /// <summary>
     /// 递归遍历查找指定的名字的子物体
     /// </summary>
@@ -1307,13 +1315,13 @@ public static class Vector3Extension
     {
         return new Vector3(xValue, self.y, self.z);
     }
-    
+
     public static float SqrDistance(this Vector3 self, Vector3 other)
     {
         float num1 = self.x - other.x;
         float num2 = self.y - other.y;
         float num3 = self.z - other.z;
-        return (float) (num1 * (double) num1 + num2 * (double) num2 + num3 * (double) num3);
+        return (float)(num1 * (double)num1 + num2 * (double)num2 + num3 * (double)num3);
     }
 
     public static Vector3 SetY(this Vector3 self, float yValue)
@@ -1326,6 +1334,7 @@ public static class Vector3Extension
         return new Vector3(self.x, self.y, zValue);
     }
 }
+
 public static class Vector2Extension
 {
     public static Vector2 GetRandomVector2(this Vector2 self, float floatRang)
@@ -1344,7 +1353,7 @@ public static class Vector2Extension
     {
         float num1 = a.x - b.x;
         float num2 = a.y - b.y;
-        return (float) (num1 * (double) num1 + num2 * (double) num2);
+        return (float)(num1 * (double)num1 + num2 * (double)num2);
     }
 
     public static Vector2 SetY(this Vector2 self, float yValue)
@@ -1352,4 +1361,3 @@ public static class Vector2Extension
         return new Vector2(self.x, yValue);
     }
 }
-

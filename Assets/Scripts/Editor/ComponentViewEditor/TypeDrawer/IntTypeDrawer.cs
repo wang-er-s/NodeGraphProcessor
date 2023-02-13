@@ -4,17 +4,17 @@ using UnityEditor;
 namespace ET
 {
     [TypeDrawer]
-    public class IntTypeDrawer: ITypeDrawer
+    public class IntTypeDrawer : ITypeDrawer
     {
         [TypeDrawer]
         public bool HandlesType(Type type)
         {
-            return type == typeof (int);
+            return type == typeof(int);
         }
 
         public object DrawAndGetNewValue(Type memberType, string memberName, object value, object target)
         {
-            return EditorGUILayout.IntField(memberName, (int) value);
+            return EditorGUILayout.IntField(memberName, (int)value);
         }
     }
 }

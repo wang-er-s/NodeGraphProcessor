@@ -5,8 +5,9 @@ namespace ET
     public class CoroutineLockQueueType
     {
         private readonly int type;
-        
-        private readonly Dictionary<long, CoroutineLockQueue> coroutineLockQueues = new Dictionary<long, CoroutineLockQueue>();
+
+        private readonly Dictionary<long, CoroutineLockQueue> coroutineLockQueues =
+            new Dictionary<long, CoroutineLockQueue>();
 
         public CoroutineLockQueueType(int type)
         {
@@ -47,7 +48,7 @@ namespace ET
             {
                 return;
             }
-            
+
             if (queue.Count == 0)
             {
                 this.Remove(key);

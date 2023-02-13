@@ -2,8 +2,8 @@
 
 namespace ET
 {
-	public class CanvasConfig: MonoBehaviour
-	{
-		public string CanvasName;
-	}
+    public class CanvasConfig : MonoBehaviour
+    {
+        public string CanvasName;
+    }
 }

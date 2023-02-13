@@ -19,68 +19,45 @@
         public Root RootNode;
 
         private Container parentNode;
+
         public Container ParentNode
         {
-            get
-            {
-                return parentNode;
-            }
+            get { return parentNode; }
         }
 
         private string label;
 
         public string Label
         {
-            get
-            {
-                return label;
-            }
-            set
-            {
-                label = value;
-            }
+            get { return label; }
+            set { label = value; }
         }
 
         private string name;
 
         public string Name
         {
-            get
-            {
-                return name;
-            }
+            get { return name; }
         }
 
         public virtual Blackboard Blackboard
         {
-            get
-            {
-                return RootNode.Blackboard;
-            }
+            get { return RootNode.Blackboard; }
         }
 
         public virtual Clock Clock
         {
-            get
-            {
-                return RootNode.Clock;
-            }
+            get { return RootNode.Clock; }
         }
 
         public bool IsStopRequested
         {
-            get
-            {
-                return this.currentState == State.STOP_REQUESTED;
-            }
+            get { return this.currentState == State.STOP_REQUESTED; }
         }
 
         public bool IsActive
         {
-            get
-            {
-                return this.currentState == State.ACTIVE;
-            }
+            get { return this.currentState == State.ACTIVE; }
         }
 
 
@@ -121,12 +98,10 @@
 
         protected virtual void DoStart()
         {
-
         }
 
         protected virtual void DoStop()
         {
-
         }
 
 
@@ -135,7 +110,8 @@
         protected virtual void Stopped(bool success)
         {
             // Assert.AreNotEqual(this.currentState, State.INACTIVE, "The Node " + this + " called 'Stopped' while in state INACTIVE, something is wrong! PATH: " + GetPath());
-            Debug.Assert(this.currentState != State.INACTIVE, "Called 'Stopped' while in state INACTIVE, something is wrong!");
+            Debug.Assert(this.currentState != State.INACTIVE,
+                "Called 'Stopped' while in state INACTIVE, something is wrong!");
             this.currentState = State.INACTIVE;
             if (this.ParentNode != null)
             {
@@ -172,7 +148,7 @@
 
         override public string ToString()
         {
-            return !string.IsNullOrEmpty(Label) ? (this.Name + "{"+Label+"}") : this.Name;
+            return !string.IsNullOrEmpty(Label) ? (this.Name + "{" + Label + "}") : this.Name;
         }
 
         protected string GetPath()

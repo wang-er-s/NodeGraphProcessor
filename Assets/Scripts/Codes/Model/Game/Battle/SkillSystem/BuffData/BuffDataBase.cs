@@ -35,8 +35,7 @@ public class BuffDataBase
     /// 比如状态BuffA（true）和其所连接的BuffB（false），A会考虑进网络同步的范畴，但B不会
     /// 所以服务端只会将BuffA同步过来，客户端在添加BuffA的时候再去添加B，这样就保证了这种连锁类型的Buff不会重复添加
     /// </summary>
-    [Space(50)]
-    [ShowIf("Base_isVisualable")] [LabelText("Buff图标的名称")] [BoxGroup("选填项")]
+    [Space(50)] [ShowIf("Base_isVisualable")] [LabelText("Buff图标的名称")] [BoxGroup("选填项")]
     public string SpriteABInfo;
 
     [BoxGroup("选填项")] [LabelText("Buff是否状态栏可见")]
@@ -60,8 +59,7 @@ public class BuffDataBase
     [LabelText("Buff基础数值影响者")] [BoxGroup("选填项")]
     public BuffBaseDataEffectTypes BaseBuffBaseDataEffectTypes;
 
-    [LabelText("计算公式")]
-    [BoxGroup("选填项")] [Tooltip("计算公式(level*3+4)")]
+    [LabelText("计算公式")] [BoxGroup("选填项")] [Tooltip("计算公式(level*3+4)")]
     public string Compute;
 
     [Tooltip("具体的加成(可能会一个效果多种加成方式)，例如法强加成")]

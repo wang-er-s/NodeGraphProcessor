@@ -5,7 +5,8 @@
         private string[] keys;
         private System.Func<bool> query;
 
-        public BlackboardQuery(string[] keys, Stops stopsOnChange, System.Func<bool> query, Node decoratee) : base("BlackboardQuery", stopsOnChange, decoratee)
+        public BlackboardQuery(string[] keys, Stops stopsOnChange, System.Func<bool> query, Node decoratee) : base(
+            "BlackboardQuery", stopsOnChange, decoratee)
         {
             this.keys = keys;
             this.query = query;
@@ -44,6 +45,7 @@
             {
                 keys += " " + key;
             }
+
             return Name + keys;
         }
     }

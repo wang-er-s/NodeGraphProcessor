@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class GizmosDebug: MonoBehaviour
+    public class GizmosDebug : MonoBehaviour
     {
         public static GizmosDebug Instance { get; private set; }
 
@@ -20,6 +20,7 @@ namespace ET
             {
                 return;
             }
+
             for (int i = 0; i < Path.Count - 1; ++i)
             {
                 Gizmos.DrawLine(Path[i], Path[i + 1]);

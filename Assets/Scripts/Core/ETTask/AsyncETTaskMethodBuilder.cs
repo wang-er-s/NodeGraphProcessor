@@ -18,8 +18,7 @@ namespace ET
         }
 
         // 2. TaskLike Task property.
-        [DebuggerHidden]
-        public ETTask Task => this.tcs;
+        [DebuggerHidden] public ETTask Task => this.tcs;
 
         // 3. SetException
         [DebuggerHidden]
@@ -37,7 +36,8 @@ namespace ET
 
         // 5. AwaitOnCompleted
         [DebuggerHidden]
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
@@ -45,7 +45,9 @@ namespace ET
         // 6. AwaitUnsafeOnCompleted
         [DebuggerHidden]
         [SecuritySafeCritical]
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter,
+            ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion
+            where TStateMachine : IAsyncStateMachine
         {
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
@@ -77,8 +79,7 @@ namespace ET
         }
 
         // 2. TaskLike Task property.
-        [DebuggerHidden]
-        public ETTask<T> Task => this.tcs;
+        [DebuggerHidden] public ETTask<T> Task => this.tcs;
 
         // 3. SetException
         [DebuggerHidden]
@@ -96,7 +97,8 @@ namespace ET
 
         // 5. AwaitOnCompleted
         [DebuggerHidden]
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
@@ -104,7 +106,9 @@ namespace ET
         // 6. AwaitUnsafeOnCompleted
         [DebuggerHidden]
         [SecuritySafeCritical]
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter,
+            ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion
+            where TStateMachine : IAsyncStateMachine
         {
             awaiter.OnCompleted(stateMachine.MoveNext);
         }

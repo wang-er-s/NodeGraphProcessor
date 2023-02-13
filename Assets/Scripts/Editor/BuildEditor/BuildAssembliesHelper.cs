@@ -51,10 +51,13 @@ namespace ET
                     throw new Exception("not found enum");
             }
 
-            BuildAssembliesHelper.BuildMuteAssembly("Model", codes, Array.Empty<string>(), codeOptimization, globalConfig.CodeMode);
+            BuildAssembliesHelper.BuildMuteAssembly("Model", codes, Array.Empty<string>(), codeOptimization,
+                globalConfig.CodeMode);
 
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.dll"), Path.Combine(CodeDir, $"Model.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.pdb"), Path.Combine(CodeDir, $"Model.pdb.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.dll"), Path.Combine(CodeDir, $"Model.dll.bytes"),
+                true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"Model.pdb"), Path.Combine(CodeDir, $"Model.pdb.bytes"),
+                true);
             Debug.Log("copy Model.dll to Bundles/Code success!");
         }
 
@@ -83,7 +86,8 @@ namespace ET
                 case CodeMode.Server:
                     codes = new List<string>()
                     {
-                        "Assets/Scripts/Codes/Hotfix/Share/", "Assets/Scripts/Codes/Hotfix/Server/", "Assets/Scripts/Codes/Hotfix/Client/",
+                        "Assets/Scripts/Codes/Hotfix/Share/", "Assets/Scripts/Codes/Hotfix/Server/",
+                        "Assets/Scripts/Codes/Hotfix/Client/",
                     };
                     break;
                 case CodeMode.ClientServer:
@@ -99,13 +103,18 @@ namespace ET
                     throw new Exception("not found enum");
             }
 
-            BuildAssembliesHelper.BuildMuteAssembly("Hotfix", codes, new[] { Path.Combine(Define.BuildOutputDir, "Model.dll") }, codeOptimization,
+            BuildAssembliesHelper.BuildMuteAssembly("Hotfix", codes,
+                new[] { Path.Combine(Define.BuildOutputDir, "Model.dll") }, codeOptimization,
                 globalConfig.CodeMode);
 
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(CodeDir, $"Hotfix.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(CodeDir, $"Hotfix.pdb.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.dll"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(Define.BuildOutputDir, $"{logicFile}.pdb"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"), Path.Combine(CodeDir, $"Hotfix.dll.bytes"),
+                true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"), Path.Combine(CodeDir, $"Hotfix.pdb.bytes"),
+                true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"),
+                Path.Combine(Define.BuildOutputDir, $"{logicFile}.dll"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"),
+                Path.Combine(Define.BuildOutputDir, $"{logicFile}.pdb"), true);
             Debug.Log("copy Hotfix.dll to Bundles/Code success!");
         }
 
@@ -142,13 +151,13 @@ namespace ET
             {
                 assemblyBuilder.excludeReferences = new string[]
                 {
-                    "DnsClient.dll", 
-                    "MongoDB.Driver.Core.dll", 
-                    "MongoDB.Driver.dll", 
+                    "DnsClient.dll",
+                    "MongoDB.Driver.Core.dll",
+                    "MongoDB.Driver.dll",
                     "MongoDB.Driver.Legacy.dll",
-                    "MongoDB.Libmongocrypt.dll", 
-                    "SharpCompress.dll", 
-                    "System.Buffers.dll", 
+                    "MongoDB.Libmongocrypt.dll",
+                    "SharpCompress.dll",
+                    "System.Buffers.dll",
                     "System.Runtime.CompilerServices.Unsafe.dll",
                     "System.Text.Encoding.CodePages.dll"
                 };
@@ -157,10 +166,12 @@ namespace ET
             //启用UnSafe
             assemblyBuilder.compilerOptions.AllowUnsafeCode = true;
 
-            BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+            BuildTargetGroup buildTargetGroup =
+                BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
 
             assemblyBuilder.compilerOptions.CodeOptimization = codeOptimization;
-            assemblyBuilder.compilerOptions.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
+            assemblyBuilder.compilerOptions.ApiCompatibilityLevel =
+                PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup);
             // assemblyBuilder.compilerOptions.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_4_6;
 
             assemblyBuilder.additionalReferences = additionalReferences;

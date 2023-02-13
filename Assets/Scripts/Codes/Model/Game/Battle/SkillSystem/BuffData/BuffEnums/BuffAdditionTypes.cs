@@ -3,20 +3,16 @@ using UnityEngine;
 
 public enum BuffAdditionTypes
 {
-    [HideInInspector]
-    [LabelText("百分比Buff")] Percentage = 10 << 1,
+    [HideInInspector] [LabelText("百分比Buff")]
+    Percentage = 10 << 1,
 
-    [HideInInspector]
-    [LabelText("值Buff")] Value = 10 << 2,
+    [HideInInspector] [LabelText("值Buff")] Value = 10 << 2,
 
-    [HideInInspector]
-    [LabelText("生命值")] HP = 3 << 1,
+    [HideInInspector] [LabelText("生命值")] HP = 3 << 1,
 
-    [HideInInspector]
-    [LabelText("法强")] Physical = 3 << 3,
+    [HideInInspector] [LabelText("法强")] Physical = 3 << 3,
 
-    [HideInInspector]
-    [LabelText("攻击力")] Magic = 3 << 5,
+    [HideInInspector] [LabelText("攻击力")] Magic = 3 << 5,
 
     [LabelText("加成方式(生命值)")] Value_HP = Value | HP,
 

@@ -47,7 +47,7 @@ public class MongoHelper
         var types = new List<Type>();
         foreach (var assembly in assemblies)
         {
-            if (assembly.FullName.Contains("Assembly-CSharp") )
+            if (assembly.FullName.Contains("Assembly-CSharp"))
             {
                 types.AddRange(assembly.GetTypes());
             }

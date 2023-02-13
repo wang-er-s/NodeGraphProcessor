@@ -1,5 +1,4 @@
-﻿
-namespace NPBehave
+﻿namespace NPBehave
 {
     public class TimeMin : Decorator
     {
@@ -26,7 +25,8 @@ namespace NPBehave
             Debug.Assert(limit > 0f, "limit has to be set");
         }
 
-        public TimeMin(float limit, float randomVariation, bool waitOnFailure, Node decoratee) : base("TimeMin", decoratee)
+        public TimeMin(float limit, float randomVariation, bool waitOnFailure, Node decoratee) : base("TimeMin",
+            decoratee)
         {
             this.limit = limit;
             this.randomVariation = randomVariation;

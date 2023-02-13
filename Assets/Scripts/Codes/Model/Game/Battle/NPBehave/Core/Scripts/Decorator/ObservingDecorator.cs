@@ -1,5 +1,4 @@
-﻿
-namespace NPBehave
+﻿namespace NPBehave
 {
     public abstract class ObservingDecorator : Decorator
     {
@@ -49,6 +48,7 @@ namespace NPBehave
                     StopObserving();
                 }
             }
+
             Stopped(result);
         }
 
@@ -65,7 +65,8 @@ namespace NPBehave
         {
             if (IsActive && !IsConditionMet())
             {
-                if (stopsOnChange == Stops.SELF || stopsOnChange == Stops.BOTH || stopsOnChange == Stops.IMMEDIATE_RESTART)
+                if (stopsOnChange == Stops.SELF || stopsOnChange == Stops.BOTH ||
+                    stopsOnChange == Stops.IMMEDIATE_RESTART)
                 {
                     // Debug.Log( this.key + " stopped self ");
                     this.Stop();
@@ -73,7 +74,8 @@ namespace NPBehave
             }
             else if (!IsActive && IsConditionMet())
             {
-                if (stopsOnChange == Stops.LOWER_PRIORITY || stopsOnChange == Stops.BOTH || stopsOnChange == Stops.IMMEDIATE_RESTART || stopsOnChange == Stops.LOWER_PRIORITY_IMMEDIATE_RESTART)
+                if (stopsOnChange == Stops.LOWER_PRIORITY || stopsOnChange == Stops.BOTH ||
+                    stopsOnChange == Stops.IMMEDIATE_RESTART || stopsOnChange == Stops.LOWER_PRIORITY_IMMEDIATE_RESTART)
                 {
                     // Debug.Log( this.key + " stopped other ");
                     Container parentNode = this.ParentNode;
@@ -83,13 +85,16 @@ namespace NPBehave
                         childNode = parentNode;
                         parentNode = parentNode.ParentNode;
                     }
+
                     Debug.Assert(parentNode != null, "NTBtrStops is only valid when attached to a parent composite");
                     if (parentNode is Parallel)
                     {
-                        Debug.Assert(stopsOnChange == Stops.IMMEDIATE_RESTART, "On Parallel Nodes all children have the same priority, thus Stops.LOWER_PRIORITY or Stops.BOTH are unsupported in this context!");
+                        Debug.Assert(stopsOnChange == Stops.IMMEDIATE_RESTART,
+                            "On Parallel Nodes all children have the same priority, thus Stops.LOWER_PRIORITY or Stops.BOTH are unsupported in this context!");
                     }
 
-                    if (stopsOnChange == Stops.IMMEDIATE_RESTART || stopsOnChange == Stops.LOWER_PRIORITY_IMMEDIATE_RESTART)
+                    if (stopsOnChange == Stops.IMMEDIATE_RESTART ||
+                        stopsOnChange == Stops.LOWER_PRIORITY_IMMEDIATE_RESTART)
                     {
                         if (isObserving)
                         {
@@ -98,7 +103,9 @@ namespace NPBehave
                         }
                     }
 
-                    ((Composite)parentNode).StopLowerPriorityChildrenForChild(childNode, stopsOnChange == Stops.IMMEDIATE_RESTART || stopsOnChange == Stops.LOWER_PRIORITY_IMMEDIATE_RESTART);
+                    ((Composite)parentNode).StopLowerPriorityChildrenForChild(childNode,
+                        stopsOnChange == Stops.IMMEDIATE_RESTART ||
+                        stopsOnChange == Stops.LOWER_PRIORITY_IMMEDIATE_RESTART);
                 }
             }
         }
@@ -108,6 +115,5 @@ namespace NPBehave
         protected abstract void StopObserving();
 
         protected abstract bool IsConditionMet();
-
     }
 }

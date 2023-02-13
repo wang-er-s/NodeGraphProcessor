@@ -43,6 +43,7 @@ public static class ClassExtension
     {
         return null != selfObj;
     }
+
     /// <summary>
     /// 深拷贝
     /// </summary>
@@ -58,34 +59,42 @@ public static class ClassExtension
             {
                 return null;
             }
+
             using (MemoryStream stream = new MemoryStream())
             {
                 BsonSerializer.Serialize(new BsonBinaryWriter(stream), obj);
                 stream.Position = 0;
-                return  BsonSerializer.Deserialize<T>(stream);
+                return BsonSerializer.Deserialize<T>(stream);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Log.Error(e.Message);
             return null;
         }
     }
-        
+
     public static T DeepCopyByReflect<T>(T obj) where T : class
     {
         //如果是字符串或值类型则直接返回
         if (obj is string || obj.GetType().IsValueType) return obj;
 
         object retval = Activator.CreateInstance(obj.GetType());
-        FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic |
+                                                     BindingFlags.Instance | BindingFlags.Static);
         foreach (FieldInfo field in fields)
         {
-            try { field.SetValue(retval, DeepCopyByReflect(field.GetValue(obj))); }
-            catch { }
+            try
+            {
+                field.SetValue(retval, DeepCopyByReflect(field.GetValue(obj)));
+            }
+            catch
+            {
+            }
         }
+
         return (T)retval;
-    } 
+    }
 }
 
 public static class GenericExtension
@@ -107,23 +116,23 @@ public static class IEnumerableExtension
     public static void Example()
     {
         // Array
-        var testArray = new int[] {1, 2, 3};
+        var testArray = new int[] { 1, 2, 3 };
         testArray.ForEach(number => Debug.Log(number));
 
         // IEnumerable<T>
-        IEnumerable<int> testIenumerable = new List<int> {1, 2, 3};
+        IEnumerable<int> testIenumerable = new List<int> { 1, 2, 3 };
         testIenumerable.ForEach(number => Debug.Log(number));
         new Dictionary<string, string>().ForEach(
             keyValue => Debug.Log(string.Format("key:{0},value:{1}", keyValue.Key, keyValue.Value)));
 
         // testList
-        var testList = new List<int> {1, 2, 3};
+        var testList = new List<int> { 1, 2, 3 };
         testList.ForEach(number => Debug.Log(number));
         testList.ForEachReverse(number => Debug.Log(number));
 
         // merge
-        var dictionary1 = new Dictionary<string, string> {{"1", "2"}};
-        var dictionary2 = new Dictionary<string, string> {{"3", "4"}};
+        var dictionary1 = new Dictionary<string, string> { { "1", "2" } };
+        var dictionary2 = new Dictionary<string, string> { { "3", "4" } };
         var dictionary3 = dictionary1.Merge(dictionary2);
         dictionary3.ForEach(pair => Debug.LogFormat("{0}:{1}", pair.Key, pair.Value));
     }
@@ -157,6 +166,7 @@ public static class IEnumerableExtension
         {
             action(item);
         }
+
         return selfArray;
     }
 
@@ -175,10 +185,12 @@ public static class IEnumerableExtension
         {
             array[i] = selfArray[i];
         }
+
         for (int i = 0; i < plusArray.Length; i++)
         {
             array[i + selfArray.Length] = plusArray[i];
         }
+
         selfArray = array;
         return selfArray;
     }
@@ -210,6 +222,7 @@ public static class IEnumerableExtension
                 array[i] = arr[i];
             }
         }
+
         slefArray = array;
         return arr;
     }
@@ -236,6 +249,7 @@ public static class IEnumerableExtension
             if (EqualityComparer<T>.Default.Equals(arr[i], val))
                 return true;
         }
+
         return false;
     }
 
@@ -297,7 +311,7 @@ public static class IEnumerableExtension
         int maxIndex = (int)(max * list.Count);
         return list[UnityEngine.Random.Range(minIndex, maxIndex)];
     }
-    
+
     public static int GetRandomIndex(this ICollection list)
     {
         return UnityEngine.Random.Range(0, list.Count);
@@ -309,6 +323,7 @@ public static class IEnumerableExtension
         {
             throw new Exception("collection count <= 0");
         }
+
         var targetIndex = UnityEngine.Random.Range(0, collection.Count);
         int index = 0;
         foreach (var item in collection)
@@ -320,12 +335,12 @@ public static class IEnumerableExtension
 
         return default;
     }
-    
+
     public static int GetRandomIndex(this ICollection list, float min, float max)
     {
         if (min > 1 || max > 1) throw new Exception("min max muse less or equal 1");
-        int minIndex = (int) (min * list.Count);
-        int maxIndex = (int) (max * list.Count);
+        int minIndex = (int)(min * list.Count);
+        int maxIndex = (int)(max * list.Count);
         return UnityEngine.Random.Range(minIndex, maxIndex);
     }
 
@@ -363,7 +378,7 @@ public static class IEnumerableExtension
 
         return resultIndex;
     }
-    
+
     /// <summary>
     /// 返回的是和val最小差异的值的索引
     /// </summary>
@@ -393,17 +408,19 @@ public static class IEnumerableExtension
         {
             throw new Exception("readonly list can not modify");
         }
+
         T result = list.Last();
         list.RemoveAt(list.Count - 1);
         return result;
     }
 
-    public static void RemoveRange<T>(this IList<T> list,in ICollection<T> list2)
+    public static void RemoveRange<T>(this IList<T> list, in ICollection<T> list2)
     {
         if (list.IsReadOnly)
         {
             throw new Exception("readonly list can not modify");
         }
+
         if (list2.Count <= 0) return;
         using ListComponent<T> tmpList = ListComponent<T>.Create();
         tmpList.AddRange(list2);
@@ -427,9 +444,10 @@ public static class IEnumerableExtension
         {
             throw new Exception("readonly list can not modify");
         }
+
         (list[i], list[j]) = (list[j], list[i]);
     }
-    
+
     public static List<T> RandomSort<T>(this IList<T> list)
     {
         if (list.IsReadOnly)
@@ -446,8 +464,11 @@ public static class IEnumerableExtension
             int k = UnityEngine.Random.Range(0, n + 1);
             result.Swap(k, n);
         }
+
         return result;
-    }    /// <summary>
+    }
+
+    /// <summary>
     /// 根据权值来获取索引
     /// </summary>
     /// <param name="powers"></param>
@@ -459,6 +480,7 @@ public static class IEnumerableExtension
         {
             sum += power;
         }
+
         var randomNum = UnityEngine.Random.Range(0, sum);
         var currentSum = 0;
         for (var i = 0; i < powers.Count; i++)
@@ -468,8 +490,10 @@ public static class IEnumerableExtension
             {
                 return i;
             }
+
             currentSum = nextSum;
         }
+
         Debug.LogError("权值范围计算错误！");
         return -1;
     }
@@ -527,6 +551,7 @@ public static class IEnumerableExtension
         {
             res[i] = selfList[i];
         }
+
         return res;
     }
 
@@ -555,6 +580,7 @@ public static class IEnumerableExtension
         {
             throw new Exception("readonly list can not modify");
         }
+
         var index = self.IndexOf(value);
         if (index == -1) return false;
         self.RemoveAt(index);
@@ -567,11 +593,13 @@ public static class IEnumerableExtension
         {
             throw new Exception("readonly list can not modify");
         }
+
         if (!selfList.Contains(value))
         {
             selfList.Add(value);
             return true;
         }
+
         return false;
     }
 
@@ -610,6 +638,7 @@ public static class IEnumerableExtension
             keys.Add(key);
             values.Add(powersDict[key]);
         }
+
         var finalKeyIndex = values.GetRandomWithPower();
         return keys[finalKeyIndex];
     }
@@ -629,6 +658,7 @@ public static class IEnumerableExtension
             var current = dictE.Current;
             action(current.Key, current.Value);
         }
+
         dictE.Dispose();
     }
 
@@ -653,8 +683,10 @@ public static class IEnumerableExtension
                     dict[current.Key] = current.Value;
                 continue;
             }
+
             dict.Add(current.Key, current.Value);
         }
+
         dictE.Dispose();
     }
 
@@ -688,6 +720,7 @@ public static class IOExtension
         {
             Directory.CreateDirectory(dirFullPath);
         }
+
         return dirFullPath;
     }
 
@@ -711,6 +744,7 @@ public static class IOExtension
         {
             Directory.Delete(dirFullPath, true);
         }
+
         Directory.CreateDirectory(dirFullPath);
     }
 
@@ -726,6 +760,7 @@ public static class IOExtension
             File.Delete(fileFullPath);
             return true;
         }
+
         return false;
     }
 
@@ -778,6 +813,7 @@ public static class IOExtension
                 result = sr.ReadToEnd();
             }
         }
+
         return result;
     }
 
@@ -854,6 +890,7 @@ public static class IOExtension
         {
             str = "file://" + str;
         }
+
         return str;
     }
 
@@ -877,12 +914,14 @@ public static class IOExtension
         {
             Directory.CreateDirectory($"{destPath}{srcInfo.FullName[srcPath.FullName.Length..]}");
         }
-        
+
         foreach (var srcInfo in srcPath.GetFiles("*", SearchOption.AllDirectories))
         {
             File.Copy(srcInfo.FullName, $"{destPath}{srcInfo.FullName[srcPath.FullName.Length..]}", true);
         }
-    }    /// <summary>
+    }
+
+    /// <summary>
     /// 使目录存在,Path可以是目录名必须是文件名
     /// </summary>
     /// <param name="path"></param>
@@ -919,6 +958,7 @@ public static class IOExtension
         {
             result = Path.Combine(result, path);
         }
+
         result = MakePathStandard(result);
         return result;
     }
@@ -934,6 +974,7 @@ public static class IOExtension
         {
             return string.Empty;
         }
+
         return Path.GetDirectoryName(path);
     }
 
@@ -1010,12 +1051,15 @@ public static class IOExtension
                 else
                     list.Add(name);
             }
+
             normalized = list.Join("/");
         }
+
         if (path.Contains("\\"))
         {
             normalized = normalized.Replace("\\", "/");
         }
+
         return normalized;
     }
 
@@ -1027,7 +1071,8 @@ public static class IOExtension
     /// <param name="pattern"></param>
     /// <param name="filter">true会被剔除</param>
     /// <returns></returns>
-    public static List<string> DirGetSubFiles(this string dirABSPath, bool isRecursive = true,string pattern = "*", Func<string, bool> filter = null)
+    public static List<string> DirGetSubFiles(this string dirABSPath, bool isRecursive = true, string pattern = "*",
+        Func<string, bool> filter = null)
     {
         var pathList = new List<string>();
         var di = new DirectoryInfo(dirABSPath);
@@ -1050,6 +1095,7 @@ public static class IOExtension
                 }
             }
         }
+
         return pathList;
     }
 
@@ -1061,7 +1107,8 @@ public static class IOExtension
     /// <param name="pattern"></param>
     /// <param name="filter">true会被剔除</param>
     /// <returns></returns>
-    public static List<string> DirGetSubDirs(this string dirABSPath, bool isRecursive = true, string pattern = "*", Func<string, bool> filter = null)
+    public static List<string> DirGetSubDirs(this string dirABSPath, bool isRecursive = true, string pattern = "*",
+        Func<string, bool> filter = null)
     {
         var pathList = new List<string>();
         var di = new DirectoryInfo(dirABSPath);
@@ -1069,7 +1116,9 @@ public static class IOExtension
         {
             return pathList;
         }
-        var dirs = di.GetDirectories(pattern , isRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+
+        var dirs = di.GetDirectories(pattern,
+            isRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
         pathList.AddRange(dirs.Select((dir) => dir.FullName));
         if (filter != null)
         {
@@ -1082,11 +1131,12 @@ public static class IOExtension
                 }
             }
         }
+
         return pathList;
     }
 
 #if UNITY_EDITOR
-    
+
     public static List<string> DirGetUnitySubDirs(this string dirRelativePath, bool isRecursive = true,
         Func<string, bool> filter = null)
     {
@@ -1104,7 +1154,7 @@ public static class IOExtension
                 }
             }
         }
-        
+
         getSubDir(dirRelativePath, result, isRecursive);
         if (filter != null)
         {
@@ -1129,6 +1179,7 @@ public static class IOExtension
         {
             return absOrAssetsPath.Substring(lastIndex);
         }
+
         return string.Empty;
     }
 
@@ -1153,6 +1204,7 @@ public static class OOPExtension
         if (typeof(OOPExtension).ImplementsInterface<ExampleInterface>())
         {
         }
+
         if (new object().ImplementsInterface<ExampleInterface>())
         {
         }
@@ -1220,6 +1272,7 @@ public class AssemblyManager
                     break;
                 }
             }
+
             return defaultCSharpAssembly;
         }
     }
@@ -1239,6 +1292,7 @@ public class AssemblyManager
                 return assembly;
             }
         }
+
         return null;
     }
 
@@ -1278,6 +1332,7 @@ public class AssemblyManager
         {
             typeName = typeFullName;
         }
+
         var orgType = assemblyName == null
             ? GetDefaultAssemblyType(typeName)
             : GetAssemblyType(assemblyName, typeName);
@@ -1318,6 +1373,7 @@ public static class ReflectionExtension
                 return a;
             }
         }
+
         Debug.LogError(">>>>>>>Error: Can\'t find Assembly-CSharp.dll");
         return null;
     }
@@ -1332,6 +1388,7 @@ public static class ReflectionExtension
                 return a;
             }
         }
+
         Debug.LogError(">>>>>>>Error: Can\'t find Assembly-CSharp-Editor.dll");
         return null;
     }
@@ -1439,18 +1496,18 @@ public static class ReflectionExtension
     {
         return method.GetCustomAttributes(attributeType, inherit).Length > 0;
     }
-    
+
     public static bool IsOverride(this MethodInfo methodInfo)
     {
         return (methodInfo.GetBaseDefinition().DeclaringType != methodInfo.DeclaringType);
-    } 
+    }
 
     /// <summary>
     /// 获取第一个特性
     /// </summary>
     public static T GetFirstAttribute<T>(this MethodInfo method, bool inherit) where T : Attribute
     {
-        var attrs = (T[]) method.GetCustomAttributes(typeof(T), inherit);
+        var attrs = (T[])method.GetCustomAttributes(typeof(T), inherit);
         if (attrs != null && attrs.Length > 0)
             return attrs[0];
         return null;
@@ -1461,7 +1518,7 @@ public static class ReflectionExtension
     /// </summary>
     public static T GetFirstAttribute<T>(this FieldInfo field, bool inherit) where T : Attribute
     {
-        var attrs = (T[]) field.GetCustomAttributes(typeof(T), inherit);
+        var attrs = (T[])field.GetCustomAttributes(typeof(T), inherit);
         if (attrs != null && attrs.Length > 0)
             return attrs[0];
         return null;
@@ -1472,7 +1529,7 @@ public static class ReflectionExtension
     /// </summary>
     public static T GetFirstAttribute<T>(this PropertyInfo prop, bool inherit) where T : Attribute
     {
-        var attrs = (T[]) prop.GetCustomAttributes(typeof(T), inherit);
+        var attrs = (T[])prop.GetCustomAttributes(typeof(T), inherit);
         if (attrs != null && attrs.Length > 0)
             return attrs[0];
         return null;
@@ -1483,7 +1540,7 @@ public static class ReflectionExtension
     /// </summary>
     public static T GetFirstAttribute<T>(this Type type, bool inherit) where T : Attribute
     {
-        var attrs = (T[]) type.GetCustomAttributes(typeof(T), inherit);
+        var attrs = (T[])type.GetCustomAttributes(typeof(T), inherit);
         if (attrs != null && attrs.Length > 0)
             return attrs[0];
         return null;
@@ -1520,11 +1577,13 @@ public static class TypeEx
             if (IsSubclassOfGenericTypeDefinition(baseType, genericTypeDefinition))
                 return true;
         }
+
         foreach (Type t in type.GetInterfaces())
         {
             if (IsSubclassOfGenericTypeDefinition(t, genericTypeDefinition))
                 return true;
         }
+
         return false;
     }
 }
@@ -1602,7 +1661,7 @@ public static class StringExtension
     /// <summary>
     /// 避免每次都用.
     /// </summary>
-    private static readonly char[] mCachedSplitCharArray = {'.'};
+    private static readonly char[] mCachedSplitCharArray = { '.' };
 
     public static string[] Split(this string selfStr, char splitSymbol)
     {
@@ -1635,7 +1694,7 @@ public static class StringExtension
 
     public static string[] ArrayFromCSV(this string values)
     {
-        return values.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(value => value.Trim())
+        return values.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(value => value.Trim())
             .ToArray();
     }
 
@@ -1649,8 +1708,10 @@ public static class StringExtension
             {
                 sb.Append(' ');
             }
+
             sb.Append(text[i]);
         }
+
         return sb.ToString();
     }
 
@@ -1713,7 +1774,7 @@ public static class StringExtension
     {
         return string.IsNullOrEmpty(value)
             ? default(T)
-            : value.TryGetValue((T) typeof(T).DefaultForType());
+            : value.TryGetValue((T)typeof(T).DefaultForType());
     }
 
     /// <summary>
@@ -1728,7 +1789,8 @@ public static class StringExtension
         {
             return default(T);
         }
-        return (T) TryGetValue(value, typeof(T), defultValue);
+
+        return (T)TryGetValue(value, typeof(T), defultValue);
     }
 
     public static object GetValue(this string value, Type type)
@@ -1751,64 +1813,79 @@ public static class StringExtension
             {
                 return type.IsValueType ? Activator.CreateInstance(type) : null;
             }
+
             if (type == typeof(string))
             {
                 return value;
             }
+
             if (type == typeof(int))
             {
                 return Convert.ToInt32(Convert.ToDouble(value));
             }
+
             if (type == typeof(float))
             {
                 return float.Parse(value);
             }
+
             if (type == typeof(byte))
             {
                 return Convert.ToByte(Convert.ToDouble(value));
             }
+
             if (type == typeof(sbyte))
             {
                 return Convert.ToSByte(Convert.ToDouble(value));
             }
+
             if (type == typeof(uint))
             {
                 return Convert.ToUInt32(Convert.ToDouble(value));
             }
+
             if (type == typeof(short))
             {
                 return Convert.ToInt16(Convert.ToDouble(value));
             }
+
             if (type == typeof(long))
             {
                 return Convert.ToInt64(Convert.ToDouble(value));
             }
+
             if (type == typeof(ushort))
             {
                 return Convert.ToUInt16(Convert.ToDouble(value));
             }
+
             if (type == typeof(ulong))
             {
                 return Convert.ToUInt64(Convert.ToDouble(value));
             }
+
             if (type == typeof(double))
             {
                 return double.Parse(value);
             }
+
             if (type == typeof(bool))
             {
                 return bool.Parse(value);
             }
+
             if (type.BaseType == typeof(Enum))
             {
                 return GetValue(value, Enum.GetUnderlyingType(type));
             }
+
             if (type == typeof(Vector2))
             {
                 Vector2 vector;
                 ParseVector2(value, out vector);
                 return vector;
             }
+
             if (type == typeof(Vector3))
             {
                 Vector3 vector;
@@ -1816,24 +1893,28 @@ public static class StringExtension
                 //Debug.LogError(vector.ToString());
                 return vector;
             }
+
             if (type == typeof(Vector4))
             {
                 Vector4 vector;
                 ParseVector4(value, out vector);
                 return vector;
             }
+
             if (type == typeof(Quaternion))
             {
                 Quaternion quaternion;
                 ParseQuaternion(value, out quaternion);
                 return quaternion;
             }
+
             if (type == typeof(Color))
             {
                 Color color;
                 ParseColor(value, out color);
                 return color;
             }
+
             object constructor;
             object genericArgument;
             //词典
@@ -1846,8 +1927,9 @@ public static class StringExtension
                 {
                     var genericArgument1 = GetValue(pair.Key, genericArguments[0]);
                     genericArgument = GetValue(pair.Value, genericArguments[1]);
-                    type.GetMethod("Add").Invoke(constructor, new[] {genericArgument1, genericArgument});
+                    type.GetMethod("Add").Invoke(constructor, new[] { genericArgument1, genericArgument });
                 }
+
                 return constructor;
             }
 
@@ -1861,14 +1943,17 @@ public static class StringExtension
                 {
                     genericArgument = GetValue(str, type2);
                     Debug.Log(str + "  " + type2.Name);
-                    type.GetMethod("Add").Invoke(constructor, new[] {genericArgument});
+                    type.GetMethod("Add").Invoke(constructor, new[] { genericArgument });
                 }
+
                 return constructor;
             }
+
             if (type == typeof(ArrayList))
             {
                 return value.GetValue<List<string>>() ?? defultValue;
             }
+
             if (type == typeof(Hashtable))
             {
                 return value.GetValue<Dictionary<string, string>>() ?? defultValue;
@@ -1885,12 +1970,15 @@ public static class StringExtension
                 {
                     array.SetValue(elStr[i].GetValue(elementType), i);
                 }
+
                 return array;
             }
+
             if (CanConvertFromString(type))
             {
                 return ParseFromStringableObject(value, type);
             }
+
             Debug.LogWarning("字符转换 没有适合的转换类型，返回默认值");
             return defultValue != type.DefaultForType() ? defultValue : type.DefaultForType();
         }
@@ -1920,6 +2008,7 @@ public static class StringExtension
         {
             return false;
         }
+
         try
         {
             var strArray = str.Split(colorSpriter);
@@ -1927,6 +2016,7 @@ public static class StringExtension
             {
                 return false;
             }
+
             result = new Color(float.Parse(strArray[0]) / 255f, float.Parse(strArray[1]) / 255f,
                 float.Parse(strArray[2]) / 255f, float.Parse(strArray[3]) / 255f);
             return true;
@@ -1953,9 +2043,11 @@ public static class StringExtension
             {
                 return list;
             }
+
             var strArray = str.Split(listSpriter);
             list.AddRange(from str2 in strArray where !string.IsNullOrEmpty(str2) select str2.Trim());
         }
+
         return list;
     }
 
@@ -1985,6 +2077,7 @@ public static class StringExtension
                 }
             }
         }
+
         return dictionary;
     }
 
@@ -2008,6 +2101,7 @@ public static class StringExtension
             {
                 return false;
             }
+
             result.x = float.Parse(strArray[0]);
             result.y = float.Parse(strArray[1]);
             result.z = float.Parse(strArray[2]);
@@ -2056,6 +2150,7 @@ public static class StringExtension
             {
                 return false;
             }
+
             result.x = float.Parse(strArray[0]);
             result.y = float.Parse(strArray[1]);
             result.z = float.Parse(strArray[2]);
@@ -2088,6 +2183,7 @@ public static class StringExtension
             {
                 return false;
             }
+
             result.x = float.Parse(strArray[0]);
             result.y = float.Parse(strArray[1]);
             return true;
@@ -2118,7 +2214,8 @@ public static class StringExtension
                 info = method;
             }
         }
-        return info.Invoke(null, new object[1] {str});
+
+        return info.Invoke(null, new object[1] { str });
     }
 
     #endregion FromString
@@ -2150,38 +2247,44 @@ public static class StringExtension
         var type = value.GetType();
         if (type == typeof(Vector3))
         {
-            return FBracket1.ToString() + ((Vector3) value).x + Spriter1 + ((Vector3) value).y +
-                   Spriter1 + ((Vector3) value).z + BBracket1;
+            return FBracket1.ToString() + ((Vector3)value).x + Spriter1 + ((Vector3)value).y +
+                   Spriter1 + ((Vector3)value).z + BBracket1;
         }
+
         if (type == typeof(Vector2))
         {
-            return FBracket1.ToString() + ((Vector2) value).x + Spriter1 + ((Vector2) value).y +
+            return FBracket1.ToString() + ((Vector2)value).x + Spriter1 + ((Vector2)value).y +
                    BBracket1;
         }
+
         if (type == typeof(Vector4))
         {
-            return FBracket1.ToString() + ((Vector4) value).x + Spriter1 + ((Vector4) value).y +
-                   Spriter1 + ((Vector4) value).z + Spriter1 + ((Vector4) value).w +
+            return FBracket1.ToString() + ((Vector4)value).x + Spriter1 + ((Vector4)value).y +
+                   Spriter1 + ((Vector4)value).z + Spriter1 + ((Vector4)value).w +
                    BBracket1;
         }
+
         if (type == typeof(Quaternion))
         {
-            return FBracket1.ToString() + ((Quaternion) value).x + Spriter1 + ((Quaternion) value).y +
-                   Spriter1 + ((Quaternion) value).z + Spriter1 + ((Quaternion) value).w +
+            return FBracket1.ToString() + ((Quaternion)value).x + Spriter1 + ((Quaternion)value).y +
+                   Spriter1 + ((Quaternion)value).z + Spriter1 + ((Quaternion)value).w +
                    BBracket1;
         }
+
         if (type == typeof(Color))
         {
-            return FBracket1.ToString() + ((Color) value).r + Spriter1 + ((Color) value).g +
-                   Spriter1 + ((Color) value).b + BBracket1;
+            return FBracket1.ToString() + ((Color)value).r + Spriter1 + ((Color)value).g +
+                   Spriter1 + ((Color)value).b + BBracket1;
         }
+
         if (type.BaseType == typeof(Enum))
         {
             return Enum.GetName(type, value);
         }
+
         if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(Dictionary<,>)))
         {
-            var Count = (int) type.GetProperty("Count").GetValue(value, null);
+            var Count = (int)type.GetProperty("Count").GetValue(value, null);
             if (Count == 0) return string.Empty;
             var getIe = type.GetMethod("GetEnumerator");
             var enumerator = getIe.Invoke(value, new object[0]);
@@ -2189,12 +2292,14 @@ public static class StringExtension
             var moveToNextMethod = enumeratorType.GetMethod("MoveNext");
             var current = enumeratorType.GetProperty("Current");
             var stringBuilder = new StringBuilder();
-            while (enumerator != null && (bool) moveToNextMethod.Invoke(enumerator, new object[0]))
+            while (enumerator != null && (bool)moveToNextMethod.Invoke(enumerator, new object[0]))
             {
                 stringBuilder.Append(Spriter1 + ConverToString(current.GetValue(enumerator, null)));
             }
+
             return stringBuilder.ToString().ReplaceFirst(Spriter1.ToString(), "");
         }
+
         if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>)))
         {
             var pairKey = type.GetProperty("Key").GetValue(value, null);
@@ -2203,9 +2308,10 @@ public static class StringExtension
             var valueStr = ConverToString(pairValue);
             return keyStr + Spriter2 + valueStr;
         }
+
         if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>)))
         {
-            var Count = (int) type.GetProperty("Count").GetValue(value, null);
+            var Count = (int)type.GetProperty("Count").GetValue(value, null);
             if (Count == 0) return String.Empty;
             var mget = type.GetMethod("get_Item", BindingFlags.Instance | BindingFlags.Public);
             var stringBuilder = new StringBuilder();
@@ -2213,15 +2319,17 @@ public static class StringExtension
             string itemStr;
             for (var i = 0; i < Count - 1; i++)
             {
-                item = mget.Invoke(value, new object[] {i});
+                item = mget.Invoke(value, new object[] { i });
                 itemStr = item.ConverToString();
                 stringBuilder.Append(itemStr + Spriter1);
             }
-            item = mget.Invoke(value, new object[] {Count - 1});
+
+            item = mget.Invoke(value, new object[] { Count - 1 });
             itemStr = item.ConverToString();
             stringBuilder.Append(itemStr);
             return stringBuilder.ToString();
         }
+
         if (type == typeof(ArrayList))
         {
             var builder = new StringBuilder();
@@ -2230,9 +2338,11 @@ public static class StringExtension
             {
                 builder.Append(arrayList[i].ConverToString()).Append(",");
             }
+
             builder.Append(arrayList[arrayList.Count - 1].ConverToString());
             return builder.ToString();
         }
+
         if (type == typeof(Hashtable))
         {
             var builder = new StringBuilder();
@@ -2244,9 +2354,11 @@ public static class StringExtension
                 var tableValue = table[e.Current].ConverToString();
                 builder.Append(tableKey).Append(Spriter2).Append(tableValue).Append(Spriter1);
             }
+
             builder.Remove(builder.Length - 2, 1);
             return builder.ToString();
         }
+
         if (type.IsArray)
         {
             var stringBuilder = new StringBuilder();
@@ -2259,14 +2371,18 @@ public static class StringExtension
                     stringBuilder.Append(Spriter1.ToString());
                     stringBuilder.Append(ConverToString(array.GetValue(i)));
                 }
+
                 return stringBuilder.ToString();
             }
+
             return string.Empty;
         }
+
         if (CanConvertToString(type))
         {
             return ToStringableObjectConvertToString(value, type);
         }
+
         return value.ToString();
     }
 
@@ -2312,7 +2428,7 @@ public static class StringExtension
     public static string ListConvertToString<T>(this IList<T> value, char split1 = ',')
     {
         var type = value.GetType();
-        var Count = (int) type.GetProperty("Count").GetValue(value, null);
+        var Count = (int)type.GetProperty("Count").GetValue(value, null);
         if (Count == 0) return String.Empty;
         var mget = type.GetMethod("get_Item", BindingFlags.Instance | BindingFlags.Public);
         var stringBuilder = new StringBuilder();
@@ -2320,11 +2436,12 @@ public static class StringExtension
         string itemStr;
         for (var i = 0; i < Count - 1; i++)
         {
-            item = mget.Invoke(value, new object[] {i});
+            item = mget.Invoke(value, new object[] { i });
             itemStr = item.ConverToString();
             stringBuilder.Append(itemStr + split1);
         }
-        item = mget.Invoke(value, new object[] {Count - 1});
+
+        item = mget.Invoke(value, new object[] { Count - 1 });
         itemStr = item.ConverToString();
         stringBuilder.Append(itemStr);
         return stringBuilder.ToString();
@@ -2348,8 +2465,10 @@ public static class StringExtension
                 stringBuilder.Append(split1.ToString());
                 stringBuilder.Append(ConverToString(array.GetValue(i)));
             }
+
             return stringBuilder.ToString();
         }
+
         return string.Empty;
     }
 
@@ -2382,7 +2501,7 @@ public static class StringExtension
         char split2 = ':')
     {
         var type = value.GetType();
-        var Count = (int) type.GetProperty("Count").GetValue(value, null);
+        var Count = (int)type.GetProperty("Count").GetValue(value, null);
         if (Count == 0) return String.Empty;
         var getIe = type.GetMethod("GetEnumerator");
         var enumerator = getIe.Invoke(value, new object[0]);
@@ -2390,10 +2509,11 @@ public static class StringExtension
         var moveToNextMethod = enumeratorType.GetMethod("MoveNext");
         var current = enumeratorType.GetProperty("Current");
         var stringBuilder = new StringBuilder();
-        while (enumerator != null && (bool) moveToNextMethod.Invoke(enumerator, new object[0]))
+        while (enumerator != null && (bool)moveToNextMethod.Invoke(enumerator, new object[0]))
         {
             stringBuilder.Append(split1 + ConverToString(current.GetValue(enumerator, null)));
         }
+
         return stringBuilder.ToString().ReplaceFirst(split1.ToString(), "");
     }
 
@@ -2416,7 +2536,8 @@ public static class StringExtension
                 info = method;
             }
         }
-        return info.Invoke(null, new object[1] {obj}) as string;
+
+        return info.Invoke(null, new object[1] { obj }) as string;
     }
 
     #endregion ToString
@@ -2490,6 +2611,7 @@ public static class StringExtension
             case "Color":
                 return typeof(Color);
         }
+
         if (str.StartsWith("List"))
         {
             var genType =
@@ -2497,6 +2619,7 @@ public static class StringExtension
             return Type.GetType("System.Collections.Generic.List`1[[" + genType.FullName + ", " +
                                 genType.Assembly.FullName + "]], " + typeof(List<>).Assembly.FullName);
         }
+
         if (str.StartsWith("Dictionary"))
         {
             var typeNames =
@@ -2520,6 +2643,7 @@ public static class StringExtension
             var typeStr = itemType.FullName + bracketStr;
             return Type.GetType(typeStr);
         }
+
         return Type.GetType(str);
     }
 
@@ -2576,6 +2700,7 @@ public static class StringExtension
         {
             return input;
         }
+
         return (input.Substring(0, index) + newValue + input.Substring(index + oldValue.Length));
     }
 
@@ -2622,6 +2747,7 @@ public static class StringExtension
                 result.Append(sp).Append(item.ConverToString());
             }
         }
+
         return result.ToString();
     }
 
@@ -2659,6 +2785,7 @@ public static class StringExtension
         {
             res[i] = res[i].Trim();
         }
+
         return res;
     }
 

@@ -17,7 +17,7 @@ namespace ET.Client
                 self.GameObject = gameObject;
             }
         }
-		
+
         [ObjectSystem]
         public class UIDestroySystem : DestroySystem<UI>
         {
@@ -27,7 +27,7 @@ namespace ET.Client
                 {
                     ui.Dispose();
                 }
-			
+
                 UnityEngine.Object.Destroy(self.GameObject);
                 self.nameChildren.Clear();
             }
@@ -50,6 +50,7 @@ namespace ET.Client
             {
                 return;
             }
+
             self.nameChildren.Remove(name);
             ui.Dispose();
         }
@@ -61,22 +62,24 @@ namespace ET.Client
             {
                 return child;
             }
+
             GameObject childGameObject = self.GameObject.transform.Find(name)?.gameObject;
             if (childGameObject == null)
             {
                 return null;
             }
+
             child = self.AddChild<UI, string, GameObject>(name, childGameObject);
             self.Add(child);
             return child;
         }
     }
-    
+
     [ChildOf()]
-    public sealed class UI: Entity, IAwake<string, GameObject>, IDestroy
+    public sealed class UI : Entity, IAwake<string, GameObject>, IDestroy
     {
         public GameObject GameObject { get; set; }
-		
+
         public string Name { get; set; }
 
         public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();

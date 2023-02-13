@@ -10,7 +10,7 @@ public abstract class NP_NodeDataBase
     /// </summary>
     [LabelText("此结点ID")] [HideInEditorMode]
     public long id;
-    
+
     public abstract NodeType BelongNodeType { get; }
 
     /// <summary>
@@ -18,8 +18,7 @@ public abstract class NP_NodeDataBase
     /// </summary>
     [HideInEditorMode] public List<long> LinkedIds = new List<long>();
 
-    [BoxGroup("结点信息描述")] [HideLabel]
-    public string NodeDes;
+    [BoxGroup("结点信息描述")] [HideLabel] public string NodeDes;
 
     /// <summary>
     /// 获取结点
@@ -43,7 +42,7 @@ public abstract class NP_NodeDataBase
     /// <param name="node">所装饰的结点</param>
     /// <param name="unitId">行为树归属的Unit</param>
     /// <returns></returns>
-    public virtual Decorator CreateDecoratorNode( NP_RuntimeTree runtimeTree, Node node)
+    public virtual Decorator CreateDecoratorNode(NP_RuntimeTree runtimeTree, Node node)
     {
         return null;
     }

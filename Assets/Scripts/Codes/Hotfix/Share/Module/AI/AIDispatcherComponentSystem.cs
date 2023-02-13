@@ -6,7 +6,7 @@ namespace ET
     public static class AIDispatcherComponentSystem
     {
         [ObjectSystem]
-        public class AIDispatcherComponentAwakeSystem: AwakeSystem<AIDispatcherComponent>
+        public class AIDispatcherComponentAwakeSystem : AwakeSystem<AIDispatcherComponent>
         {
             protected override void Awake(AIDispatcherComponent self)
             {
@@ -16,7 +16,7 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class AIDispatcherComponentLoadSystem: LoadSystem<AIDispatcherComponent>
+        public class AIDispatcherComponentLoadSystem : LoadSystem<AIDispatcherComponent>
         {
             protected override void Load(AIDispatcherComponent self)
             {
@@ -25,7 +25,7 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class AIDispatcherComponentDestroySystem: DestroySystem<AIDispatcherComponent>
+        public class AIDispatcherComponentDestroySystem : DestroySystem<AIDispatcherComponent>
         {
             protected override void Destroy(AIDispatcherComponent self)
             {
@@ -33,12 +33,12 @@ namespace ET
                 AIDispatcherComponent.Instance = null;
             }
         }
-        
+
         private static void Load(this AIDispatcherComponent self)
         {
             self.AIHandlers.Clear();
-            
-            var types = EventSystem.Instance.GetTypes(typeof (AIHandlerAttribute));
+
+            var types = EventSystem.Instance.GetTypes(typeof(AIHandlerAttribute));
             foreach (Type type in types)
             {
                 AAIHandler aaiHandler = Activator.CreateInstance(type) as AAIHandler;
@@ -47,6 +47,7 @@ namespace ET
                     Log.Error($"robot ai is not AAIHandler: {type.Name}");
                     continue;
                 }
+
                 self.AIHandlers.Add(type.Name, aaiHandler);
             }
         }

@@ -5,15 +5,15 @@
         public struct SceneChangeStart
         {
         }
-        
+
         public struct SceneChangeFinish
         {
         }
-        
+
         public struct AfterCreateClientScene
         {
         }
-        
+
         public struct AfterCreateCurrentScene
         {
         }

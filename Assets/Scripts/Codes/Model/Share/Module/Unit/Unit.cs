@@ -6,17 +6,15 @@ namespace ET
 {
     [ChildOf(typeof(UnitComponent))]
     [DebuggerDisplay("ViewName,nq")]
-    public class Unit: Entity, IAwake<int>
+    public class Unit : Entity, IAwake<int>
     {
         public int ConfigId { get; set; } //配置表id
 
-        [BsonIgnore]
-        public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
+        [BsonIgnore] public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
 
         public UnitType Type => (UnitType)UnitConfigCategory.Instance.Get(this.ConfigId).Type;
 
-        [BsonElement]
-        private float3 position; //坐标
+        [BsonElement] private float3 position; //坐标
 
         [BsonIgnore]
         public float3 Position
@@ -26,7 +24,8 @@ namespace ET
             {
                 float3 oldPos = this.position;
                 this.position = value;
-                EventSystem.Instance.Publish(this.DomainScene(), new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
+                EventSystem.Instance.Publish(this.DomainScene(),
+                    new EventType.ChangePosition() { Unit = this, OldPos = oldPos });
             }
         }
 
@@ -36,10 +35,9 @@ namespace ET
             get => math.mul(this.Rotation, math.forward());
             set => this.Rotation = quaternion.LookRotation(value, math.up());
         }
-        
-        [BsonElement]
-        private quaternion rotation;
-        
+
+        [BsonElement] private quaternion rotation;
+
         [BsonIgnore]
         public quaternion Rotation
         {
@@ -53,10 +51,7 @@ namespace ET
 
         protected override string ViewName
         {
-            get
-            {
-                return $"{this.GetType().Name} ({this.Id})";
-            }
+            get { return $"{this.GetType().Name} ({this.Id})"; }
         }
     }
 }

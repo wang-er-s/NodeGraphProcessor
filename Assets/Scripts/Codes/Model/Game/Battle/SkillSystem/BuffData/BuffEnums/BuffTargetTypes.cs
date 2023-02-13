@@ -12,5 +12,5 @@ public enum BuffTargetTypes
     /// <summary>
     /// 别人
     /// </summary>
-    [LabelText("别人")]  Others = 1 << 2,
+    [LabelText("别人")] Others = 1 << 2,
 }

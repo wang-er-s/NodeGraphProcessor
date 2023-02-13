@@ -15,14 +15,16 @@ namespace NPBehave
             this.checkVariance = 0.0f;
         }
 
-        public Condition(Func<bool> condition, Stops stopsOnChange, Node decoratee) : base("Condition", stopsOnChange, decoratee)
+        public Condition(Func<bool> condition, Stops stopsOnChange, Node decoratee) : base("Condition", stopsOnChange,
+            decoratee)
         {
             this.condition = condition;
             this.checkInterval = 0.0f;
             this.checkVariance = 0.0f;
         }
 
-        public Condition(Func<bool> condition, Stops stopsOnChange, float checkInterval, float randomVariance, Node decoratee) : base("Condition", stopsOnChange, decoratee)
+        public Condition(Func<bool> condition, Stops stopsOnChange, float checkInterval, float randomVariance,
+            Node decoratee) : base("Condition", stopsOnChange, decoratee)
         {
             this.condition = condition;
             this.checkInterval = checkInterval;

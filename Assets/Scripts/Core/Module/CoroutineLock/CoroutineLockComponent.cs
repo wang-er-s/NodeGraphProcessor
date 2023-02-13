@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class CoroutineLockComponent: Singleton<CoroutineLockComponent>, ISingletonUpdate
+    public class CoroutineLockComponent : Singleton<CoroutineLockComponent>, ISingletonUpdate
     {
         private readonly List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>(CoroutineLockType.Max);
         private readonly Queue<(int, long, int)> nextFrameRun = new Queue<(int, long, int)>();

@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class UnityLogger: ILog
+    public class UnityLogger : ILog
     {
         public void Trace(string msg)
         {

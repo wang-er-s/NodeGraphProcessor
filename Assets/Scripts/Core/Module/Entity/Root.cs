@@ -6,11 +6,11 @@ using System.Text;
 namespace ET
 {
     // 管理根部的Scene
-    public class Root: Singleton<Root>, ISingletonAwake
+    public class Root : Singleton<Root>, ISingletonAwake
     {
         // 管理所有的Entity
         private readonly Dictionary<long, Entity> allEntities = new();
-        
+
         public Scene Scene { get; private set; }
 
         public void Awake()
@@ -27,7 +27,7 @@ namespace ET
         {
             this.allEntities.Add(entity.InstanceId, entity);
         }
-        
+
         public void Remove(long instanceId)
         {
             this.allEntities.Remove(instanceId);
@@ -39,7 +39,7 @@ namespace ET
             this.allEntities.TryGetValue(instanceId, out component);
             return component;
         }
-        
+
         public override string ToString()
         {
             StringBuilder sb = new();

@@ -3,18 +3,15 @@ using System.Diagnostics;
 
 namespace ET
 {
-    public class Logger: Singleton<Logger>
+    public class Logger : Singleton<Logger>
     {
         private ILog iLog;
 
         public ILog ILog
         {
-            set
-            {
-                this.iLog = value;
-            }
+            set { this.iLog = value; }
         }
-        
+
         private const int TraceLevel = 1;
         private const int DebugLevel = 2;
         private const int InfoLevel = 3;
@@ -26,15 +23,17 @@ namespace ET
             {
                 return true;
             }
+
             return Options.Instance.LogLevel <= level;
         }
-        
+
         public void Trace(string msg)
         {
             if (!CheckLogLevel(DebugLevel))
             {
                 return;
             }
+
             StackTrace st = new StackTrace(2, true);
             this.iLog.Trace($"{msg}\n{st}");
         }
@@ -45,6 +44,7 @@ namespace ET
             {
                 return;
             }
+
             this.iLog.Debug(msg);
         }
 
@@ -54,6 +54,7 @@ namespace ET
             {
                 return;
             }
+
             this.iLog.Info(msg);
         }
 
@@ -63,6 +64,7 @@ namespace ET
             {
                 return;
             }
+
             StackTrace st = new StackTrace(2, true);
             this.iLog.Trace($"{msg}\n{st}");
         }
@@ -90,6 +92,7 @@ namespace ET
                 this.iLog.Error($"{e.Data["StackTrace"]}\n{e}");
                 return;
             }
+
             string str = e.ToString();
             this.iLog.Error(str);
         }
@@ -100,6 +103,7 @@ namespace ET
             {
                 return;
             }
+
             StackTrace st = new StackTrace(2, true);
             this.iLog.Trace($"{string.Format(message, args)}\n{st}");
         }
@@ -110,6 +114,7 @@ namespace ET
             {
                 return;
             }
+
             this.iLog.Warning(string.Format(message, args));
         }
 
@@ -119,6 +124,7 @@ namespace ET
             {
                 return;
             }
+
             this.iLog.Info(string.Format(message, args));
         }
 
@@ -128,8 +134,8 @@ namespace ET
             {
                 return;
             }
-            this.iLog.Debug(string.Format(message, args));
 
+            this.iLog.Debug(string.Format(message, args));
         }
 
         public void Error(string message, params object[] args)
@@ -138,16 +144,17 @@ namespace ET
             string s = string.Format(message, args) + '\n' + st;
             this.iLog.Error(s);
         }
-        
+
         public void Console(string message)
         {
             if (Options.Instance.Console == 1)
             {
                 System.Console.WriteLine(message);
             }
+
             this.iLog.Debug(message);
         }
-        
+
         public void Console(string message, params object[] args)
         {
             string s = string.Format(message, args);
@@ -155,6 +162,7 @@ namespace ET
             {
                 System.Console.WriteLine(s);
             }
+
             this.iLog.Debug(s);
         }
     }

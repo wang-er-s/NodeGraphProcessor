@@ -16,8 +16,7 @@ namespace ET
         }
 
         // 2. TaskLike Task property(void)
-        [DebuggerHidden]
-        public ETVoid Task => default;
+        [DebuggerHidden] public ETVoid Task => default;
 
         // 3. SetException
         [DebuggerHidden]
@@ -35,7 +34,8 @@ namespace ET
 
         // 5. AwaitOnCompleted
         [DebuggerHidden]
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
@@ -43,7 +43,9 @@ namespace ET
         // 6. AwaitUnsafeOnCompleted
         [DebuggerHidden]
         [SecuritySafeCritical]
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter,
+            ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion
+            where TStateMachine : IAsyncStateMachine
         {
             awaiter.UnsafeOnCompleted(stateMachine.MoveNext);
         }

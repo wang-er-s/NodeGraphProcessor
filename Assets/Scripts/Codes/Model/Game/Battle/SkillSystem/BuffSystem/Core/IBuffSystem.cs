@@ -43,7 +43,7 @@ public interface IBuffSystem
     // Unit TheUnitBelongto { get; set; }
     //     
     // void Init(BuffDataBase buffDataBase, Unit theUnitFrom, Unit theUnitBelongto, uint currentFrame);
-        
+
     void Excute(uint currentFrame);
 
     void Update(uint currentFrame);
@@ -51,4 +51,4 @@ public interface IBuffSystem
     void Finished(uint currentFrame);
 
     void Refresh(uint currentFrame);
-    }
+}

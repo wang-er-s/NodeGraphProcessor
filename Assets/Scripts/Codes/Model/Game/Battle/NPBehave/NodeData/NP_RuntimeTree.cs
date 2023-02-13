@@ -13,17 +13,17 @@ public class NP_RuntimeTree
     /// 所归属的数据块
     /// </summary>
     public NP_DataSupportor BelongNP_DataSupportor;
-    
+
     /// <summary>
     /// 所归属的Unit
     /// </summary>
     public Unit BelongToUnit;
 
-    public NP_SyncComponent NpSyncComponent; 
+    public NP_SyncComponent NpSyncComponent;
 
     public Clock GetClock()
     {
-        return NpSyncComponent.SyncContext.GetClock(); 
+        return NpSyncComponent.SyncContext.GetClock();
     }
 
     /// <summary>

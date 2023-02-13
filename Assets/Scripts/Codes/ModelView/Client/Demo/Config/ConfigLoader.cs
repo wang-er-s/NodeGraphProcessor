@@ -6,13 +6,13 @@ using UnityEngine;
 namespace ET.Client
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
+    public class GetAllConfigBytes : AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
     {
         public override Dictionary<Type, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
-            HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
-            
+            HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof(ConfigAttribute));
+
             if (Define.IsEditor)
             {
                 string ct = "cs";
@@ -32,11 +32,12 @@ namespace ET.Client
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
                 List<string> startConfigs = new List<string>()
                 {
-                    "StartMachineConfigCategory", 
-                    "StartProcessConfigCategory", 
-                    "StartSceneConfigCategory", 
+                    "StartMachineConfigCategory",
+                    "StartProcessConfigCategory",
+                    "StartSceneConfigCategory",
                     "StartZoneConfigCategory",
                 };
                 foreach (Type configType in configTypes)
@@ -44,12 +45,13 @@ namespace ET.Client
                     string configFilePath;
                     if (startConfigs.Contains(configType.Name))
                     {
-                        configFilePath = $"../Config/Excel/{ct}/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
+                        configFilePath = $"../Config/Excel/{ct}/{Options.Instance.StartConfig}/{configType.Name}.bytes";
                     }
                     else
                     {
                         configFilePath = $"../Config/Excel/{ct}/{configType.Name}.bytes";
                     }
+
                     output[configType] = File.ReadAllBytes(configFilePath);
                 }
             }
@@ -59,10 +61,11 @@ namespace ET.Client
                 {
                     const string configBundleName = "config.unity3d";
                     ResourcesComponent.Instance.LoadBundle(configBundleName);
-                    
+
                     foreach (Type configType in configTypes)
                     {
-                        TextAsset v = ResourcesComponent.Instance.GetAsset(configBundleName, configType.Name) as TextAsset;
+                        TextAsset v =
+                            ResourcesComponent.Instance.GetAsset(configBundleName, configType.Name) as TextAsset;
                         output[configType] = v.bytes;
                     }
                 }
@@ -71,9 +74,9 @@ namespace ET.Client
             return output;
         }
     }
-    
+
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigComponent.GetOneConfigBytes, byte[]>
+    public class GetOneConfigBytes : AInvokeHandler<ConfigComponent.GetOneConfigBytes, byte[]>
     {
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {

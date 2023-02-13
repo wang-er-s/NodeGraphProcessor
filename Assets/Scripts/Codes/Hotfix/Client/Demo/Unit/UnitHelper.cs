@@ -8,7 +8,7 @@
             Scene currentScene = clientScene.GetComponent<CurrentScenesComponent>().Scene;
             return currentScene.GetComponent<UnitComponent>().Get(playerComponent.MyId);
         }
-        
+
         public static Unit GetMyUnitFromCurrentScene(Scene currentScene)
         {
             PlayerComponent playerComponent = currentScene.Parent.GetParent<Scene>().GetComponent<PlayerComponent>();

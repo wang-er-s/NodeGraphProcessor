@@ -27,17 +27,17 @@ namespace ET
             VIEW_MONO = new GameObject("View").AddComponent<ComponentView>();
             DontDestroyOnLoad(VIEW_MONO);
 
-            WINDOW              = GetWindow<EntityTreeWindow>(DockDefine.Types);
+            WINDOW = GetWindow<EntityTreeWindow>(DockDefine.Types);
             WINDOW.titleContent = new GUIContent("Entity Tree Window");
             WINDOW.Show();
         }
 
         private void OnEnable()
         {
-            this.treeView                            =  new EntityTreeView(new TreeViewState());
-            this.searchField                         =  new SearchField();
+            this.treeView = new EntityTreeView(new TreeViewState());
+            this.searchField = new SearchField();
             this.searchField.downOrUpArrowKeyPressed += this.treeView.SetFocusAndEnsureSelectedItem;
-            EditorApplication.playModeStateChanged   += OnPlayModeStateChange;
+            EditorApplication.playModeStateChanged += OnPlayModeStateChange;
         }
 
         private void OnPlayModeStateChange(PlayModeStateChange state)

@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 
 namespace ET
 {
-    [AsyncMethodBuilder(typeof (AsyncETTaskCompletedMethodBuilder))]
-    public struct ETTaskCompleted: ICriticalNotifyCompletion
+    [AsyncMethodBuilder(typeof(AsyncETTaskCompletedMethodBuilder))]
+    public struct ETTaskCompleted : ICriticalNotifyCompletion
     {
         [DebuggerHidden]
         public ETTaskCompleted GetAwaiter()
@@ -13,8 +13,7 @@ namespace ET
             return this;
         }
 
-        [DebuggerHidden]
-        public bool IsCompleted => true;
+        [DebuggerHidden] public bool IsCompleted => true;
 
         [DebuggerHidden]
         public void GetResult()
@@ -31,7 +30,7 @@ namespace ET
         {
         }
     }
-    
+
     public struct AA : ICriticalNotifyCompletion
     {
         public void OnCompleted(Action continuation)

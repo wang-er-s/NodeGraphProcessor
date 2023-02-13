@@ -8,7 +8,7 @@ namespace ET
     public static class MoveComponentSystem
     {
         [Invoke(TimerInvokeType.MoveTimer)]
-        public class MoveTimer: ATimer<MoveComponent>
+        public class MoveTimer : ATimer<MoveComponent>
         {
             protected override void Run(MoveComponent self)
             {
@@ -22,9 +22,9 @@ namespace ET
                 }
             }
         }
-    
+
         [ObjectSystem]
-        public class DestroySystem: DestroySystem<MoveComponent>
+        public class DestroySystem : DestroySystem<MoveComponent>
         {
             protected override void Destroy(MoveComponent self)
             {
@@ -33,7 +33,7 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<MoveComponent>
+        public class AwakeSystem : AwakeSystem<MoveComponent>
         {
             protected override void Awake(MoveComponent self)
             {
@@ -48,7 +48,7 @@ namespace ET
                 self.TurnTime = 0;
             }
         }
-        
+
         public static bool IsArrived(this MoveComponent self)
         {
             return self.Targets.Count == 0;
@@ -65,24 +65,26 @@ namespace ET
             {
                 return false;
             }
-            
+
             Unit unit = self.GetParent<Unit>();
 
             using ListComponent<float3> path = ListComponent<float3>.Create();
-            
+
             self.MoveForward(false);
-                
+
             path.Add(unit.Position); // 第一个是Unit的pos
             for (int i = self.N; i < self.Targets.Count; ++i)
             {
                 path.Add(self.Targets[i]);
             }
+
             self.MoveToAsync(path, speed).Coroutine();
             return true;
         }
 
         // 该方法不需要用cancelToken的方式取消，因为即使不传入cancelToken，多次调用该方法也要取消之前的移动协程,上层可以stop取消
-        public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<float3> target, float speed, int turnTime = 100)
+        public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<float3> target, float speed,
+            int turnTime = 100)
         {
             self.Stop(false);
 
@@ -96,16 +98,19 @@ namespace ET
             self.Speed = speed;
             self.tcs = ETTask<bool>.Create(true);
 
-            EventSystem.Instance.Publish(self.DomainScene(), new EventType.MoveStart() {Unit = self.GetParent<Unit>()});
-            
+            EventSystem.Instance.Publish(self.DomainScene(),
+                new EventType.MoveStart() { Unit = self.GetParent<Unit>() });
+
             self.StartMove();
-            
+
             bool moveRet = await self.tcs;
 
             if (moveRet)
             {
-                EventSystem.Instance.Publish(self.DomainScene(), new EventType.MoveStop() {Unit = self.GetParent<Unit>()});
+                EventSystem.Instance.Publish(self.DomainScene(),
+                    new EventType.MoveStop() { Unit = self.GetParent<Unit>() });
             }
+
             return moveRet;
         }
 
@@ -113,7 +118,7 @@ namespace ET
         private static void MoveForward(this MoveComponent self, bool ret)
         {
             Unit unit = self.GetParent<Unit>();
-            
+
             long timeNow = TimeHelper.ClientNow();
             long moveTime = timeNow - self.StartTime;
 
@@ -123,7 +128,7 @@ namespace ET
                 {
                     return;
                 }
-                
+
                 // 计算位置插值
                 if (moveTime >= self.NeedTime)
                 {
@@ -142,7 +147,7 @@ namespace ET
                         float3 newPos = math.lerp(self.StartPos, self.NextTarget, amount);
                         unit.Position = newPos;
                     }
-                    
+
                     // 计算方向插值
                     if (self.TurnTime > 0)
                     {
@@ -151,6 +156,7 @@ namespace ET
                         {
                             amount = 1f;
                         }
+
                         quaternion q = math.slerp(self.From, self.To, amount);
                         unit.Rotation = q;
                     }
@@ -163,9 +169,9 @@ namespace ET
                 {
                     return;
                 }
-                
+
                 // 到这里说明这个点已经走完
-                
+
                 // 如果是最后一个点
                 if (self.N >= self.Targets.Count - 1)
                 {
@@ -191,7 +197,6 @@ namespace ET
 
         private static void SetNextTarget(this MoveComponent self)
         {
-
             Unit unit = self.GetParent<Unit>();
 
             ++self.N;
@@ -199,14 +204,14 @@ namespace ET
             // 时间计算用服务端的位置, 但是移动要用客户端的位置来插值
             float3 v = self.GetFaceV();
             float distance = math.length(v);
-            
+
             // 插值的起始点要以unit的真实位置来算
             self.StartPos = unit.Position;
 
             self.StartTime += self.NeedTime;
-            
-            self.NeedTime = (long) (distance / self.Speed * 1000);
-            
+
+            self.NeedTime = (long)(distance / self.Speed * 1000);
+
             if (self.TurnTime > 0)
             {
                 // 要用unit的位置
@@ -215,8 +220,9 @@ namespace ET
                 {
                     return;
                 }
+
                 self.From = unit.Rotation;
-                
+
                 if (self.IsTurnHorizontal)
                 {
                     faceV.y = 0;
@@ -229,7 +235,7 @@ namespace ET
 
                 return;
             }
-            
+
             if (self.TurnTime == 0) // turn time == 0 立即转向
             {
                 float3 faceV = self.GetFaceV();
@@ -275,7 +281,7 @@ namespace ET
             {
                 return;
             }
-            
+
             self.StartTime = 0;
             self.StartPos = float3.zero;
             self.BeginTime = 0;

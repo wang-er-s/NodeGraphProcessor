@@ -3,10 +3,10 @@ using ET;
 
 namespace NPBehave
 {
-        /// <summary>
+    /// <summary>
     /// 条件的匹配类型
     /// </summary>
-    public enum MatchType: byte
+    public enum MatchType : byte
     {
         /// <summary>
         /// 与
@@ -24,7 +24,9 @@ namespace NPBehave
     /// </summary>
     public class MatchInfo
     {
-        public NP_BlackBoardRelationData NPBalckBoardRelationData = new NP_BlackBoardRelationData() { WriteOrCompareToBB = true };
+        public NP_BlackBoardRelationData NPBalckBoardRelationData = new NP_BlackBoardRelationData()
+            { WriteOrCompareToBB = true };
+
         public Operator Operator = Operator.IS_EQUAL;
     }
 

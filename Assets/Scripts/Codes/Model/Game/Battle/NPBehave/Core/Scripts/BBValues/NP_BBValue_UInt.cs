@@ -5,14 +5,11 @@ namespace ET
 {
     [HideLabel]
     [HideReferenceObjectPicker]
-    public class NP_BBValue_UInt: NP_BBValueBase<uint>, IEquatable<NP_BBValue_UInt>
+    public class NP_BBValue_UInt : NP_BBValueBase<uint>, IEquatable<NP_BBValue_UInt>
     {
         public override Type NP_BBValueType
         {
-            get
-            {
-                return typeof (uint);
-            }
+            get { return typeof(uint); }
         }
 
         #region 对比函数
@@ -60,7 +57,7 @@ namespace ET
                 return false;
             }
 
-            return Equals((NP_BBValue_Int) obj);
+            return Equals((NP_BBValue_Int)obj);
         }
 
         public override int GetHashCode()
@@ -113,6 +110,5 @@ namespace ET
         }
 
         #endregion
-        
     }
 }

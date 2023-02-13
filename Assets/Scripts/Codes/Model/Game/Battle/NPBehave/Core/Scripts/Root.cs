@@ -1,5 +1,4 @@
-﻿
-namespace NPBehave
+﻿namespace NPBehave
 {
     public class Root : Decorator
     {
@@ -8,33 +7,29 @@ namespace NPBehave
         //private Node inProgressNode;
 
         private Blackboard blackboard;
+
         public override Blackboard Blackboard
         {
-            get
-            {
-                return blackboard;
-            }
+            get { return blackboard; }
         }
 
 
         private Clock clock;
+
         public override Clock Clock
         {
-            get
-            {
-                return clock;
-            }
+            get { return clock; }
         }
 
         public Root(Node mainNode, Clock clock) : base("Root", mainNode)
         {
             this.mainNode = mainNode;
-        //    m_MainNodeStartActionCache = this.mainNode.Start;
+            //    m_MainNodeStartActionCache = this.mainNode.Start;
             this.clock = clock;
             this.blackboard = new Blackboard(this.clock);
             this.SetRoot(this);
         }
-        
+
         public Root(Blackboard blackboard, Clock clock, Node mainNode) : base("Root", mainNode)
         {
             this.blackboard = blackboard;
@@ -87,7 +82,8 @@ namespace NPBehave
         public void CancelWithoutReturnResult()
         {
             //Assert.AreEqual(this.currentState, State.ACTIVE, "can only stop active nodes, tried to stop " + this.Name + "! PATH: " + GetPath());
-            Debug.Assert(this.currentState == State.ACTIVE, $"can only stop active nodes, tried to stop  PATH: {GetPath()}");
+            Debug.Assert(this.currentState == State.ACTIVE,
+                $"can only stop active nodes, tried to stop  PATH: {GetPath()}");
             this.currentState = State.STOP_REQUESTED;
             DoStop();
         }

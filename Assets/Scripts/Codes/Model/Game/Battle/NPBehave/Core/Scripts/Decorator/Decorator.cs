@@ -1,6 +1,5 @@
 ﻿namespace NPBehave
 {
-
     public abstract class Decorator : Container
     {
         protected Node Decoratee;
@@ -21,10 +20,7 @@
 #if UNITY_EDITOR
         public override Node[] DebugChildren
         {
-            get
-            {
-                return new Node[] { Decoratee };
-            }
+            get { return new Node[] { Decoratee }; }
         }
 #endif
 

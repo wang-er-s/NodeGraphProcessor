@@ -9,15 +9,18 @@ namespace NPBehave
         public ANP_BBValue Value { get; }
 
         public Operator Operator { get; }
-        public BlackboardCondition(string Key, Operator Operator, ANP_BBValue Value, Stops stopsOnChange, Node decoratee) : base("BlackboardCondition", stopsOnChange, decoratee)
+
+        public BlackboardCondition(string Key, Operator Operator, ANP_BBValue Value, Stops stopsOnChange,
+            Node decoratee) : base("BlackboardCondition", stopsOnChange, decoratee)
         {
             this.Operator = Operator;
             this.Key = Key;
             this.Value = Value;
             this.stopsOnChange = stopsOnChange;
         }
-        
-        public BlackboardCondition(string Key, Operator Operator, Stops stopsOnChange, Node decoratee) : base("BlackboardCondition", stopsOnChange, decoratee)
+
+        public BlackboardCondition(string Key, Operator Operator, Stops stopsOnChange, Node decoratee) : base(
+            "BlackboardCondition", stopsOnChange, decoratee)
         {
             this.Operator = Operator;
             this.Key = Key;

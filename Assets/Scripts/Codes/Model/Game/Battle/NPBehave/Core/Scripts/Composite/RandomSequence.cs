@@ -6,9 +6,9 @@
 
 
 #if UNITY_EDITOR
-        static public void DebugSetSeed( int seed )
+        static public void DebugSetSeed(int seed)
         {
-            rng = new System.Random( seed );
+            rng = new System.Random(seed);
         }
 #endif
 
@@ -107,6 +107,7 @@
                     {
                         currentIndex = Children.Length;
                     }
+
                     currentChild.Stop();
                     break;
                 }

@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class NP_SyncComponent: Entity
+    public class NP_SyncComponent : Entity
     {
         public SyncContext SyncContext;
     }

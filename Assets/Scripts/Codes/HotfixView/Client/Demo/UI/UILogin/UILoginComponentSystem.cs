@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
-    [FriendOf(typeof (UILoginComponent))]
+    [FriendOf(typeof(UILoginComponent))]
     public static class UILoginComponentSystem
     {
         [ObjectSystem]
-        public class UILoginComponentAwakeSystem: AwakeSystem<UILoginComponent>
+        public class UILoginComponentAwakeSystem : AwakeSystem<UILoginComponent>
         {
             protected override void Awake(UILoginComponent self)
             {

@@ -14,18 +14,20 @@ public class ETProjectMenusWindow : EditorWindow
         RenameFolder,
         RenamScript
     }
+
     public static ETProjectMenusWindow Open(string fullPath, Mode mode, Action<string> refresh)
     {
         if (string.IsNullOrEmpty(fullPath))
         {
             return null;
         }
+
         string title = (mode) switch
         {
-            Mode.CreateScript => "´´½¨½Å±¾",
-            Mode.CreateFolder => "´´½¨Ä¿Â¼",
-            Mode.RenameFolder => "ÖØÃüÃû½Å±¾",
-            Mode.RenamScript => "ÖØÃüÃûÄ¿Â¼",
+            Mode.CreateScript => "åˆ›å»ºè„šæœ¬",
+            Mode.CreateFolder => "åˆ›å»ºç›®å½•",
+            Mode.RenameFolder => "é‡å‘½åè„šæœ¬",
+            Mode.RenamScript => "é‡å‘½åç›®å½•",
             _ => mode.ToString(),
         };
         var window = GetWindow<ETProjectMenusWindow>(false, title);
@@ -38,6 +40,7 @@ public class ETProjectMenusWindow : EditorWindow
         window.Show();
         return window;
     }
+
     string _fullPath;
     private Mode _mode;
     string _textFieldStr = string.Empty;
@@ -48,26 +51,30 @@ public class ETProjectMenusWindow : EditorWindow
     {
         _focus = true;
     }
+
     private void OnDisable()
     {
         ETProjectBrowserMenusItem.Path = string.Empty;
         ETProjectBrowserMenusItem.Refresh = null;
     }
+
     private void OnGUI()
     {
         GUI.SetNextControlName("TextField");
-        _textFieldStr = GUILayout.TextField(_textFieldStr, new GUIStyle("TextField") { alignment = TextAnchor.MiddleCenter });
+        _textFieldStr = GUILayout.TextField(_textFieldStr,
+            new GUIStyle("TextField") { alignment = TextAnchor.MiddleCenter });
         if (_focus)
         {
             EditorGUI.FocusTextInControl("TextField");
             _focus = false;
         }
+
         string btnName = (_mode) switch
         {
-            Mode.CreateScript => "´´½¨½Å±¾",
-            Mode.CreateFolder => "´´½¨Ä¿Â¼",
-            Mode.RenameFolder => "ÖØÃüÃû½Å±¾",
-            Mode.RenamScript => "ÖØÃüÃûÄ¿Â¼",
+            Mode.CreateScript => "åˆ›å»ºè„šæœ¬",
+            Mode.CreateFolder => "åˆ›å»ºç›®å½•",
+            Mode.RenameFolder => "é‡å‘½åè„šæœ¬",
+            Mode.RenamScript => "é‡å‘½åç›®å½•",
             _ => _mode.ToString(),
         };
         if (GUILayout.Button(btnName))
@@ -75,82 +82,90 @@ public class ETProjectMenusWindow : EditorWindow
             switch (_mode)
             {
                 case Mode.CreateScript:
+                {
+                    if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
                     {
-                        if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
-                        {
-                            EditorUtility.DisplayDialog("´íÎó", "Õâ¸öÃû×Ö²»ºÏ·¨", "¹Ø±Õ");
-                            return;
-                        }
-                        if (!_textFieldStr.EndsWith(".cs"))
-                        {
-                            _textFieldStr += ".cs";
-                        }
-                        DirectoryInfo dirInfo = new DirectoryInfo(_fullPath);
-                        string name = Path.GetFileNameWithoutExtension(_textFieldStr);
-                        string template = File.ReadAllText("Assets/Scripts/Editor/CodesListener/template.txt");
-                        File.WriteAllText(Path.Combine(dirInfo.FullName, _textFieldStr), template.Replace("#CLASS_NAME#", name));
-                        _refresh?.Invoke(dirInfo.FullName);
-                        Close();
-                        break;
+                        EditorUtility.DisplayDialog("é”™è¯¯", "è¿™ä¸ªåå­—ä¸åˆæ³•", "å…³é—­");
+                        return;
                     }
+
+                    if (!_textFieldStr.EndsWith(".cs"))
+                    {
+                        _textFieldStr += ".cs";
+                    }
+
+                    DirectoryInfo dirInfo = new DirectoryInfo(_fullPath);
+                    string name = Path.GetFileNameWithoutExtension(_textFieldStr);
+                    string template = File.ReadAllText("Assets/Scripts/Editor/CodesListener/template.txt");
+                    File.WriteAllText(Path.Combine(dirInfo.FullName, _textFieldStr),
+                        template.Replace("#CLASS_NAME#", name));
+                    _refresh?.Invoke(dirInfo.FullName);
+                    Close();
+                    break;
+                }
                 case Mode.CreateFolder:
+                {
+                    if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
                     {
-                        if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
-                        {
-                            EditorUtility.DisplayDialog("´íÎó", "Õâ¸öÃû×Ö²»ºÏ·¨", "¹Ø±Õ");
-                            return;
-                        }
-                        DirectoryInfo dirInfo = new DirectoryInfo(_fullPath);
-                        Directory.CreateDirectory(Path.Combine(dirInfo.FullName, _textFieldStr));
-                        _refresh?.Invoke(dirInfo.FullName);
-                        Close();
-                        break;
+                        EditorUtility.DisplayDialog("é”™è¯¯", "è¿™ä¸ªåå­—ä¸åˆæ³•", "å…³é—­");
+                        return;
                     }
+
+                    DirectoryInfo dirInfo = new DirectoryInfo(_fullPath);
+                    Directory.CreateDirectory(Path.Combine(dirInfo.FullName, _textFieldStr));
+                    _refresh?.Invoke(dirInfo.FullName);
+                    Close();
+                    break;
+                }
                 case Mode.RenamScript:
+                {
+                    FileInfo file = new FileInfo(_fullPath);
+                    if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
                     {
-                        FileInfo file = new FileInfo(_fullPath);
-                        if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
-                        {
-                            EditorUtility.DisplayDialog("´íÎó", "Õâ¸öÃû×Ö²»ºÏ·¨", "¹Ø±Õ");
-                            return;
-                        }
-                        if (!_textFieldStr.EndsWith(".cs"))
-                        {
-                            _textFieldStr += ".cs";
-                        }
-                        string dest = Path.Combine(file.Directory.FullName, _textFieldStr);
-
-                        if (File.Exists(dest))
-                        {
-                            EditorUtility.DisplayDialog("´íÎó", "Õâ¸öÒÑ´æÔÚÍ¬ÃûÎÄ¼ş", "¹Ø±Õ");
-                            return;
-                        }
-                        File.Move(file.FullName, dest);
-                        _refresh?.Invoke(null);
-                        break;
+                        EditorUtility.DisplayDialog("é”™è¯¯", "è¿™ä¸ªåå­—ä¸åˆæ³•", "å…³é—­");
+                        return;
                     }
+
+                    if (!_textFieldStr.EndsWith(".cs"))
+                    {
+                        _textFieldStr += ".cs";
+                    }
+
+                    string dest = Path.Combine(file.Directory.FullName, _textFieldStr);
+
+                    if (File.Exists(dest))
+                    {
+                        EditorUtility.DisplayDialog("é”™è¯¯", "è¿™ä¸ªå·²å­˜åœ¨åŒåæ–‡ä»¶", "å…³é—­");
+                        return;
+                    }
+
+                    File.Move(file.FullName, dest);
+                    _refresh?.Invoke(null);
+                    break;
+                }
                 case Mode.RenameFolder:
+                {
+                    if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
                     {
-                        if (_textFieldStr.Contains("/") || _textFieldStr.Contains("\\"))
-                        {
-                            EditorUtility.DisplayDialog("´íÎó", "Õâ¸öÃû×Ö²»ºÏ·¨", "¹Ø±Õ");
-                            return;
-                        }
-                        DirectoryInfo dirInfo = new DirectoryInfo(_fullPath);
-                        string dest = Path.Combine(dirInfo.Parent.FullName, _textFieldStr);
-
-                        if (File.Exists(dest))
-                        {
-                            EditorUtility.DisplayDialog("´íÎó", "Õâ¸öÒÑ´æÔÚÍ¬ÃûÎÄ¼ş", "¹Ø±Õ");
-                            return;
-                        }
-                        Directory.Move(dirInfo.FullName, dest);
-                        _refresh?.Invoke(dest);
-                        Close();
-                        break;
+                        EditorUtility.DisplayDialog("é”™è¯¯", "è¿™ä¸ªåå­—ä¸åˆæ³•", "å…³é—­");
+                        return;
                     }
+
+                    DirectoryInfo dirInfo = new DirectoryInfo(_fullPath);
+                    string dest = Path.Combine(dirInfo.Parent.FullName, _textFieldStr);
+
+                    if (File.Exists(dest))
+                    {
+                        EditorUtility.DisplayDialog("é”™è¯¯", "è¿™ä¸ªå·²å­˜åœ¨åŒåæ–‡ä»¶", "å…³é—­");
+                        return;
+                    }
+
+                    Directory.Move(dirInfo.FullName, dest);
+                    _refresh?.Invoke(dest);
+                    Close();
+                    break;
+                }
             }
         }
-
     }
 }

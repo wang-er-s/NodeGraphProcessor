@@ -10,30 +10,30 @@ namespace ET
     public static class ConsoleComponentSystem
     {
         [ObjectSystem]
-        public class ConsoleComponentAwakeSystem: AwakeSystem<ConsoleComponent>
+        public class ConsoleComponentAwakeSystem : AwakeSystem<ConsoleComponent>
         {
             protected override void Awake(ConsoleComponent self)
             {
                 self.Load();
-            
+
                 self.Start().Coroutine();
             }
         }
 
         [ObjectSystem]
-        public class ConsoleComponentLoadSystem: LoadSystem<ConsoleComponent>
+        public class ConsoleComponentLoadSystem : LoadSystem<ConsoleComponent>
         {
             protected override void Load(ConsoleComponent self)
             {
                 self.Load();
             }
         }
-        
+
         public static void Load(this ConsoleComponent self)
         {
             self.Handlers.Clear();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConsoleHandlerAttribute));
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(ConsoleHandlerAttribute));
 
             foreach (Type type in types)
             {
@@ -50,12 +50,14 @@ namespace ET
                 IConsoleHandler iConsoleHandler = obj as IConsoleHandler;
                 if (iConsoleHandler == null)
                 {
-                    throw new Exception($"ConsoleHandler handler not inherit IConsoleHandler class: {obj.GetType().FullName}");
+                    throw new Exception(
+                        $"ConsoleHandler handler not inherit IConsoleHandler class: {obj.GetType().FullName}");
                 }
+
                 self.Handlers.Add(consoleHandlerAttribute.Mode, iConsoleHandler);
             }
         }
-        
+
         public static async ETTask Start(this ConsoleComponent self)
         {
             self.CancellationTokenSource = new CancellationTokenSource();
@@ -70,7 +72,7 @@ namespace ET
                         Console.Write($"{modeContex?.Mode ?? ""}> ");
                         return Console.In.ReadLine();
                     }, self.CancellationTokenSource.Token);
-                    
+
                     line = line.Trim();
 
                     switch (line)
@@ -83,7 +85,7 @@ namespace ET
                         default:
                         {
                             string[] lines = line.Split(" ");
-                            string mode = modeContex == null? lines[0] : modeContex.Mode;
+                            string mode = modeContex == null ? lines[0] : modeContex.Mode;
 
                             if (!self.Handlers.TryGetValue(mode, out IConsoleHandler iConsoleHandler))
                             {
@@ -96,12 +98,11 @@ namespace ET
                                 modeContex = self.AddComponent<ModeContex>();
                                 modeContex.Mode = mode;
                             }
+
                             await iConsoleHandler.Run(modeContex, line);
                             break;
                         }
                     }
-
-
                 }
                 catch (Exception e)
                 {

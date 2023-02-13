@@ -1,14 +1,13 @@
-﻿
-namespace NPBehave
+﻿namespace NPBehave
 {
     public class RandomSelector : Composite
     {
         static System.Random rng = new System.Random();
 
 #if UNITY_EDITOR
-        static public void DebugSetSeed( int seed )
+        static public void DebugSetSeed(int seed)
         {
-            rng = new System.Random( seed );
+            rng = new System.Random(seed);
         }
 #endif
 
@@ -46,7 +45,6 @@ namespace NPBehave
 
             ProcessChildren();
         }
-
 
 
         protected override void DoStop()
@@ -109,6 +107,7 @@ namespace NPBehave
                     {
                         currentIndex = Children.Length;
                     }
+
                     currentChild.Stop();
                     break;
                 }

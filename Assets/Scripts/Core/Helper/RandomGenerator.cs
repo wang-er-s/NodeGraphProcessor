@@ -7,9 +7,7 @@ namespace ET
     // 支持多线程
     public static class RandomGenerator
     {
-        [StaticField]
-        [ThreadStatic]
-        private static Random random;
+        [StaticField] [ThreadStatic] private static Random random;
 
         private static Random GetRandom()
         {
@@ -20,7 +18,7 @@ namespace ET
         {
             int r1 = RandInt32();
             int r2 = RandInt32();
-            
+
             return ((ulong)r1 << 32) & (ulong)r2;
         }
 
@@ -31,7 +29,7 @@ namespace ET
 
         public static uint RandUInt32()
         {
-            return (uint) GetRandom().Next();
+            return (uint)GetRandom().Next();
         }
 
         public static long RandInt64()

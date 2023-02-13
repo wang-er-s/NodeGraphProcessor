@@ -4,35 +4,34 @@
     {
         public struct EntryEvent1
         {
-        }   
-        
+        }
+
         public struct EntryEvent2
         {
-        } 
-        
+        }
+
         public struct EntryEvent3
         {
-        } 
+        }
     }
-    
+
     public static class Entry
     {
         public static void Init()
         {
-            
         }
-        
+
         public static void Start()
         {
             StartAsync().Coroutine();
         }
-        
+
         private static async ETTask StartAsync()
         {
             WinPeriod.Init();
-            
+
             MongoHelper.Init();
-            
+
             Game.AddSingleton<Root>();
             await Game.AddSingleton<ConfigComponent>().LoadAsync();
 

@@ -8,29 +8,28 @@ namespace ET
     /// assignNewTypeInstance: 从默认构造函数初始化
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class StaticFieldAttribute: Attribute
+    public class StaticFieldAttribute : Attribute
     {
         public readonly object valueToAssign;
 
         public readonly bool assignNewTypeInstance;
-        
+
         public StaticFieldAttribute()
         {
-            this.valueToAssign  = null;
+            this.valueToAssign = null;
             this.assignNewTypeInstance = false;
         }
-        
-        public StaticFieldAttribute(object valueToAssign )
+
+        public StaticFieldAttribute(object valueToAssign)
         {
-            this.valueToAssign  = valueToAssign ;
+            this.valueToAssign = valueToAssign;
             this.assignNewTypeInstance = false;
         }
-        
+
         public StaticFieldAttribute(bool assignNewTypeInstance)
         {
-            this.valueToAssign  = null;
+            this.valueToAssign = null;
             this.assignNewTypeInstance = assignNewTypeInstance;
         }
     }
 }
-

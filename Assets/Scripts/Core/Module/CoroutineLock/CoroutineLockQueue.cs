@@ -7,7 +7,7 @@ namespace ET
     {
         private int type;
         private long key;
-        
+
         public static CoroutineLockQueue Create(int type, long key)
         {
             CoroutineLockQueue coroutineLockQueue = ObjectPool.Instance.Fetch<CoroutineLockQueue>();
@@ -17,15 +17,12 @@ namespace ET
         }
 
         private CoroutineLock currentCoroutineLock;
-        
+
         private readonly Queue<WaitCoroutineLock> queue = new Queue<WaitCoroutineLock>();
 
         public int Count
         {
-            get
-            {
-                return this.queue.Count;
-            }
+            get { return this.queue.Count; }
         }
 
         public async ETTask<CoroutineLock> Wait(int time)
@@ -43,6 +40,7 @@ namespace ET
                 long tillTime = TimeHelper.ClientFrameTime() + time;
                 TimerComponent.Instance.NewOnceTimer(tillTime, TimerCoreInvokeType.CoroutineTimeout, waitCoroutineLock);
             }
+
             this.currentCoroutineLock = await waitCoroutineLock.Wait();
             return this.currentCoroutineLock;
         }

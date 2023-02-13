@@ -16,6 +16,7 @@ public class NP_BlackboardMultipleConditionsNodeData : NP_NodeDataBase
     [LabelText("终止条件")] public Stops Stop = Stops.IMMEDIATE_RESTART;
 
     public override NodeType BelongNodeType => NodeType.Decorator;
+
     public override Decorator CreateDecoratorNode(NP_RuntimeTree runtimeTree, Node node)
     {
         this.m_BlackboardMultipleConditions =

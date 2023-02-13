@@ -13,7 +13,7 @@ namespace ET
 #endif
             ShellHelper.Run($"{tools} --AppType=ExcelExporter --Console=1", "../Bin/");
         }
-        
+
         public static void Proto2CS()
         {
 #if UNITY_EDITOR_OSX || UNITY_EDITOR_LINUX

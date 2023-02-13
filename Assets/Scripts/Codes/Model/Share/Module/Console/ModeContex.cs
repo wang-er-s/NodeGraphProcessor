@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
     [ObjectSystem]
-    public class ModeContexAwakeSystem: AwakeSystem<ModeContex>
+    public class ModeContexAwakeSystem : AwakeSystem<ModeContex>
     {
         protected override void Awake(ModeContex self)
         {
@@ -10,7 +10,7 @@
     }
 
     [ObjectSystem]
-    public class ModeContexDestroySystem: DestroySystem<ModeContex>
+    public class ModeContexDestroySystem : DestroySystem<ModeContex>
     {
         protected override void Destroy(ModeContex self)
         {
@@ -19,7 +19,7 @@
     }
 
     [ComponentOf(typeof(ConsoleComponent))]
-    public class ModeContex: Entity, IAwake, IDestroy
+    public class ModeContex : Entity, IAwake, IDestroy
     {
         public string Mode = "";
     }

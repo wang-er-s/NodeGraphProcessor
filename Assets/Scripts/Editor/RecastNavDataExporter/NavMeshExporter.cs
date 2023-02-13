@@ -16,7 +16,7 @@ namespace ETEditor
     /// 从Unity的NavMesh组件里导出地图数据，供服务器来使用
     /// https://blog.csdn.net/huutu/article/details/52672505
     /// </summary>
-    public class NavMeshExporter: Editor
+    public class NavMeshExporter : Editor
     {
         public const byte VERSION = 1;
 
@@ -64,13 +64,19 @@ namespace ETEditor
         private static List<Face> faceList = new List<Face>();
         private static List<Pair> pairList = new List<Pair>();
         private static Dictionary<Vert, Face> vertFaceDict = new Dictionary<Vert, Face>();
-        private static Dictionary<Vert, Dictionary<Vert, Pair>> vertPairDict = new Dictionary<Vert, Dictionary<Vert, Pair>>();
-        private static Dictionary<float, Dictionary<float, Vert>> pointVertDict = new Dictionary<float, Dictionary<float, Vert>>();
+
+        private static Dictionary<Vert, Dictionary<Vert, Pair>> vertPairDict =
+            new Dictionary<Vert, Dictionary<Vert, Pair>>();
+
+        private static Dictionary<float, Dictionary<float, Vert>> pointVertDict =
+            new Dictionary<float, Dictionary<float, Vert>>();
+
         private static Dictionary<int, Vert> indexVertDict = new Dictionary<int, Vert>();
         private static string outputClientFolder = "../RecastNavMesh/Meshes/";
         private static string outputServerFolder = "../Config/RecastNavData/ExportedObj/";
 
         #region 菜单主函数
+
         [MenuItem("ET/NavMesh/ExportSceneObj")]
         public static void ExportScene()
         {
@@ -112,9 +118,9 @@ namespace ETEditor
             for (int i = 0, n = vertices.Length - 1; i <= n; i++)
             {
                 var point = vertices[i];
-                var x = (float) Math.Round(point.x, 2);
-                var y = (float) Math.Round(point.y, 2);
-                var z = (float) Math.Round(point.z, 2);
+                var x = (float)Math.Round(point.x, 2);
+                var y = (float)Math.Round(point.y, 2);
+                var z = (float)Math.Round(point.z, 2);
                 if (!pointVertDict.ContainsKey(x))
                 {
                     pointVertDict.Add(x, new Dictionary<float, Vert>());
@@ -161,7 +167,7 @@ namespace ETEditor
                 }
 
                 var newFace = true;
-                var area = areas[i] >= 3? areas[i] - 2 : 0;
+                var area = areas[i] >= 3 ? areas[i] - 2 : 0;
                 if (face != null && face.area == area)
                 {
                     for (var j = 0; j < 3; j++)
@@ -234,7 +240,7 @@ namespace ETEditor
 
         private static float GetDistance(float deltaX, float deltaZ)
         {
-            return (float) Math.Round(Math.Sqrt((double) deltaX * (double) deltaX + (double) deltaZ * (double) deltaZ), 2);
+            return (float)Math.Round(Math.Sqrt((double)deltaX * (double)deltaX + (double)deltaZ * (double)deltaZ), 2);
         }
 
         private static void InitFace(Face face)
@@ -257,14 +263,14 @@ namespace ETEditor
             face.centerZ /= vertCount;
             if (face.normalB != 0)
             {
-                face.normalX = (float) Math.Round(face.normalA / face.normalB, 6);
-                face.normalZ = (float) Math.Round(face.normalC / face.normalB, 6);
+                face.normalX = (float)Math.Round(face.normalA / face.normalB, 6);
+                face.normalZ = (float)Math.Round(face.normalC / face.normalB, 6);
             }
 
             for (int i = 0, n = vertCount - 1; i <= n; i++)
             {
                 var firstVert = face.verts[i];
-                var secondVert = face.verts[i == n? 0 : i + 1];
+                var secondVert = face.verts[i == n ? 0 : i + 1];
                 if (!vertPairDict.ContainsKey(firstVert))
                 {
                     vertPairDict.Add(firstVert, new Dictionary<Vert, Pair>());
@@ -329,8 +335,8 @@ namespace ETEditor
             var hilbertZ = 65535f / (maxZ - minZ);
             foreach (var face in faceList)
             {
-                var X = (uint) Math.Round((face.centerX - minX) * hilbertX);
-                var Z = (uint) Math.Round((face.centerZ - minZ) * hilbertZ);
+                var X = (uint)Math.Round((face.centerX - minX) * hilbertX);
+                var Z = (uint)Math.Round((face.centerZ - minZ) * hilbertZ);
                 var a = X ^ Z;
                 var b = 0xFFFF ^ a;
                 var c = 0xFFFF ^ (X | Z);
@@ -464,8 +470,9 @@ namespace ETEditor
             //顶点
             for (int i = 0; i < tmpNavMeshTriangulation.vertices.Length; i++)
             {
-                tmpStreamWriter.WriteLine("v  " + tmpNavMeshTriangulation.vertices[i].x + " " + tmpNavMeshTriangulation.vertices[i].y + " " +
-                    tmpNavMeshTriangulation.vertices[i].z);
+                tmpStreamWriter.WriteLine("v  " + tmpNavMeshTriangulation.vertices[i].x + " " +
+                                          tmpNavMeshTriangulation.vertices[i].y + " " +
+                                          tmpNavMeshTriangulation.vertices[i].z);
             }
 
             tmpStreamWriter.WriteLine("g pPlane1");
@@ -473,8 +480,9 @@ namespace ETEditor
             //索引
             for (int i = 0; i < tmpNavMeshTriangulation.indices.Length;)
             {
-                tmpStreamWriter.WriteLine("f " + (tmpNavMeshTriangulation.indices[i] + 1) + " " + (tmpNavMeshTriangulation.indices[i + 1] + 1) + " " +
-                    (tmpNavMeshTriangulation.indices[i + 2] + 1));
+                tmpStreamWriter.WriteLine("f " + (tmpNavMeshTriangulation.indices[i] + 1) + " " +
+                                          (tmpNavMeshTriangulation.indices[i + 1] + 1) + " " +
+                                          (tmpNavMeshTriangulation.indices[i + 2] + 1));
                 i = i + 3;
             }
 
@@ -517,7 +525,7 @@ namespace ETEditor
                 sw.Write("mtllib ./" + filename + ".mtl\n");
                 string strMes = MeshToString(mf, materialList);
                 sw.Write(strMes);
-                EditorUtility.DisplayProgressBar("Exporting objects...", mf.name, count++ / (float) meshes.Count);
+                EditorUtility.DisplayProgressBar("Exporting objects...", mf.name, count++ / (float)meshes.Count);
             }
 
             sw.Flush();
@@ -576,7 +584,8 @@ namespace ETEditor
 
             if (!bFindTag)
             {
-                Debug.LogError($"NavMeshExporter Collect Error - 所有需要被NavMesh导出的物体的Tag必须是：[{NAVMESH_TAG}]，目前的项目里没有这个Tag。");
+                Debug.LogError(
+                    $"NavMeshExporter Collect Error - 所有需要被NavMesh导出的物体的Tag必须是：[{NAVMESH_TAG}]，目前的项目里没有这个Tag。");
                 return meshes;
             }
 
@@ -640,7 +649,8 @@ namespace ETEditor
             }
             else if (mats.Length < countMat)
             {
-                Debug.LogWarning($"NavMeshExporter MeshToString Error - 共享材质数量小于该物体的子物体数量 - {mats.Length} / {countMat}");
+                Debug.LogWarning(
+                    $"NavMeshExporter MeshToString Error - 共享材质数量小于该物体的子物体数量 - {mats.Length} / {countMat}");
                 countMat = mats.Length;
             }
 
@@ -684,7 +694,8 @@ namespace ETEditor
                 {
                     //Because we inverted the x-component, we also needed to alter the triangle winding.
                     sb.Append(string.Format("f {1}/{1}/{1} {0}/{0}/{0} {2}/{2}/{2}\n",
-                        triangles[i] + 1 + vertexOffset, triangles[i + 1] + 1 + normalOffset, triangles[i + 2] + 1 + uvOffset));
+                        triangles[i] + 1 + vertexOffset, triangles[i + 1] + 1 + normalOffset,
+                        triangles[i + 2] + 1 + uvOffset));
                 }
             }
 
@@ -730,6 +741,7 @@ namespace ETEditor
                 {
                     System.IO.Directory.CreateDirectory(outputServerFolder);
                 }
+
                 foreach (string file in files)
                 {
                     string name = System.IO.Path.GetFileName(file);

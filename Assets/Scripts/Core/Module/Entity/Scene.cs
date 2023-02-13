@@ -5,22 +5,13 @@ namespace ET
     [EnableMethod]
     [DebuggerDisplay("ViewName,nq")]
     [ChildOf]
-    public sealed class Scene: Entity
+    public sealed class Scene : Entity
     {
-        public int Zone
-        {
-            get;
-        }
+        public int Zone { get; }
 
-        public SceneType SceneType
-        {
-            get;
-        }
+        public SceneType SceneType { get; }
 
-        public string Name
-        {
-            get;
-        }
+        public string Name { get; }
 
         public Scene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
@@ -55,7 +46,7 @@ namespace ET
         public override void Dispose()
         {
             base.Dispose();
-            
+
             Log.Info($"scene dispose: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
@@ -67,10 +58,7 @@ namespace ET
 
         public new Entity Parent
         {
-            get
-            {
-                return this.parent;
-            }
+            get { return this.parent; }
             private set
             {
                 if (value == null)
@@ -83,13 +71,10 @@ namespace ET
                 this.parent.Children.Add(this.Id, this);
             }
         }
-        
+
         protected override string ViewName
         {
-            get
-            {
-                return $"{this.GetType().Name} ({this.SceneType})";    
-            }
+            get { return $"{this.GetType().Name} ({this.SceneType})"; }
         }
     }
 }

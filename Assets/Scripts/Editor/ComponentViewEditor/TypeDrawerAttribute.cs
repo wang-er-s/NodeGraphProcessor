@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class TypeDrawerAttribute: Attribute
+    public class TypeDrawerAttribute : Attribute
     {
     }
 }

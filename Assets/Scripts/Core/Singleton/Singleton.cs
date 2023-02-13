@@ -2,33 +2,30 @@
 
 namespace ET
 {
-    public interface ISingleton: IDisposable
+    public interface ISingleton : IDisposable
     {
         void Register();
         void Destroy();
         bool IsDisposed();
     }
-    
-    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
+
+    public abstract class Singleton<T> : ISingleton where T : Singleton<T>, new()
     {
         private bool isDisposed;
-        [StaticField]
-        private static T instance;
+        [StaticField] private static T instance;
 
         public static T Instance
         {
-            get
-            {
-                return instance;
-            }
+            get { return instance; }
         }
 
         void ISingleton.Register()
         {
             if (instance != null)
             {
-                throw new Exception($"singleton register twice! {typeof (T).Name}");
+                throw new Exception($"singleton register twice! {typeof(T).Name}");
             }
+
             instance = (T)this;
         }
 
@@ -38,8 +35,9 @@ namespace ET
             {
                 return;
             }
+
             this.isDisposed = true;
-            
+
             instance.Dispose();
             instance = null;
         }

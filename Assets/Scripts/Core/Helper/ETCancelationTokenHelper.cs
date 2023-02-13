@@ -10,12 +10,12 @@ namespace ET
             }
 
             await TimerComponent.Instance.WaitAsync(afterTimeCancel);
-            
+
             if (self.IsCancel())
             {
                 return;
             }
-            
+
             self.Cancel();
         }
     }

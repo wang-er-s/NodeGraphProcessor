@@ -15,16 +15,16 @@ namespace ET
         {
             var types = TypeCache.GetTypesWithAttribute<EntityMenuAttribute>();
 
-            foreach(var type in types)
+            foreach (var type in types)
             {
                 var menu = type.GetCustomAttribute<EntityMenuAttribute>();
 
-                if(menu is null)
+                if (menu is null)
                 {
                     continue;
                 }
 
-                if(Activator.CreateInstance(type) is not AEntityMenuHandler action)
+                if (Activator.CreateInstance(type) is not AEntityMenuHandler action)
                 {
                     continue;
                 }
@@ -36,7 +36,7 @@ namespace ET
 
         public static void Show(object entity)
         {
-            if(entity is null)
+            if (entity is null)
             {
                 return;
             }
@@ -45,21 +45,21 @@ namespace ET
 
             ACTIONS.TryGetValue(name, out var actions);
 
-            if(actions is null)
+            if (actions is null)
             {
                 return;
             }
 
             menu = new GenericMenu();
 
-            foreach(var action in actions)
+            foreach (var action in actions)
             {
                 menu.AddItem(
                     new GUIContent(action.menuName),
                     false,
                     delegate(object data)
                     {
-                        if(data is not Entity callback_data)
+                        if (data is not Entity callback_data)
                         {
                             return;
                         }

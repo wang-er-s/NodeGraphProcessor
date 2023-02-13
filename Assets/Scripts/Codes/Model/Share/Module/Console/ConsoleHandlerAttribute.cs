@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public class ConsoleHandlerAttribute: BaseAttribute
+    public class ConsoleHandlerAttribute : BaseAttribute
     {
         public string Mode { get; }
 

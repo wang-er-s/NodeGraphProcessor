@@ -8,7 +8,7 @@
         public const int SessionIdleChecker = 101;
         public const int ActorLocationSenderChecker = 102;
         public const int ActorMessageSenderChecker = 103;
-        
+
         // 框架层100-200，逻辑层的timer type 200-300
         public const int MoveTimer = 201;
         public const int AITimer = 202;

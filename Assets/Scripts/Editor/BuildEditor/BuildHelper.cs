@@ -11,14 +11,15 @@ namespace ET
         private const string relativeDirPrefix = "../Release";
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
-        
-        
+
+
         [InitializeOnLoadMethod]
         public static void ReGenerateProjectFiles()
         {
-            if (Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name== "RiderScriptEditor")
+            if (Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name == "RiderScriptEditor")
             {
-                FieldInfo generator = Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().GetField("m_ProjectGeneration", BindingFlags.Static | BindingFlags.NonPublic);
+                FieldInfo generator = Unity.CodeEditor.CodeEditor.CurrentEditor.GetType()
+                    .GetField("m_ProjectGeneration", BindingFlags.Static | BindingFlags.NonPublic);
                 var syncMethod = generator.FieldType.GetMethod("Sync");
                 syncMethod.Invoke(generator.GetValue(Unity.CodeEditor.CodeEditor.CurrentEditor), null);
             }
@@ -26,11 +27,11 @@ namespace ET
             {
                 Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
             }
-            
+
             Debug.Log("ReGenerateProjectFiles finished.");
         }
 
-        
+
 #if ENABLE_CODES
         [MenuItem("ET/ChangeDefine/Remove ENABLE_CODES")]
         public static void RemoveEnableCodes()
@@ -46,7 +47,8 @@ namespace ET
 #endif
         private static void EnableCodes(bool enable)
         {
-            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            string defines =
+                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             var ss = defines.Split(';').ToList();
             if (enable)
             {
@@ -54,6 +56,7 @@ namespace ET
                 {
                     return;
                 }
+
                 ss.Add("ENABLE_CODES");
             }
             else
@@ -62,13 +65,15 @@ namespace ET
                 {
                     return;
                 }
+
                 ss.Remove("ENABLE_CODES");
             }
+
             defines = string.Join(";", ss);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
             AssetDatabase.SaveAssets();
         }
-        
+
 #if ENABLE_VIEW
         [MenuItem("ET/ChangeDefine/Remove ENABLE_VIEW")]
         public static void RemoveEnableView()
@@ -84,7 +89,8 @@ namespace ET
 #endif
         private static void EnableView(bool enable)
         {
-            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            string defines =
+                PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             var ss = defines.Split(';').ToList();
             if (enable)
             {
@@ -92,6 +98,7 @@ namespace ET
                 {
                     return;
                 }
+
                 ss.Add("ENABLE_VIEW");
             }
             else
@@ -100,15 +107,17 @@ namespace ET
                 {
                     return;
                 }
+
                 ss.Remove("ENABLE_VIEW");
             }
-            
+
             defines = string.Join(";", ss);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
             AssetDatabase.SaveAssets();
         }
 
-        public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB, bool clearFolder)
+        public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions,
+            BuildOptions buildOptions, bool isBuildExe, bool isContainAB, bool clearFolder)
         {
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
             string programName = "ET";
@@ -129,7 +138,7 @@ namespace ET
                 case PlatformType.MacOS:
                     buildTarget = BuildTarget.StandaloneOSX;
                     break;
-                
+
                 case PlatformType.Linux:
                     buildTarget = BuildTarget.StandaloneLinux64;
                     break;
@@ -141,6 +150,7 @@ namespace ET
             {
                 Directory.Delete(fold, true);
             }
+
             Directory.CreateDirectory(fold);
 
             UnityEngine.Debug.Log("start build assetbundle");
@@ -157,7 +167,8 @@ namespace ET
             if (isBuildExe)
             {
                 AssetDatabase.Refresh();
-                string[] levels = {
+                string[] levels =
+                {
                     "Assets/Scenes/Init.unity",
                 };
                 UnityEngine.Debug.Log("start build exe");

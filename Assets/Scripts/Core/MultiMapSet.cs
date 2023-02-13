@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace ET
 {
-    public class MultiMapSet<T, K>: SortedDictionary<T, HashSet<K>>
+    public class MultiMapSet<T, K> : SortedDictionary<T, HashSet<K>>
     {
         private readonly HashSet<K> Empty = new HashSet<K>();
-		
+
         public void Add(T t, K k)
         {
             HashSet<K> list;
@@ -17,6 +17,7 @@ namespace ET
                 list = new HashSet<K>();
                 this.Add(t, list);
             }
+
             list.Add(k);
         }
 
@@ -28,14 +29,17 @@ namespace ET
             {
                 return false;
             }
+
             if (!list.Remove(k))
             {
                 return false;
             }
+
             if (list.Count == 0)
             {
                 this.Remove(t);
             }
+
             return true;
         }
 
@@ -52,6 +56,7 @@ namespace ET
             {
                 return Array.Empty<K>();
             }
+
             return list.ToArray();
         }
 
@@ -77,6 +82,7 @@ namespace ET
             {
                 return list.FirstOrDefault();
             }
+
             return default;
         }
 
@@ -88,6 +94,7 @@ namespace ET
             {
                 return false;
             }
+
             return list.Contains(k);
         }
     }

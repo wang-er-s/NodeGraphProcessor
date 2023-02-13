@@ -5,22 +5,16 @@ using Unity.Mathematics;
 namespace ET
 {
     [ComponentOf(typeof(Unit))]
-    public class MoveComponent: Entity, IAwake, IDestroy
+    public class MoveComponent : Entity, IAwake, IDestroy
     {
         public float3 PreTarget
         {
-            get
-            {
-                return this.Targets[this.N - 1];
-            }
+            get { return this.Targets[this.N - 1]; }
         }
 
         public float3 NextTarget
         {
-            get
-            {
-                return this.Targets[this.N];
-            }
+            get { return this.Targets[this.N]; }
         }
 
         // 开启移动协程的时间
@@ -34,24 +28,15 @@ namespace ET
 
         public float3 RealPos
         {
-            get
-            {
-                return this.Targets[0];
-            }
+            get { return this.Targets[0]; }
         }
 
         private long needTime;
 
         public long NeedTime
         {
-            get
-            {
-                return this.needTime;
-            }
-            set
-            {
-                this.needTime = value;
-            }
+            get { return this.needTime; }
+            set { this.needTime = value; }
         }
 
         public long MoveTimer;
@@ -64,10 +49,7 @@ namespace ET
 
         public float3 FinalTarget
         {
-            get
-            {
-                return this.Targets[this.Targets.Count - 1];
-            }
+            get { return this.Targets[this.Targets.Count - 1]; }
         }
 
         public int N;
