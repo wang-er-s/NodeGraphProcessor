@@ -41,6 +41,12 @@ namespace ET
 
         private void LateUpdate()
         {
+#if UNITY_EDITOR 
+            if (UnityEditor.EditorApplication.isPaused) 
+            { 
+                return;
+            } 
+#endif
             Game.LateUpdate();
             Game.FrameFinishUpdate();
         }
