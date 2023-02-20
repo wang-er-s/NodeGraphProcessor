@@ -1,22 +1,25 @@
-﻿public enum BuffState
+﻿namespace ET
 {
-    /// <summary>
-    /// 等待执行
-    /// </summary>
-    Waiting,
+    public enum BuffState
+    {
+        /// <summary>
+        /// 等待执行
+        /// </summary>
+        Waiting,
 
-    /// <summary>
-    /// 正在执行
-    /// </summary>
-    Running,
+        /// <summary>
+        /// 正在执行
+        /// </summary>
+        Running,
 
-    /// <summary>
-    /// Buff使命完成
-    /// </summary>
-    Finished,
+        /// <summary>
+        /// Buff使命完成
+        /// </summary>
+        Finished,
 
-    /// <summary>
-    /// 永恒的Buff
-    /// </summary>
-    Forever
+        /// <summary>
+        /// 永恒的Buff
+        /// </summary>
+        Forever
+    }
 }
