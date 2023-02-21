@@ -49,6 +49,10 @@ public class BuffDataBase
 
     [ShowIf("CanOverlay")] [LabelText("最大叠加数")] [BoxGroup("选填项")]
     public int MaxOverlay;
+    
+    [LabelText("要抛出的事件ID，如果有的话")]
+    [BoxGroup("选填项")]
+    public List<VTD_EventId> EventIds = new List<VTD_EventId>(); 
 
     [LabelText("Buff持续时间")] [Tooltip("-1代表永久,0代表此处设置无效,1000 = 1s")] [BoxGroup("选填项")]
     public long SustainTime;

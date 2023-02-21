@@ -37,11 +37,11 @@ namespace ET
         /// <param name="theUnitIdBelongTo">Buff寄生者</param>
         /// <param name="theSkillCanvasIdBelongTo"></param>
         /// <returns></returns>
-        public static IBuffSystem AcquireBuff(Room room, long npsupportDataId, long buffNodeId, long theUnitIdFrom,
+        public static IBuffSystem AcquireBuff(long npsupportDataId, long buffNodeId, long theUnitIdFrom,
             long theUnitIdBelongTo,
             long theSkillCanvasIdBelongTo)
         {
-            UnitComponent unitComponent = room.GetComponent<UnitComponent>();
+            UnitComponent unitComponent = Root.Instance.Scene.GetComponent<UnitComponent>();
             Unit theUnitFrom = unitComponent.Get(theUnitIdFrom);
             Unit theUnitBelongTo = unitComponent.Get(theUnitIdBelongTo);
 

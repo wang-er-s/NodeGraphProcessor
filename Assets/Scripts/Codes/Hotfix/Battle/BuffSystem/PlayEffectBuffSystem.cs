@@ -5,7 +5,7 @@
 #if !SERVER
         public override void OnExecute(uint currentFrame)
         {
-            EventSystem.Instance.Publish(new EventType.PlayEffectBuffSystemExcuteEvent()
+            EventSystem.Instance.Publish(Root.Instance.Scene,new EventType.PlayEffectBuffSystemExcuteEvent()
             {
                 PlayEffectBuffData = GetBuffDataWithTType, Target = this.GetBuffTarget(),
                 CurrentOverlay = this.CurrentOverlay
@@ -15,7 +15,7 @@
             {
                 foreach (var eventId in this.BuffData.EventIds)
                 {
-                    Game.Scene.GetComponent<BattleEventSystemComponent>().Run($"{eventId}{this.TheUnitFrom.Id}", this);
+                    Root.Instance.Scene.GetComponent<BattleEventSystemComponent>().Run($"{eventId}{this.TheUnitFrom.Id}", this);
                     //Log.Info($"抛出了{this.MSkillBuffDataBase.theEventID}{this.theUnitFrom.Id}");
                 }
             }
@@ -23,7 +23,7 @@
 
         public override void OnFinished(uint currentFrame)
         {
-            EventSystem.Instance.Publish(new EventType.PlayEffectBuffSystemFinishEvent()
+            EventSystem.Instance.Publish(Root.Instance.Scene,new EventType.PlayEffectBuffSystemFinishEvent()
             {
                 PlayEffectBuffData = GetBuffDataWithTType, Target = this.GetBuffTarget(),
                 CurrentOverlay = this.CurrentOverlay
@@ -32,7 +32,7 @@
 
         public override void OnRefreshed(uint currentFrame)
         {
-            EventSystem.Instance.Publish(new EventType.PlayEffectBuffSystemExcuteEvent()
+            EventSystem.Instance.Publish(Root.Instance.Scene,new EventType.PlayEffectBuffSystemExcuteEvent()
             {
                 PlayEffectBuffData = GetBuffDataWithTType, Target = this.GetBuffTarget(),
                 CurrentOverlay = this.CurrentOverlay
@@ -42,7 +42,7 @@
             {
                 foreach (var eventId in this.BuffData.EventIds)
                 {
-                    Game.Scene.GetComponent<BattleEventSystemComponent>().Run($"{eventId}{this.TheUnitFrom.Id}", this);
+                    Root.Instance.Scene.GetComponent<BattleEventSystemComponent>().Run($"{eventId}{this.TheUnitFrom.Id}", this);
                     //Log.Info($"抛出了{this.MSkillBuffDataBase.theEventID}{this.theUnitFrom.Id}");
                 }
             }

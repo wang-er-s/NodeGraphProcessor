@@ -2,7 +2,7 @@
 using NPBehave;
 using Root = NPBehave.Root;
 
-public class NP_RuntimeTree
+public class NP_RuntimeTree : Entity
 {
     /// <summary>
     /// NP行为树根结点

@@ -1,18 +1,5 @@
-//------------------------------------------------------------
-// Author: 烟雨迷离半世殇
-// Mail: 1778139321@qq.com
-// Data: 2019年9月21日 10:09:03
-//------------------------------------------------------------
-
-using System;
 using System.Collections.Generic;
-using ET.EventType;
 using Sirenix.OdinInspector;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEngine;
-
-#endif
 
 namespace ET
 {
