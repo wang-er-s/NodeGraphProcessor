@@ -287,16 +287,6 @@ namespace ET
                             component.parent = this;
                         }
                     }
-
-                    if (this.childrenDB != null)
-                    {
-                        foreach (Entity child in this.childrenDB)
-                        {
-                            child.IsComponent = false;
-                            this.Children.Add(child.Id, child);
-                            child.parent = this;
-                        }
-                    }
                 }
 
                 // 递归设置孩子的Domain
@@ -324,8 +314,6 @@ namespace ET
             }
         }
 
-        [BsonElement("Children")] [BsonIgnoreIfNull]
-        private HashSet<Entity> childrenDB;
 
         [BsonIgnore] private Dictionary<long, Entity> children;
 
@@ -338,7 +326,6 @@ namespace ET
         private void AddToChildren(Entity entity)
         {
             this.Children.Add(entity.Id, entity);
-            this.AddToChildrenDB(entity);
         }
 
         private void RemoveFromChildren(Entity entity)
@@ -356,40 +343,6 @@ namespace ET
                 this.children = null;
             }
 
-            this.RemoveFromChildrenDB(entity);
-        }
-
-        private void AddToChildrenDB(Entity entity)
-        {
-            if (!(entity is ISerializeToEntity))
-            {
-                return;
-            }
-
-            this.childrenDB ??= ObjectPool.Instance.Fetch<HashSet<Entity>>();
-
-            this.childrenDB.Add(entity);
-        }
-
-        private void RemoveFromChildrenDB(Entity entity)
-        {
-            if (!(entity is ISerializeToEntity))
-            {
-                return;
-            }
-
-            if (this.childrenDB == null)
-            {
-                return;
-            }
-
-            this.childrenDB.Remove(entity);
-
-            if (this.childrenDB.Count == 0 && this.IsNew)
-            {
-                ObjectPool.Instance.Recycle(this.childrenDB);
-                this.childrenDB = null;
-            }
         }
 
         [BsonElement("C")] [BsonIgnoreIfNull] private HashSet<Entity> componentsDB;
@@ -447,17 +400,6 @@ namespace ET
                 this.children.Clear();
                 ObjectPool.Instance.Recycle(this.children);
                 this.children = null;
-
-                if (this.childrenDB != null)
-                {
-                    this.childrenDB.Clear();
-                    // 创建的才需要回到池中,从db中不需要回收
-                    if (this.IsNew)
-                    {
-                        ObjectPool.Instance.Recycle(this.childrenDB);
-                        this.childrenDB = null;
-                    }
-                }
             }
 
             // 触发Destroy事件
